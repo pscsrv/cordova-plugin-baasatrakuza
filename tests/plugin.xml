@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-plugin-baasatrakuza-tests"
+    version="1.0.0">
+    <name>Cordova BaaSAtRakuza Plugin Tests</name>
+    <license>Apache 2.0</license>
+
+    <js-module src="tests.js" name="tests"></js-module>
+    <js-module src="tests_helper.js" name="tests_helper"></js-module>
+
+    <js-module src="trial_plan/test_runner.js" name="trial_plan/test_runner"></js-module>
+    <js-module src="trial_plan/tests_application.js" name="trial_plan/tests_application"></js-module>
+    <js-module src="trial_plan/tests_beacon.js" name="trial_plan/tests_beacon"></js-module>
+    <js-module src="trial_plan/tests_contact.js" name="trial_plan/tests_contact"></js-module>
+    <js-module src="trial_plan/tests_coupon.js" name="trial_plan/tests_coupon"></js-module>
+    <js-module src="trial_plan/tests_news.js" name="trial_plan/tests_news"></js-module>
+    <js-module src="trial_plan/tests_object_data.js" name="trial_plan/tests_object_data"></js-module>
+    <js-module src="trial_plan/tests_point.js" name="trial_plan/tests_point"></js-module>
+    <js-module src="trial_plan/tests_spot.js" name="trial_plan/tests_spot"></js-module>
+    <js-module src="trial_plan/tests_stamp_rally.js" name="trial_plan/tests_stamp_rally"></js-module>
+    <js-module src="trial_plan/tests_user.js" name="trial_plan/tests_user"></js-module>
+
+    <js-module src="light_plan/test_runner.js" name="light_plan/test_runner"></js-module>
+    <js-module src="light_plan/tests_application.js" name="light_plan/tests_application"></js-module>
+    <js-module src="light_plan/tests_contact.js" name="light_plan/tests_contact"></js-module>
+    <js-module src="light_plan/tests_coupon.js" name="light_plan/tests_coupon"></js-module>
+    <js-module src="light_plan/tests_news.js" name="light_plan/tests_news"></js-module>
+    <js-module src="light_plan/tests_object_data.js" name="light_plan/tests_object_data"></js-module>
+    <js-module src="light_plan/tests_point.js" name="light_plan/tests_point"></js-module>
+    <js-module src="light_plan/tests_spot.js" name="light_plan/tests_spot"></js-module>
+    <js-module src="light_plan/tests_stamp_rally.js" name="light_plan/tests_stamp_rally"></js-module>
+    <js-module src="light_plan/tests_user.js" name="light_plan/tests_user"></js-module>
+
+    <js-module src="standard_plan/test_runner.js" name="standard_plan/test_runner"></js-module>
+    <js-module src="standard_plan/tests_application.js" name="standard_plan/tests_application"></js-module>
+    <js-module src="standard_plan/tests_contact.js" name="standard_plan/tests_contact"></js-module>
+    <js-module src="standard_plan/tests_coupon.js" name="standard_plan/tests_coupon"></js-module>
+    <js-module src="standard_plan/tests_news.js" name="standard_plan/tests_news"></js-module>
+    <js-module src="standard_plan/tests_object_data.js" name="standard_plan/tests_object_data"></js-module>
+    <js-module src="standard_plan/tests_point.js" name="standard_plan/tests_point"></js-module>
+    <js-module src="standard_plan/tests_spot.js" name="standard_plan/tests_spot"></js-module>
+    <js-module src="standard_plan/tests_stamp_rally.js" name="standard_plan/tests_stamp_rally"></js-module>
+    <js-module src="standard_plan/tests_user.js" name="standard_plan/tests_user"></js-module>
+
+</plugin>
