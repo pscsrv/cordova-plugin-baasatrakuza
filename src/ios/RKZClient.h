@@ -12,13 +12,11 @@
 #import <Cordova/CDVPlugin.h>
 
 #import "RKZData.h"
-#import "RKZBeaconReceiver.h"
 
 #import "RKZResponseStatus.h"
 
 @interface RKZClient : CDVPlugin
 {
-    RKZBeaconReceiver *receiver;
     NSString *receiveCallbackId;
 }
 

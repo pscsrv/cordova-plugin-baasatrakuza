@@ -10,8 +10,6 @@
 
 #import "RKZClient.h"
 #import "RKZService.h"
-#import "RKZBeaconReceiver.h"
-#import "RKZBeaconInfo.h"
 
 @implementation RKZClient (Spot)
 

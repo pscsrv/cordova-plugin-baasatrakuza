@@ -96,13 +96,10 @@
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZApplicationConfigData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZBeaconData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZBeaconDetectContactData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
-    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZBeaconInfo.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
-    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZBeaconReceiver.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZBeaconSpotData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZContactData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZCouponData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
-    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZEntryData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZLocaleData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZMyCouponData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZMyStampHistoryData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />

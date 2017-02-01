@@ -149,10 +149,10 @@ exports.suite = function(helper) {
                         expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"contact_method_class_cd_name":"ビーコン検知"}));
                         expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"contact_method_class_cd":"0008"}));
                         expect(beaconContacts[0].contact_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
-                        expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"target_tenant_id":"21002"}));
+                        expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"target_tenant_id":"21004"}));
                         expect(beaconContacts[0].contact_no).toBeDefined();
                         expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"beacon_spot_cd":"0001"}));
-                        expect(beaconContacts[0].user_id).toMatch(/^21002[0-9]{10}$/);
+                        expect(beaconContacts[0].user_id).toMatch(/^21004[0-9]{10}$/);
                         expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"contact_class_cd_name":"ビーコン検知"}));
                         expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"rssi":3}));
                         expect(beaconContacts[0]).toEqual(jasmine.objectContaining({"contact_class_cd":"0012"}));

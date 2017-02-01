@@ -13,6 +13,11 @@
 #define RKZMyStampData_h
 
 
+/**
+ スタンプ取得履歴を管理するクラス
+
+ スタンプを取得したスポット情報をスタンプラリーに合わせて復帰する
+ */
 @interface RKZMyStampHistoryData : RKZData
 
 ///------------------------------

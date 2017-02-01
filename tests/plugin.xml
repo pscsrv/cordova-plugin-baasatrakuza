@@ -41,6 +41,7 @@
 
     <js-module src="light_plan/test_runner.js" name="light_plan/test_runner"></js-module>
     <js-module src="light_plan/tests_application.js" name="light_plan/tests_application"></js-module>
+    <js-module src="light_plan/tests_beacon.js" name="light_plan/tests_beacon"></js-module>
     <js-module src="light_plan/tests_contact.js" name="light_plan/tests_contact"></js-module>
     <js-module src="light_plan/tests_coupon.js" name="light_plan/tests_coupon"></js-module>
     <js-module src="light_plan/tests_news.js" name="light_plan/tests_news"></js-module>
@@ -52,6 +53,7 @@
 
     <js-module src="standard_plan/test_runner.js" name="standard_plan/test_runner"></js-module>
     <js-module src="standard_plan/tests_application.js" name="standard_plan/tests_application"></js-module>
+    <js-module src="standard_plan/tests_beacon.js" name="standard_plan/tests_beacon"></js-module>
     <js-module src="standard_plan/tests_contact.js" name="standard_plan/tests_contact"></js-module>
     <js-module src="standard_plan/tests_coupon.js" name="standard_plan/tests_coupon"></js-module>
     <js-module src="standard_plan/tests_news.js" name="standard_plan/tests_news"></js-module>

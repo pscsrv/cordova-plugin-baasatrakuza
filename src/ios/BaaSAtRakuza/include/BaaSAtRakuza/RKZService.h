@@ -11,7 +11,6 @@
 #import "RKZStampRallySpotData.h"
 
 @class RKZUserData;
-@class RKZSurveyItemAndEntryData;
 @class RKZPointData;
 @class RKZCouponData;
 @class RKZMyCouponData;
@@ -23,13 +22,8 @@
 @class RKZObjectData;
 @class RKZApplicationConfigData;
 @class RKZUserEditWebView;
-@class RKZSurveyItemEntryWebView;
-@class RKZBeaconReceiver;
 @class RKZContactData;
 @class RKZEditPasswordWebView;
-
-#pragma mark RKZService
-@protocol RKZBeaconReceiverDelegate;
 
 /**
  BaaS@rakuza を利用するためのクラス
@@ -393,32 +387,6 @@
           searchConditionArray:(NSMutableArray *)searchConditionArray
             sortConditionArray:(NSMutableArray *)sortConditionArray
                      withBlock:(void (^)(NSMutableArray* detectBeaconContactArray, RKZResponseStatus *responseStatus))block;
-
-
-/**
- ビーコン検知オブジェクト取得
- 
- ビーコン検知機能を持つ RKZBeaconReceiver クラスを返却します。
- 
- @param delegate デリゲート
- */
-- (RKZBeaconReceiver *)getBeaconReceiver:(id<RKZBeaconReceiverDelegate>)delegate;
-
-/**
- BLUETUSを利用するためのライセンスキーを設定します。
- このメソッドにて設定したライセンスキーが優先的に利用されます。
- 
- @param licenseKey BLUETUSライセンスキー
- */
-- (void) setBluetusLicenseKey:(NSString *)licenseKey;
-
-/**
- Beaconetsを利用するための認証パスワードを設定します。
- このメソッドにて設定した認証パスワードが優先的に利用されます。
- 
- @param password Beaconets認証パスワード
- */
-- (void) setBeaconetsAuthenticationPassword:(NSString *)password;
 
 @end
 
@@ -858,6 +826,16 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
 
 /**
  スタンプコンプリート設定
+ 
+ 開催されているスタンプラリーで、コンプリートした状態に登録する。
+ コンプリートしたかどうかを自動で判定するのではなく、コンプリートした状態として登録する場合、当APIを呼び出す。
+ (コンプリートしたかどうかの判定は各自実装して判定する)
+
+ @param userAccessToken ユーザーアクセストークン
+ @param stampRallyId スタンプラリーID
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( NSMutableArray(RKZResponseStatus) *statusCode, RKZResponseStatus *responseStatus )
+ 
  */
 -(void)stampComplete:(NSString *)userAccessToken stampRallyId:(NSString *)stampRallyId withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
 
@@ -905,19 +883,19 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
  @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
  @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
  @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
- ( NSMutableArray(RKZContactHistoryData) *contactHistoryDataArray, RKZResponseStatus *responseStatus )
+ ( NSMutableArray(RKZContactData) *contactDataArray, RKZResponseStatus *responseStatus )
  */
 - (void)getContactList:(NSString *)userAccessToken
   searchConditionArray:(NSMutableArray *)searchConditionArray
     sortConditionArray:(NSMutableArray *)sortConditionArray
-             withBlock:(void (^)(NSMutableArray* contactHistoryDataArray, RKZResponseStatus *responseStatus))block;
+             withBlock:(void (^)(NSMutableArray* contactDataArray, RKZResponseStatus *responseStatus))block;
 
 
 /**
- コンタクト履歴の登録
+ コンタクトの登録
  
  @param userAccessToken 登録するユーザーのアクセストークン
- @param contactHistoryData 登録するコンタクト履歴データ
+ @param contactData 登録するコンタクトデータ
  @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
  ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
  */

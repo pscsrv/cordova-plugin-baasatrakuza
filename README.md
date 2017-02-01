@@ -10,7 +10,7 @@ BaaS@rakuzaのご利用については [BaaS@rakuza製品サイト](http://www.r
 
 |プラグイン バージョン|BaaS@rakuza SDK バージョン|BaaS@rakuza バージョン|
 |:-:|:-:|:-:|
-|1.0.0|2.0.0|2.0.0|
+|1.0.1|2.0.0|2.0.0|
 
 ## Cordovaでのインストール方法
 
@@ -18,9 +18,7 @@ BaaS@rakuzaのご利用については [BaaS@rakuza製品サイト](http://www.r
 
 ## Monacaでのインストール方法
 
-Monaca IDE から `Cordovaプラグインの管理...`を開き、以下のURLを指定して`Cordovaプラグインのインポート`をおこなってください。
-
-    https://github.com/pscsrv/cordova-plugin-baasatrakuza.git
+Monaca IDE から `Cordovaプラグインの管理...`を開き、利用可能なプラグンより `BaaS@rakuza` を選択して `有効` ボタンをクリックしてください。
 
 ## サポートプラットフォーム
 
