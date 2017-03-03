@@ -269,29 +269,49 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
 
-            it('正常な値の場合、正しく登録されること', function(done) {
-                var data = {
-                    'object_id' : 'spot',
-                    'name' : 'CORDOVA_PLUGIN_TEST_SPOT',
-                    'beacon_range_for_iphone' : '1',
-                    'beacon_range_for_android' : '1',
-                    'pixel_position_x' : '0',
-                    'pixel_position_y' : '0',
-                    'updated_at' : '2016-09-30 10:36',
-                };
-                RKZClient.addData(data,
-                    function(statusCode) {
-                        expect(statusCode).toBeDefined();
-                        expect(statusCode).toEqual("1001");
-                        done();
-                    }, function(error) {
-                        expect(false).toBeTruthy(); done();  // Failed
-                    });
-            }, TIMEOUT);
+            describe('正常な値の登録の場合', function() {
+                it('正常な値の場合、正しく登録されること', function(done) {
+                    var data = {
+                        'object_id' : 'delete_master',
+                        'name' : 'CORDOVA_PLUGIN_TEST_OBJECT',
+                        'short_name' : 'short_name',
+                        'sort_no' : 10,
+                        attributes : {
+                            'attributes_value' : '新規',
+                            'attributes_date' : '2017-01-01 00:00:00'
+                        }
+                    };
+                    RKZClient.addData(data,
+                        function(statusCode) {
+                            expect(statusCode).toBeDefined();
+                            expect(statusCode).toEqual("1001");
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+
+                afterEach(function(done) {
+                    var objectId = "delete_master";
+                    var searchConditions = [
+                        RKZSearchCondition.equal("name", "CORDOVA_PLUGIN_TEST_OBJECT")
+                    ];
+                    var sortConditions = [];
+                    RKZClient.getDataList(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas.length).toEqual(1);
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({attributes_value: "新規"}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({attributes_date: "2017-01-01 00:00:00"}));
+                            done();
+                        }, function(error) {
+                            done();
+                        });
+                }, TIMEOUT);
+            });
 
             it('必須項目が未指定の場合、エラーが返ってくること', function(done) {
                 var data = {
-                    'name' : 'CORDOVA_PLUGIN_TEST_SPOT',
+                    'name' : 'CORDOVA_PLUGIN_TEST_OBJECT',
                 };
                 RKZClient.addData(data,
                     function(statusCode) {
@@ -338,9 +358,9 @@ exports.suite = function(helper) {
             describe('正しいdataを指定した場合', function() {
                 var _data = null;
                 beforeEach(function(done) {
-                    var objectId = "spot";
+                    var objectId = "delete_master";
                     var searchConditions = [
-                        RKZSearchCondition.equal("name", "CORDOVA_PLUGIN_TEST_SPOT")
+                        RKZSearchCondition.equal("name", "CORDOVA_PLUGIN_TEST_OBJECT")
                     ];
                     var sortConditions = [];
                     RKZClient.getDataList(objectId, searchConditions, sortConditions,
@@ -355,6 +375,11 @@ exports.suite = function(helper) {
 
                 it('正しく更新されること', function(done) {
                     _data.short_name = "Short name.";
+                    _data.attributes = {
+                        "attributes_value" : "修正",
+                        "attributes_date" : "2017-03-01 12:34:56"
+                    };
+
                     RKZClient.editData(_data,
                         function(statusCode) {
                             expect(statusCode).toBeDefined();
@@ -375,6 +400,24 @@ exports.suite = function(helper) {
                             expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
                             if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
                             else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+
+                afterEach(function(done) {
+                    var objectId = "delete_master";
+                    var searchConditions = [
+                        RKZSearchCondition.equal("name", "CORDOVA_PLUGIN_TEST_OBJECT")
+                    ];
+                    var sortConditions = [];
+                    RKZClient.getDataList(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas.length).toEqual(1);
+                            expect(datas[0].short_name).toEqual("Short name.");
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({attributes_value: "修正"}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({attributes_date: "2017-03-01 12:34:56"}));
+                            done();
+                        }, function(error) {
                             done();
                         });
                 }, TIMEOUT);
@@ -412,7 +455,7 @@ exports.suite = function(helper) {
             });  // end of describe('パラメータ:tableName', function()
             describe('パラメータ:searchConditions', function() {
                 it('!== Object の場合、エラーになること', function(done) {
-                    var objectId = "spot";
+                    var objectId = "delete_master";
                     var searchConditions = "1";
                     RKZClient.deleteData(objectId, searchConditions,
                         function(deleteCount) {
@@ -443,9 +486,9 @@ exports.suite = function(helper) {
                 describe('正しいコードを指定した場合', function() {
                     var _code = null;
                     beforeEach(function(done) {
-                        var objectId = "spot";
+                        var objectId = "delete_master";
                         var searchConditions = [
-                            RKZSearchCondition.equal("name", "CORDOVA_PLUGIN_TEST_SPOT")
+                            RKZSearchCondition.equal("name", "CORDOVA_PLUGIN_TEST_OBJECT")
                         ];
                         var sortConditions = [];
                         RKZClient.getDataList(objectId, searchConditions, sortConditions,
@@ -461,7 +504,7 @@ exports.suite = function(helper) {
                         var searchConditions = [
                             RKZSearchCondition.equal("code", _code)
                         ];
-                        RKZClient.deleteData("spot", searchConditions,
+                        RKZClient.deleteData("delete_master", searchConditions,
                             function(deleteCount) {
                                 expect(deleteCount).toBeDefined();
                                 expect(deleteCount).toEqual(1);

@@ -10,7 +10,9 @@ BaaS@rakuzaのご利用については [BaaS@rakuza製品サイト](http://www.r
 
 |プラグイン バージョン|BaaS@rakuza SDK バージョン|BaaS@rakuza バージョン|
 |:-:|:-:|:-:|
-|1.0.1|2.0.0|2.0.0|
+|1.0.2|2.0.0, 2.0.1|2.0.0|
+|1.0.1|2.0.0, 2.0.1|2.0.0|
+|1.0.0|2.0.0|2.0.0|
 
 ## Cordovaでのインストール方法
 
@@ -129,7 +131,7 @@ RKZClientクラスの各APIメソッドを呼び出す前に、setTenantKeyメ�
 また、Onsen UIを利用している場合はOnsen UIコンポーネントの初期化が完了(ons.readyイベントが発火)した後に呼び出してください。
 
 ```js
-RKZClient.setTenantKey(tenantKey, success, error); 
+RKZClient.setTenantKey(tenantKey, success, error);
 ```
 
 * **tenantKey**: `String` テナント認証キー (必須)
@@ -150,7 +152,7 @@ BaaS@rakuzaのサーバー側システム日付を取得します。
 :information_source: BaaS@rakuzaのタイムゾーンは JST です。
 
 ```js
-RKZClient.getSystemDate(success, error); 
+RKZClient.getSystemDate(success, error);
 ```
 
 * **success**: `function` 成功時コールバック関数
@@ -171,7 +173,7 @@ RKZClient.getSystemDate(success, error);
 BaaS@rakuzaに設定したアプリケーション設定情報を取得します。
 
 ```js
-RKZClient.getApplicationSettingData(success, error); 
+RKZClient.getApplicationSettingData(success, error);
 ```
 
 * **success**: `function` 成功時コールバック関数
@@ -196,7 +198,7 @@ BaaS@rakuzaに設定されているオブジェクトのデータを、リスト
 検索条件およびソート条件を指定して取得することも可能です。
 
 ```js
-RKZClient.getDataList(objectId, searchConditions, sortConditions, success, error); 
+RKZClient.getDataList(objectId, searchConditions, sortConditions, success, error);
 ```
 
 * **objectId**: `String` オブジェクトID (必須)
@@ -226,7 +228,7 @@ RKZClient.getDataList(objectId, searchConditions, sortConditions, success, error
 BaaS@rakuzaに設定されているオブジェクトのデータを、コードを指定して一件取得します。
 
 ```js
-RKZClient.getData(objectId, code, success, error); 
+RKZClient.getData(objectId, code, success, error);
 ```
 
 * **objectId**: `String` オブジェクトID (必須)
@@ -250,7 +252,7 @@ RKZClient.getData(objectId, code, success, error);
 BaaS@rakuzaに設定されているオブジェクトにデータを追加します。
 
 ```js
-RKZClient.addData(data, success, error); 
+RKZClient.addData(data, success, error);
 ```
 
 * **data**: `Object` [オブジェクトデータ情報オブジェクト](#オブジェクトデータ情報オブジェクト)
@@ -272,7 +274,7 @@ RKZClient.addData(data, success, error);
 BaaS@rakuzaに設定されているオブジェクトのデータを、コードを指定して一件更新します。
 
 ```js
-RKZClient.editData(data, success, error); 
+RKZClient.editData(data, success, error);
 ```
 
 * **data**: `Object` [オブジェクトデータ情報オブジェクト](#オブジェクトデータ情報オブジェクト)
@@ -294,7 +296,7 @@ RKZClient.editData(data, success, error);
 BaaS@rakuzaに設定されているオブジェクトのデータを、検索条件を指定して削除します。
 
 ```js
-RKZClient.deleteData(objectId, searchConditions, success, error); 
+RKZClient.deleteData(objectId, searchConditions, success, error);
 ```
 
 * **objectId**: `String` オブジェクトID (必須)
@@ -326,7 +328,7 @@ RKZClient.deleteData(objectId, searchConditions, success, error);
 :warning: ユーザーアクセストークンはアプリ側で恒久的に保存するようにしてください。
 
 ```js
-RKZClient.registUser(data, success, error); 
+RKZClient.registUser(data, success, error);
 ```
 
 * **data**: `Object` [ユーザー情報オブジェクト](#ユーザー情報オブジェクト)
@@ -354,7 +356,7 @@ RKZClient.registUser(data, success, error);
 ユーザー情報を取得します。
 
 ```js
-RKZClient.editUser(userAccessToken, success, error); 
+RKZClient.editUser(userAccessToken, success, error);
 ```
 
 * **userAccessToken**: `String` ユーザーアクセストークン （必須)
@@ -378,7 +380,7 @@ RKZClient.editUser(userAccessToken, success, error);
 ユーザー情報を編集します。
 
 ```js
-RKZClient.editUser(data, success, error); 
+RKZClient.editUser(data, success, error);
 ```
 
 * **data**: `Object` [ユーザー情報オブジェクト](#ユーザー情報オブジェクト)
@@ -594,7 +596,7 @@ RKZClient.getContactList(userAccessToken, searchConditions, sortConditions, succ
 ユーザーのコンタクト情報を追加します。
 
 ```js
-RKZClient.addData(userAccessToken, data, success, error); 
+RKZClient.addData(userAccessToken, data, success, error);
 ```
 
 * **userAccessToken**: `String` ユーザーアクセストークン (必須)
@@ -782,7 +784,7 @@ RKZClient.getNewsReadHistory(params, userAccessToken, success, error);
 お知らせ既読情報の登録を行います。
 
 ```js
-RKZClient.registNewsReadHistory(params, userAccessToken, success, error); 
+RKZClient.registNewsReadHistory(params, userAccessToken, success, error);
 ```
 
 * **params**: `Object` お知らせ既読情報オブジェクト
@@ -821,7 +823,7 @@ RKZClient.registNewsReadHistory(params, userAccessToken, success, error);
 プッシュデバイストークンを登録します。
 
 ```js
-RKZClient.registPushDeviceToken(userAccessToken, deviceToken, success, error); 
+RKZClient.registPushDeviceToken(userAccessToken, deviceToken, success, error);
 ```
 
 * **userAccessToken**: `String` ユーザーアクセストークン (必須)
@@ -1150,7 +1152,7 @@ RKZClient.useMyCoupon(userAccessToken, myCoupon, success, error);
 ユーザーが保持しているポイント情報を取得します。
 
 ```js
-RKZClient.getPoint(userAccessToken, success, error); 
+RKZClient.getPoint(userAccessToken, success, error);
 ```
 
 * **userAccessToken**: `String` ユーザーアクセストークン (必須)
@@ -1179,7 +1181,7 @@ RKZClient.getPoint(userAccessToken, success, error);
 ユーザーがへポイントの付与を行います。
 
 ```js
-RKZClient.addPoint(userAccessToken, point, addDate, success, error); 
+RKZClient.addPoint(userAccessToken, point, addDate, success, error);
 ```
 
 * **userAccessToken**: `String` ユーザーアクセストークン (必須)
@@ -1187,7 +1189,7 @@ RKZClient.addPoint(userAccessToken, point, addDate, success, error);
 * **point**: `Number` ポイント (必須)
 
     加算するポイントを指定します。
-    
+
     負の値を指定することでポイントの減算も行えます。
 
 * **addDate**: `Date` ポイント追加日 (必須)
