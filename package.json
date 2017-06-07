@@ -1,12 +1,12 @@
 {
   "name": "cordova-plugin-baasatrakuza",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "BaaS@rakuza SDK for Cordova plugin.",
   "cordova": {
     "id": "cordova-plugin-baasatrakuza",
     "platforms": [
       "android",
-      "ios",
+      "ios"
     ]
   },
   "keywords": [
@@ -18,7 +18,7 @@
     "sdk",
     "cordova-android",
     "cordova-ios",
-    "楽座",
+    "楽座"
   ],
   "engines": [
     {

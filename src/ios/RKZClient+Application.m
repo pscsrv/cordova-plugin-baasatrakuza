@@ -67,9 +67,9 @@
     NSString *languageCd = [command.arguments objectAtIndex:1];
 
     NSLocale *locale = [self localeFromLanguageCd:languageCd];
-    
+
     [[RKZService sharedInstance] setLocale:userAccessToken locale:locale withBlock:^(NSLocale *updateLocale, RKZResponseStatus *responseStatus) {
-        
+
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSString *languageCd = [self stringFromLocale:updateLocale];
@@ -85,12 +85,13 @@
 - (void) getSystemDate:(CDVInvokedUrlCommand*)command
 {
     [[RKZService sharedInstance] getSystemDateWithBlock:^(NSDate *rakuzaSystemDate, RKZResponseStatus *responseStatus) {
-        
+
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSDateFormatter *outputDateFormatter = [[NSDateFormatter alloc] init];
             NSString *outputDateFormatterStr = @"yyyy-MM-dd HH:mm:ss+0900";
             [outputDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+            [outputDateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
             [outputDateFormatter setDateFormat:outputDateFormatterStr];
             NSString *outputDateStr = [outputDateFormatter stringFromDate:rakuzaSystemDate];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:outputDateStr];
