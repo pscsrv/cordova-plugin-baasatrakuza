@@ -86,7 +86,7 @@
     NSString *userAccessToken = [command.arguments objectAtIndex:0];
     NSString *nowPassword = [command.arguments objectAtIndex:1];
     NSString *newPassword = [command.arguments objectAtIndex:2];
-    
+
     [[RKZService sharedInstance] editPassword:userAccessToken nowPassword:nowPassword newPassword:newPassword withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -129,7 +129,7 @@
 
             NSDictionary *results = @{@"model_change_code" : modelChangeCode,
                                      @"limit_date" : outputDateStr};
-            
+
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:results];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
@@ -161,12 +161,77 @@
 {
     NSString *loginId = [command.arguments objectAtIndex:0];
     NSString *password = [command.arguments objectAtIndex:1];
-    
+
     [[RKZService sharedInstance] userAuth:loginId password:password withBlock:^(RKZUserData *userData, RKZResponseStatus *responseStatus){
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSDictionary *data = [self dictionaryFromRKZData:userData];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) updateUserAccessToken:(CDVInvokedUrlCommand*)command
+{
+    NSString *userAccessToken = [command.arguments objectAtIndex:0];
+
+    [[RKZService sharedInstance] updateUserAccessToken:userAccessToken withBlock:^(NSString *newUserAccessToken, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newUserAccessToken];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) beginUpdateUserAccessToken:(CDVInvokedUrlCommand*)command
+{
+    NSString *userAccessToken = [command.arguments objectAtIndex:0];
+
+    [[RKZService sharedInstance] beginUpdateUserAccessToken:userAccessToken withBlock:^(NSString *newUserAccessToken, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newUserAccessToken];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) commitUpdateUserAccessToken:(CDVInvokedUrlCommand*)command
+{
+    NSString *userAccessToken = [command.arguments objectAtIndex:0];
+
+    [[RKZService sharedInstance] commitUpdateUserAccessToken:userAccessToken withBlock:^(NSString *newUserAccessToken, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:newUserAccessToken];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getUserFieldDataList:(CDVInvokedUrlCommand*)command
+{
+    BOOL visibleFieldOnly = [(NSNumber *)[command.arguments objectAtIndex:0] boolValue];;
+
+    [[RKZService sharedInstance] getUserFieldDataList:visibleFieldOnly withBlock:^(NSMutableArray *rkzFieldDataArray, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSMutableArray *resutlarray = [self arrayFromRKZData:rkzFieldDataArray];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resutlarray];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];

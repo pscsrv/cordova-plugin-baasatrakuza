@@ -64,10 +64,12 @@ exports.suite = function(helper) {
                         expect(beacons[0]).toEqual(jasmine.objectContaining({"minor":null}));
                         expect(beacons[0]).toEqual(jasmine.objectContaining({"not_use_flg":false}));
                         expect(beacons[0]).toEqual(jasmine.objectContaining({"beacon_type_cd":"0002"}));
-                        expect(Object.keys(beacons[0].attributes).length).toEqual(3);
+                        expect(Object.keys(beacons[0].attributes).length).toEqual(5);
                         expect(beacons[0].attributes).toEqual(jasmine.objectContaining( {"beacon_type_cd_name":"BULETUS"} ));
                         expect(beacons[0].attributes).toEqual(jasmine.objectContaining( {"not_delete_flg":"0"} ));
                         expect(beacons[0].attributes).toEqual(jasmine.objectContaining( {"not_edit_flg":"0"} ));
+                        expect(beacons[0].attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(beacons[0].attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     },
                     function(error) {

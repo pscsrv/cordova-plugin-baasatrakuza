@@ -237,6 +237,75 @@ var BaaSAtRakuza = (function() {
             var _password = password || "";
             cordova.exec(success, error, featureName, "userAuth", [ _loginId, _password ]);
         },
+        /**
+         * 現在利用中のユーザーアクセストークンを更新する
+         *
+         * @param {String} userAccessToken ユーザーアクセストークン(必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        updateUserAccessToken: function(userAccessToken, success, error) {
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+            cordova.exec(success, error, featureName, "updateUserAccessToken", [ _userAccessToken ]);
+        },
+        /**
+         * 現在利用中のユーザーアクセストークンの更新を開始する<br />
+         * 新しいユーザーアクセストークンを仮発行するが、確定はしないので利用不可の状態で復帰される。
+         * 新しいユーザーアクセストークンを利用する場合は commitUpdateUserAccessToken を呼び出して、ユーザーアクセストークンを確定させる必要がある。
+         *
+         * @param {String} userAccessToken ユーザーアクセストークン(必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        beginUpdateUserAccessToken: function(userAccessToken, success, error) {
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+            cordova.exec(success, error, featureName, "beginUpdateUserAccessToken", [ _userAccessToken ]);
+        },
+        /**
+         * 現在利用中のユーザーアクセストークンの更新を確定する<br />
+         * 仮発行されたユーザーアクセストークンを確定して、利用可能な状態にする。
+         *
+         * @param {String} userAccessToken ユーザーアクセストークン(必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        commitUpdateUserAccessToken: function(userAccessToken, success, error) {
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+            cordova.exec(success, error, featureName, "commitUpdateUserAccessToken", [ _userAccessToken ]);
+        },
+        /**
+         * ユーザーオブジェクトのフィールド情報を取得する
+         *
+         * @param {Boolean} visibleFieldOnly 表示項目のみ対象 (任意) true:表示項目のみ, false:表示項目以外も対象
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getUserFieldDataList: function(visibleFieldOnly, success, error) {
+            var _visibleFieldOnly;
+            var _success, _error;
+
+            if (arguments.length == 2) {
+                // 引数が 2 の場合は、visibleFieldOnly がない前提で処理する
+                _visibleFieldOnly = true;
+                _success = arguments[0];
+                _error = arguments[1];
+            } else {
+                // 引数が 2 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _visibleFieldOnly = visibleFieldOnly;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("Boolean", _visibleFieldOnly) && !is("Null", _visibleFieldOnly) && !is("Undefined", _visibleFieldOnly)) { error(RKZMessages.error("CDVE0001", "visibleFieldOnly"));return; }
+            if (is("Null", _visibleFieldOnly) || is("Undefined", _visibleFieldOnly)) {
+                _visibleFieldOnly = true;
+            }
+
+            cordova.exec(_success, _error, featureName, "getUserFieldDataList", [ _visibleFieldOnly ]);
+        },
         //--------------------------------------------------------------------------------
         // クーポンAPI
         //--------------------------------------------------------------------------------
@@ -443,8 +512,8 @@ var BaaSAtRakuza = (function() {
          * お知らせ情報を取得します。
          *
          * @param {Object.<String, Object>} params 連想配列パラメータ (必須)
-         * @param {params.<"news_id", String>} ニュースID (必須)
-         * @param {params.<"tenant_id", String>} テナントID (任意)
+         * @param {String} params.news_id  ニュースID (必須)
+         * @param {String} params.tenant_id テナントID (任意)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
@@ -468,6 +537,7 @@ var BaaSAtRakuza = (function() {
         getReleasedNewsList: function(limit, searchConditions, sortConditions, success, error) {
             if (!is("Number", limit) && !is("Undefined", limit) && !is("Null", limit)) { error(RKZMessages.error("CDVE0001", "limit"));return; }
             var _limit = limit || null;
+
             try { var _searchConditions = convertConditionToJson(searchConditions); } catch (ex) {
                 error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
@@ -475,6 +545,35 @@ var BaaSAtRakuza = (function() {
                 error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
             cordova.exec(success, error, featureName, "getReleasedNewsList", [ _limit, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * 複数お知らせ情報（公開中のもののみ）を取得します。
+         *
+         * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
+         * @param {String} userAccessToken セグメント配信を取得するユーザーのアクセストークン (必須)
+         * @param {Boolean} onlyMatchSegment セグメント配信情報のみ取得するか (true:セグメント配信のみ取得, false:全て取得) (必須) nullの場合は、false:全て取得
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getReleasedSegmentNewsList: function(limit, userAccessToken, onlyMatchSegment, searchConditions, sortConditions, success, error) {
+            if (!is("Number", limit) && !is("Undefined", limit) && !is("Null", limit)) { error(RKZMessages.error("CDVE0001", "limit"));return; }
+            var _limit = limit || null;
+
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            if (!is("Boolean", onlyMatchSegment)) { error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
+            var _onlyMatchSegment = onlyMatchSegment || false;
+
+            try { var _searchConditions = convertConditionToJson(searchConditions); } catch (ex) {
+                error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(sortConditions); } catch (ex) {
+                error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            cordova.exec(success, error, featureName, "getReleasedSegmentNewsList", [ _limit, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions ]);
         },
         /**
          * 複数お知らせ情報（未公開も含む）を取得します。
@@ -488,6 +587,7 @@ var BaaSAtRakuza = (function() {
         getNewsList: function(limit, searchConditions, sortConditions, success, error) {
             if (!is("Number", limit) && !is("Undefined", limit) && !is("Null", limit)) { error(RKZMessages.error("CDVE0001", "limit"));return; }
             var _limit = limit || null;
+
             try { var _searchConditions = convertConditionToJson(searchConditions); } catch (ex) {
                 error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
@@ -497,11 +597,40 @@ var BaaSAtRakuza = (function() {
             cordova.exec(success, error, featureName, "getNewsList", [ _limit, _searchConditions, _sortConditions ]);
         },
         /**
+         * 複数お知らせ情報（未公開も含む）を取得します。
+         *
+         * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
+         * @param {String} userAccessToken セグメント配信を取得するユーザーのアクセストークン (必須)
+         * @param {Boolean} onlyMatchSegment セグメント配信情報のみ取得するか (true:セグメント配信のみ取得, false:全て取得) (必須) nullの場合は、false:全て取得
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getSegmentNewsList: function(limit, userAccessToken, onlyMatchSegment, searchConditions, sortConditions, success, error) {
+            if (!is("Number", limit) && !is("Undefined", limit) && !is("Null", limit)) { error(RKZMessages.error("CDVE0001", "limit"));return; }
+            var _limit = limit || null;
+
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            if (!is("Boolean", onlyMatchSegment)) { error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
+            var _onlyMatchSegment = onlyMatchSegment || false;
+
+            try { var _searchConditions = convertConditionToJson(searchConditions); } catch (ex) {
+                error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(sortConditions); } catch (ex) {
+                error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            cordova.exec(success, error, featureName, "getSegmentNewsList", [ _limit, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions ]);
+        },
+        /**
          * 単一お知らせ既読情報を取得します。
          *
          * @param {Object.<String, Object>} params 連想配列パラメータ (必須)
-         * @param {params.<"news_id", String>} ニュースID (必須)
-         * @param {params.<"tenant_id", String>} テナントID (任意)
+         * @param {String} params.news_id ニュースID (必須)
+         * @param {String} params.tenant_id テナントID (任意)
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
@@ -532,9 +661,9 @@ var BaaSAtRakuza = (function() {
          * お知らせ既読情報の登録を行います。
          *
          * @param {Object.<String, Object>} params 連想配列パラメータ (必須)
-         * @param {params.<"news_id", String>} ニュースID (必須)
-         * @param {params.<"tenant_id", String>} テナントID (任意)
-         * @param {params.<"read_date", Date>} 既読日時 (任意)既読日時未指定時は現在日時を自動的に指定
+         * @param {String} params.news_id ニュースID (必須)
+         * @param {String} params.tenant_id テナントID (任意)
+         * @param {Date} params.read_date 既読日時 (任意)既読日時未指定時は現在日時を自動的に指定
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
@@ -595,11 +724,66 @@ var BaaSAtRakuza = (function() {
             cordova.exec(success, error, featureName, "getDataList", [ _objectId, _searchConditions, _sortConditions ]);
         },
         /**
+         * データオブジェクトの複数レコードを取得します。
+         *
+         * 取得する際に、取得する件数(limit)と取得する開始位置(offset)を指定します。
+         *
+         * 復帰値は以下の内容で返却します。
+         * results = {
+         *    limit: 10,         // 指定したlimitが格納されます。
+         *    offset: 0,         // 指定したoffsetが格納されます。
+         *    result_cnt: 108,   // 指定した条件に該当する件数が格納されます。 (limit, offsetは対象外)
+         *    datas: [
+         *          {},
+         *          {},
+         *          {},
+         *      ]
+         *   }
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Number} limit 取得件数 (必須)
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateDataList: function(objectId, limit, offset, searchConditions, sortConditions, success, error) {
+          var _objectId, _limit, _offset, _searchConditions, _sortConditions;
+          var _success, _error;
+
+          // パラメータ引数の保持
+          _objectId = objectId;
+          _limit = limit;
+          _offset = offset;
+          _searchConditions = searchConditions;
+          _sortConditions = sortConditions;
+          _success = success;
+          _error = error;
+
+          if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+          _objectId = _objectId || "";
+
+          if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+          _limit = _limit || null;
+
+          if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+          _offset = _offset || null;
+
+          try { var _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+              _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+          }
+          try { var _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+              _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+          }
+          cordova.exec(_success, _error, featureName, "getPaginateDataList", [ _objectId, _limit, _offset, _searchConditions, _sortConditions ]);
+        },
+        /**
          * データオブジェクトにレコードを追加します。
          *
          * @param {Object.<String, Object>} data データオブジェクト (必須) object_idとname属性は必ず指定しておく必要があります。
-         * @param {data.<"object_id", String>} オブジェクトID (必須)
-         * @param {data.<"name", String>} 名称 (必須)
+         * @param {String} data.object_id オブジェクトID (必須)
+         * @param {String} data.name 名称 (必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
@@ -612,8 +796,8 @@ var BaaSAtRakuza = (function() {
          * データオブジェクトのレコードを編集します。
          *
          * @param {Object.<String, Object>} data データオブジェクト (必須) object_idとcode属性は必ず指定しておく必要があります。
-         * @param {data.<"object_id", String>} オブジェクトID (必須)
-         * @param {data.<"code", String>} コード (必須)
+         * @param {String} data.object_id オブジェクトID (必須)
+         * @param {String} data.code コード (必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
@@ -639,6 +823,416 @@ var BaaSAtRakuza = (function() {
             }
 
             cordova.exec(success, error, featureName, "deleteData", [ _objectId, _searchConditions ]);
+        },
+        /**
+         * データオブジェクトの単一レコードを取得します。<br />
+         * オブジェクトの項目に「関連オブジェクト」を指定しているフィールドがある場合、関連オブジェクトの内容を結合して取得します。<br />
+         * 取得した結果は {関連オブジェクトを指定したフィールド名}_objects というフィールドに格納されます。
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} code コード値 (必須)
+         * @param {Number} treeCount 取得階層数 (任意) 指定した階層数を取得。
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getDataWithRelationObjects: function(objectId, code, treeCount, success, error) {
+            var _objectId, _code, _treeCount;
+            var _success, _error;
+
+            if (arguments.length == 4) {
+                // 引数が 4 の場合は、treeCountがない前提で処理する
+                _objectId = arguments[0];
+                _code = arguments[1];
+                _treeCount = null;
+                _success = arguments[2];
+                _error = arguments[3];
+            } else {
+                // 引数が 4 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _code = code;
+                _treeCount = treeCount;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _code)) { _error(RKZMessages.error("CDVE0001", "code"));return; }
+            _code = _code || "";
+
+            if (!is("Number", _treeCount) && !is("Null", _treeCount)) { _error(RKZMessages.error("CDVE0001", "treeCount"));return; }
+            _treeCount = _treeCount || null;
+
+            try { var _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            cordova.exec(_success, _error, featureName, "getDataWithRelationObjects", [ _objectId, _code, _treeCount ]);
+        },
+        /**
+         * データオブジェクトの複数レコードを取得します。
+         * オブジェクトの項目に「関連オブジェクト」を指定しているフィールドがある場合、関連オブジェクトの内容を結合して取得します。<br />
+         * 取得した結果は {関連オブジェクトを指定したフィールド名}_objects というフィールドに格納されます。
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Number} treeCount 取得階層数 (任意) 指定した階層数を取得。最大3階層まで指定可能
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getDataListWithRelationObjects: function(objectId, treeCount, searchConditions, sortConditions, success, error) {
+            var _objectId, _treeCount, _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 5) {
+                // 引数が 5 の場合は、treeCountがない前提で処理する
+                _objectId = arguments[0];
+                _treeCount = null;
+                _searchConditions = arguments[1];
+                _sortConditions = arguments[2];
+                _success = arguments[3];
+                _error = arguments[4];
+            } else {
+                // 引数が 5 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _treeCount = treeCount;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("Number", _treeCount) && !is("Null", _treeCount)) { _error(RKZMessages.error("CDVE0001", "treeCount"));return; }
+            _treeCount = _treeCount || null;
+
+            try { var _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            cordova.exec(_success, _error, featureName, "getDataListWithRelationObjects", [ _objectId, _treeCount, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * データオブジェクトの複数レコードを取得します。
+         * オブジェクトの項目に「関連オブジェクト」を指定しているフィールドがある場合、関連オブジェクトの内容を結合して取得します。<br />
+         * 取得した結果は {関連オブジェクトを指定したフィールド名}_objects というフィールドに格納されます。
+         *
+         * 取得する際に、取得する件数(limit)と取得する開始位置(offset)を指定します。
+         *
+         * 復帰値は以下の内容で返却します。
+         * results = {
+         *    limit: 10,         // 指定したlimitが格納されます。
+         *    offset: 0,         // 指定したoffsetが格納されます。
+         *    result_cnt: 108,   // 指定した条件に該当する件数が格納されます。 (limit, offsetは対象外)
+         *    datas: [
+         *          {},
+         *          {},
+         *          {},
+         *      ]
+         *   }
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Number} limit 取得件数 (必須)
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {Number} treeCount 取得階層数 (任意) 指定した階層数を取得。最大3階層まで指定可能
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateDataListWithRelationObjects: function(objectId, limit, offset, treeCount, searchConditions, sortConditions, success, error) {
+            var _objectId, _limit, _offset, _treeCount, _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 7) {
+                // 引数が 7 の場合は、treeCountがない前提で処理する
+                _objectId = arguments[0];
+                _limit = arguments[1];
+                _offset = arguments[2];
+                _treeCount = null;
+                _searchConditions = arguments[3];
+                _sortConditions = arguments[4];
+                _success = arguments[5];
+                _error = arguments[6];
+            } else {
+                // 引数が 7 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _limit = limit;
+                _offset = offset;
+                _treeCount = treeCount;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+            _limit = _limit || null;
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+            _offset = _offset || null;
+
+            if (!is("Number", _treeCount) && !is("Null", _treeCount)) { _error(RKZMessages.error("CDVE0001", "treeCount"));return; }
+            _treeCount = _treeCount || null;
+
+            try { var _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            cordova.exec(_success, _error, featureName, "getPaginateDataListWithRelationObjects", [ _objectId, _limit, _offset, _treeCount, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * 位置情報付きオブジェクトデータを取得します。
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} code コード値 (必須)
+         * @param {Object} location スポット検索条件 (任意) 指定した位置情報でスポットを検索する
+         * @param {Number} location.latitude 緯度情報。経度と合わせて指定する。
+         * @param {Number} location.longitude 経度情報。緯度と合わせて指定する。
+         * @param {Number} location.range 範囲情報。緯度経度と合わせて指定する。
+         * @param {String} spotFieldName スポット項目名称 (任意) スポット情報を関連付けしている項目の名称を指定する。未指定時は、先頭のスポット項目が利用される。
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getDataWithLocation: function(objectId, code, location, spotFieldName, success, error) {
+            var _objectId, _code, _location, _spotFieldName;
+            var _success, _error;
+
+            if (arguments.length == 5) {
+                // 引数が 5 の場合は、spotFieldName がない前提で処理する
+                _objectId = arguments[0];
+                _code = arguments[1];
+                _location = arguments[2]
+                _spotFieldName = null;
+                _success = arguments[3];
+                _error = arguments[4];
+            } else {
+                // 引数が 5 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _code = code;
+                _location = location;
+                _spotFieldName = spotFieldName;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _code)) { _error(RKZMessages.error("CDVE0001", "code"));return; }
+            _code = _code || "";
+
+            if (!is("Object", _location) && !is("Null", _location) && !is("Undefined", _location)) { _error(RKZMessages.error("CDVE0001", "location"));return; }
+            _location = _location || null;
+            if (_location != null) {
+                if (!is("Number", _location.latitude) && !is("Null", _location.latitude) && !is("Undefined", _location.latitude)) { _error(RKZMessages.error("CDVE0001", "location.latitude"));return; }
+                if (!is("Number", _location.longitude) && !is("Null", _location.longitude) && !is("Undefined", _location.longitude)) { _error(RKZMessages.error("CDVE0001", "location.longitude"));return; }
+                if (!is("Number", _location.range) && !is("Null", _location.range) && !is("Undefined", _location.range)) { _error(RKZMessages.error("CDVE0001", "location.range"));return; }
+            }
+
+            if (!is("String", _spotFieldName) && !is("Null", _spotFieldName) && !is("Undefined", _spotFieldName)) { _error(RKZMessages.error("CDVE0001", "spotFieldName"));return; }
+            _spotFieldName = _spotFieldName || null;
+
+            cordova.exec(_success, _error, featureName, "getDataWithLocation", [ _objectId, _code, _location, _spotFieldName ]);
+        },
+        /**
+         * 位置情報付きオブジェクトデータを一覧で取得します。
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Object} location スポット検索条件 (任意) 指定した位置情報でスポットを検索する
+         * @param {Number} location.latitude 緯度情報。経度と合わせて指定する。
+         * @param {Number} location.longitude 経度情報。緯度と合わせて指定する。
+         * @param {Number} location.range 範囲情報。緯度経度と合わせて指定する。
+         * @param {String} spotFieldName スポット項目名称 (任意) スポット情報を関連付けしている項目の名称を指定する。未指定時は、先頭のスポット項目が利用される。
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getDataListWithLocation: function(objectId, location, spotFieldName, searchConditions, sortConditions, success, error) {
+            var _objectId, _location, _spotFieldName, _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 6) {
+                // 引数が 6 の場合は、spotFieldName がない前提で処理する
+                _objectId = arguments[0];
+                _location = arguments[1]
+                _spotFieldName = null;
+                _searchConditions = arguments[2];
+                _sortConditions = arguments[3];
+                _success = arguments[4];
+                _error = arguments[5];
+            } else {
+                // 引数が 6 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _location = location;
+                _spotFieldName = spotFieldName;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("Object", _location) && !is("Null", _location) && !is("Undefined", _location)) { _error(RKZMessages.error("CDVE0001", "location"));return; }
+            _location = _location || null;
+            if (_location != null) {
+                if (!is("Number", _location.latitude) && !is("Null", _location.latitude) && !is("Undefined", _location.latitude)) { _error(RKZMessages.error("CDVE0001", "location.latitude"));return; }
+                if (!is("Number", _location.longitude) && !is("Null", _location.longitude) && !is("Undefined", _location.longitude)) { _error(RKZMessages.error("CDVE0001", "location.longitude"));return; }
+                if (!is("Number", _location.range) && !is("Null", _location.range) && !is("Undefined", _location.range)) { _error(RKZMessages.error("CDVE0001", "location.range"));return; }
+
+                if (is("Number", _location.latitude)) { _location.latitude = String(_location.latitude); }
+                if (is("Number", _location.longitude)) { _location.longitude = String(_location.longitude); }
+                if (is("Number", _location.range)) { _location.range = String(_location.range); }
+            }
+
+            if (!is("String", _spotFieldName) && !is("Null", _spotFieldName) && !is("Undefined", _spotFieldName)) { _error(RKZMessages.error("CDVE0001", "spotFieldName"));return; }
+            _spotFieldName = _spotFieldName || null;
+
+            try { var _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            cordova.exec(_success, _error, featureName, "getDataListWithLocation", [ _objectId, _location, _spotFieldName, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * 位置情報付きオブジェクトデータを一覧で取得します。
+         *
+         * 取得する際に、取得する件数(limit)と取得する開始位置(offset)を指定します。
+         *
+         * 復帰値は以下の内容で返却します。
+         * results = {
+         *    limit: 10,         // 指定したlimitが格納されます。
+         *    offset: 0,         // 指定したoffsetが格納されます。
+         *    result_cnt: 108,   // 指定した条件に該当する件数が格納されます。 (limit, offsetは対象外)
+         *    datas: [
+         *          {},
+         *          {},
+         *          {},
+         *      ]
+         *   }
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Object} location スポット検索条件 (任意) 指定した位置情報でスポットを検索する
+         * @param {Number} location.latitude 緯度情報。経度と合わせて指定する。
+         * @param {Number} location.longitude 経度情報。緯度と合わせて指定する。
+         * @param {Number} location.range 範囲情報。緯度経度と合わせて指定する。
+         * @param {String} spotFieldName スポット項目名称 (任意) スポット情報を関連付けしている項目の名称を指定する。未指定時は、先頭のスポット項目が利用される。
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateDataListWithLocation: function(objectId, limit, offset, location, spotFieldName, searchConditions, sortConditions, success, error) {
+            var _objectId, _limit, _offset, _location, _spotFieldName, _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 8) {
+                // 引数が 8 の場合は、spotFieldName がない前提で処理する
+                _objectId = arguments[0];
+                _limit = arguments[1];
+                _offset = arguments[2];
+                _location = arguments[3]
+                _spotFieldName = null;
+                _searchConditions = arguments[4];
+                _sortConditions = arguments[5];
+                _success = arguments[6];
+                _error = arguments[7];
+            } else {
+                // 引数が 8 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _limit = limit;
+                _offset = offset;
+                _location = location;
+                _spotFieldName = spotFieldName;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+            _limit = _limit || null;
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+            _offset = _offset || null;
+
+            if (!is("Object", _location) && !is("Null", _location) && !is("Undefined", _location)) { _error(RKZMessages.error("CDVE0001", "location"));return; }
+            _location = _location || null;
+            if (_location != null) {
+                if (!is("Number", _location.latitude) && !is("Null", _location.latitude) && !is("Undefined", _location.latitude)) { _error(RKZMessages.error("CDVE0001", "location.latitude"));return; }
+                if (!is("Number", _location.longitude) && !is("Null", _location.longitude) && !is("Undefined", _location.longitude)) { _error(RKZMessages.error("CDVE0001", "location.longitude"));return; }
+                if (!is("Number", _location.range) && !is("Null", _location.range) && !is("Undefined", _location.range)) { _error(RKZMessages.error("CDVE0001", "location.range"));return; }
+            }
+
+            if (!is("String", _spotFieldName) && !is("Null", _spotFieldName) && !is("Undefined", _spotFieldName)) { _error(RKZMessages.error("CDVE0001", "spotFieldName"));return; }
+            _spotFieldName = _spotFieldName || null;
+
+            try { var _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { var _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            cordova.exec(_success, _error, featureName, "getPaginateDataListWithLocation", [ _objectId, _limit, _offset, _location, _spotFieldName, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * オブジェクトのフィールド情報を取得する
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Boolean} visibleFieldOnly 表示項目のみ対象 (任意) true:表示項目のみ, false:表示項目以外も対象
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getFieldDataList: function(objectId, visibleFieldOnly, success, error) {
+            var _objectId, _visibleFieldOnly;
+            var _success, _error;
+
+            if (arguments.length == 3) {
+                // 引数が 3 の場合は、visibleFieldOnly がない前提で処理する
+                _objectId = arguments[0];
+                _visibleFieldOnly = true;
+                _success = arguments[1];
+                _error = arguments[2];
+            } else {
+                // 引数が 7 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _objectId = objectId;
+                _visibleFieldOnly = visibleFieldOnly;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("Boolean", _visibleFieldOnly) && !is("Null", _visibleFieldOnly) && !is("Undefined", _visibleFieldOnly)) { error(RKZMessages.error("CDVE0001", "visibleFieldOnly"));return; }
+            if (is("Null", _visibleFieldOnly) || is("Undefined", _visibleFieldOnly)) {
+                _visibleFieldOnly = true;
+            }
+
+            cordova.exec(_success, _error, featureName, "getFieldDataList", [ _objectId, _visibleFieldOnly ]);
         },
         //--------------------------------------------------------------------------------
         // スポットAPI

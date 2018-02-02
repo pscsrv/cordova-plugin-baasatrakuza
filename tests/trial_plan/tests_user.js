@@ -142,8 +142,8 @@ exports.suite = function(helper) {
                     function(user) {
                         expect(false).toBeTruthy();  done();  // Failed
                     }, function(error) {
-                        expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
-                        expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : 不正なパラメータです。"}));
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "不正トークンエラー : 不正なパラメータです。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -377,8 +377,8 @@ exports.suite = function(helper) {
                     function(user) {
                         expect(false).toBeTruthy();  done();  // Failed
                     }, function(error) {
-                        expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
-                        expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : 不正なパラメータです。"}));
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "不正トークンエラー : 不正なパラメータです。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -545,8 +545,8 @@ exports.suite = function(helper) {
                     function(modelChangeCode) {
                         expect(false).toBeTruthy(); done();  // Failed
                     }, function(error) {
-                        expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
-                        expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : 不正なパラメータです。"}));
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "不正トークンエラー : 不正なパラメータです。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -719,7 +719,7 @@ exports.suite = function(helper) {
                     }, function(error) {
                         expect(error).toEqual(jasmine.objectContaining({status_code: "2001"}));
                         // プラットフォームごとにメッセージの出力方法が違うため、コメントアウト
-//                        expect(error).toEqual(jasmine.objectContaining({message: "バリデーションエラー : 無効な認証コードです。"}));
+                        // expect(error).toEqual(jasmine.objectContaining({message: "バリデーションエラー : 無効な認証コードです。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -852,7 +852,7 @@ exports.suite = function(helper) {
                     }, function(error) {
                         expect(error).toEqual(jasmine.objectContaining({status_code: "2001"}));
                         // プラットフォームごとにメッセージの出力方法が違うため、コメントアウト
-//                        expect(error).toEqual(jasmine.objectContaining({message: "バリデーションエラー : 顧客番号、またはパスワードが不正です。"}));
+                        // expect(error).toEqual(jasmine.objectContaining({message: "バリデーションエラー : 顧客番号、またはパスワードが不正です。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -923,7 +923,8 @@ exports.suite = function(helper) {
                     function(user) {
                         expect(user).toBeDefined();
                         expect(user).toEqual(jasmine.objectContaining({"user_no" : _user_no}));
-                        expect(user).toEqual(jasmine.objectContaining({"user_access_token" : helper.userAccessToken}));
+                        expect(user).not.toEqual(jasmine.objectContaining({"user_access_token" : helper.userAccessToken}));
+                        helper.userAccessToken = user.user_access_token;
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -931,6 +932,393 @@ exports.suite = function(helper) {
             }, TIMEOUT);
         });  // end of ログインする場合
 
+        describe('ユーザーアクセストークン更新', function() {
+            var oldUserAccessToken = '';
+            var baseUserAccessToken = '';
+
+            it('事前にトークン更新用のユーザーを生成しておく', function(done) {
+                var user = {
+                    user_name: "UpdateUserAccessToken"
+                };
+                RKZClient.registUser(user,
+                    function(user) {
+                        expect(user).toBeDefined();
+                        expect(Object.keys(user).length).toEqual(19);
+                        expect(user.user_access_token).not.toBeNull();
+
+                        // 以降の処理で利用するため保持する
+                        baseUserAccessToken = user.user_access_token;
+
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy();  // Failed
+                        done();
+                    });
+            }, TIMEOUT);
+            describe('RKZClient.updateUserAccessToken', function() {
+                describe('パラメータ:userAccessToken', function() {
+                    it('= undefined の場合、エラーになること', function(done) {
+                        var _userAccessToken;
+                        RKZClient.updateUserAccessToken(_userAccessToken,
+                            function(newUserAccessToken) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            }, function(error) {
+                                expect(error).toBeDefined();
+                                expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                                expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                                done();
+                            })
+                    }, TIMEOUT);
+                    it('= null の場合、エラーになること', function(done) {
+                        var _userAccessToken = null;
+                        RKZClient.updateUserAccessToken(_userAccessToken,
+                            function(newUserAccessToken) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            }, function(error) {
+                                expect(error).toBeDefined();
+                                expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                                expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                                done();
+                            })
+                    }, TIMEOUT);
+                    it('!== String の場合、エラーになること', function(done) {
+                        var _userAccessToken = 1;
+                        RKZClient.updateUserAccessToken(_userAccessToken,
+                            function(newUserAccessToken) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            }, function(error) {
+                                expect(error).toBeDefined();
+                                expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                                expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                                done();
+                            })
+                    }, TIMEOUT);
+                    it('に、存在しないトークンを指定した場合、エラーになること', function(done) {
+                        var _userAccessToken = "1";
+                        RKZClient.updateUserAccessToken(_userAccessToken,
+                            function(newUserAccessToken) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            }, function(error) {
+                                expect(error).toBeDefined();
+                                expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
+                                done();
+                            })
+                    }, TIMEOUT);
+                    describe('に、正しいトークンを指定した場合', function() {
+                        it('正常に更新されること', function(done) {
+                            var _userAccessToken = baseUserAccessToken;
+                            RKZClient.updateUserAccessToken(_userAccessToken,
+                                function(newUserAccessToken) {
+                                    expect(newUserAccessToken).not.toBeNull();
+                                    // 次の処理のために保持する
+                                    oldUserAccessToken = baseUserAccessToken;
+                                    baseUserAccessToken = newUserAccessToken;
+                                    done();
+                                }, function(error) {
+                                    expect(false).toBeTruthy(); done();  // Failed
+                                })
+                        }, TIMEOUT);
+                        it('更新後は新しいトークンでアクセス可能であること', function(done) {
+                            RKZClient.getUser(baseUserAccessToken,
+                                function(user) {
+                                    expect(user).toBeDefined();
+                                    done();
+                                }, function(error) {
+                                    expect(false).toBeTruthy(); done();  // Failed
+                                });
+                        }, TIMEOUT);
+                        it('更新後は古いトークンではアクセス不可であること', function(done) {
+                            RKZClient.getUser(oldUserAccessToken,
+                                function(user) {
+                                    expect(false).toBeTruthy(); done();  // Failed
+                                }, function(error) {
+                                    expect(error).toBeDefined();
+                                    done();
+                                });
+                        }, TIMEOUT);
+                    });
+                });
+            });
+            describe('RKZClient.beginUpdateUserAccessToken', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var _userAccessToken;
+                    RKZClient.beginUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        })
+                }, TIMEOUT);
+                it('= null の場合、エラーになること', function(done) {
+                    var _userAccessToken = null;
+                    RKZClient.beginUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        })
+                }, TIMEOUT);
+                it('!== String の場合、エラーになること', function(done) {
+                    var _userAccessToken = 1;
+                    RKZClient.beginUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        })
+                }, TIMEOUT);
+                it('に、存在しないトークンを指定した場合、エラーになること', function(done) {
+                    var _userAccessToken = "1";
+                    RKZClient.beginUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
+                            done();
+                        })
+                }, TIMEOUT);
+                describe('に、正しいトークンを指定した場合', function() {
+                    it('正常に仮発行されること', function(done) {
+                        var _userAccessToken = baseUserAccessToken;
+                        RKZClient.beginUpdateUserAccessToken(_userAccessToken,
+                            function(newUserAccessToken) {
+                                expect(newUserAccessToken).not.toBeNull();
+                                // 次の処理のために保持する
+                                oldUserAccessToken = baseUserAccessToken;
+                                baseUserAccessToken = newUserAccessToken;
+                                done();
+                            }, function(error) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            })
+                    }, TIMEOUT);
+                    it('仮発行後は新しいトークンではアクセス不可であること', function(done) {
+                        RKZClient.getUser(baseUserAccessToken,
+                            function(user) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            }, function(error) {
+                                expect(error).toBeDefined();
+                                done();
+                            });
+                    }, TIMEOUT);
+                    it('仮発行後は古いトークンではアクセス可能であること', function(done) {
+                        RKZClient.getUser(oldUserAccessToken,
+                            function(user) {
+                                expect(user).toBeDefined();
+                                done();
+                            }, function(error) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            });
+                    }, TIMEOUT);
+                });
+            });
+            describe('RKZClient.commitUpdateUserAccessToken', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var _userAccessToken;
+                    RKZClient.commitUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        })
+                }, TIMEOUT);
+                it('= null の場合、エラーになること', function(done) {
+                    var _userAccessToken = null;
+                    RKZClient.commitUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        })
+                }, TIMEOUT);
+                it('!== String の場合、エラーになること', function(done) {
+                    var _userAccessToken = 1;
+                    RKZClient.commitUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        })
+                }, TIMEOUT);
+                it('に、存在しないトークンを指定した場合、エラーになること', function(done) {
+                    var _userAccessToken = "1";
+                    RKZClient.commitUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
+                            done();
+                        })
+                }, TIMEOUT);
+                describe('に、正しいトークンを指定した場合', function() {
+                    it('正常に確定されること', function(done) {
+                        var _userAccessToken = oldUserAccessToken;
+                        RKZClient.commitUpdateUserAccessToken(_userAccessToken,
+                            function(newUserAccessToken) {
+                                expect(newUserAccessToken).not.toBeNull();
+                                expect(newUserAccessToken).toEqual(baseUserAccessToken);
+                                done();
+                            }, function(error) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            });
+                    }, TIMEOUT);
+                    it('確定後は新しいトークンでアクセス可能であること', function(done) {
+                        RKZClient.getUser(baseUserAccessToken,
+                            function(user) {
+                                expect(user).toBeDefined();
+                                done();
+                            }, function(error) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            });
+                    }, TIMEOUT);
+                    it('確定後は古いトークンではアクセス不可であること', function(done) {
+                        RKZClient.getUser(oldUserAccessToken,
+                            function(user) {
+                                expect(false).toBeTruthy(); done();  // Failed
+                            }, function(error) {
+                                expect(error).toBeDefined();
+                                done();
+                            });
+                    }, TIMEOUT);
+                });
+                it('beginUpdateUserAccessToken を読んでいないトークンを指定した場合、エラーになること', function(done) {
+                    var _userAccessToken = baseUserAccessToken;
+                    RKZClient.commitUpdateUserAccessToken(_userAccessToken,
+                        function(newUserAccessToken) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
+                            done();
+                        })
+                }, TIMEOUT);
+            });
+        });  // end of ユーザーアクセストークン更新
+
+        describe('RKZClient.getUserFieldDataList', function() {
+            describe('パラメータ:visibleFieldOnly', function() {
+                it('= undefined の場合、表示項目のみ指定と同じ結果が帰ってくること', function(done) {
+                    var visibleFieldOnly;
+                    RKZClient.getUserFieldDataList(visibleFieldOnly,
+                        function(fields) {
+                            expect(fields).toBeDefined();
+                            expect(fields.length).toEqual(5);
+                            expect(fields[0].sort_no).toEqual(10);
+                            expect(fields[1].sort_no).toEqual(20);
+                            expect(fields[2].sort_no).toEqual(30);
+                            expect(fields[3].sort_no).toEqual(40);
+                            expect(fields[4].sort_no).toEqual(50);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('= null の場合、表示項目のみ指定と同じ結果が帰ってくること', function(done) {
+                    var visibleFieldOnly = null;
+                    RKZClient.getUserFieldDataList(visibleFieldOnly,
+                        function(fields) {
+                            expect(fields).toBeDefined();
+                            expect(fields.length).toEqual(5);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Boolean の場合、エラーとなること', function(done) {
+                    var visibleFieldOnly = "TRUE";
+                    RKZClient.getUserFieldDataList(visibleFieldOnly,
+                        function(fields) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of visibleFieldOnly is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('== False の場合、隠しフィールドも取得すること', function(done) {
+                    var visibleFieldOnly = false;
+                    RKZClient.getUserFieldDataList(visibleFieldOnly,
+                        function(fields) {
+                            expect(fields).toBeDefined();
+                            expect(fields.length).toEqual(42);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:visibleFieldOnly
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                RKZClient.getUserFieldDataList(
+                    function(fields) {
+                        expect(fields).toBeDefined();
+                        expect(fields.length).toEqual(5);
+                        expect(Object.keys(fields[0]).length).toEqual(12);
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"sort_no":10}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"field_name":"user_no"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"label_str":"ユーザーNo"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"data_type_id":"0001"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"display_type":"0002"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"read_only_flg":"1"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"is_required_flg":true}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"not_visible_flg":false}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"min_length":0}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"max_length":24}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":""}));
+                        expect(Object.keys(fields[0].attributes).length).toEqual(28);
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_related_field_no":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_unique_flg":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_format_pattern":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"choose_list":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"default_value":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"label_group":""}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"field_num":"41"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"master_object_id":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"confirm_input_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_index_flg":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_field_no":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"parent_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_id":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"section_no":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"field_info":"ベンダー内でユニーク"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_type":'2 '}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_field":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"style_txt":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_type":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"system_field_id":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"link_url":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_name_kbn":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_field_disp_direction":null}));
+                        expect(fields[0].attributes.label_mult_str).toEqual(jasmine.objectContaining({"ja":"ユーザーNo"}));
+                        expect(fields[0].attributes.label_mult_group).toEqual(jasmine.objectContaining({"ja":""}));
+                        expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":""}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of RKZClient.getFieldDataList
     });  // end of ユーザー関連API
 
 };

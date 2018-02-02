@@ -18,19 +18,14 @@
 
 //コード
 @property(nonatomic) NSString *code;
-
 //名称
 @property(nonatomic) NSString *name;
-
 //デフォルトフラグ
 @property(nonatomic) BOOL default_flg;
-
 //楽座言語CD
 @property(nonatomic)NSString *language_cd;
-
 //言語名
 @property(nonatomic)NSString *language_name;
-
 //端末のロケール
 @property(nonatomic) NSLocale *locale;
 
@@ -39,6 +34,7 @@
 @property(nonatomic) NSNumber *sort_no;
 //利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
+
 //自由項目
 @property(nonatomic) NSMutableDictionary *attributes;
 

@@ -29,13 +29,13 @@ static NSString *const kVALUE = @"values";
 - (void) setTenantKey: (CDVInvokedUrlCommand*)command
 {
     NSString *tenantKey = [command.arguments objectAtIndex:0];
-    
+
     CDVPluginResult* result;
     RKZResponseStatus *responseStatus = [[RKZService sharedInstance]setTenantKey:tenantKey];
     if (responseStatus.isSuccess) {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     } else {
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:responseStatus.message];
     }
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
@@ -64,7 +64,7 @@ static NSString *const kVALUE = @"values";
 {
     NSMutableDictionary *params = [NSMutableDictionary new];
     NSDictionary *props = [self getProperties:data];
-    
+
     @try {
         for (id pName in [props keyEnumerator]) {
             // 変数を取得する
@@ -78,7 +78,7 @@ static NSString *const kVALUE = @"values";
             if ([pName isEqualToString:@"description_"]) {
                 outPName = @"description";
             }
-            
+
             // 各出力時のタイプ事の擦り合わせを実施
             if(value != nil && ![value isEqual:[NSNull null]]) {
                 if([dataType isEqualToString:@"NSNumber"]) {
@@ -93,11 +93,19 @@ static NSString *const kVALUE = @"values";
                     NSDateFormatter *outputDateFormatter = [[NSDateFormatter alloc] init];
                     NSString *outputDateFormatterStr = @"yyyy-MM-dd HH:mm:ss+0900";
                     [outputDateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+                    [outputDateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
                     [outputDateFormatter setDateFormat:outputDateFormatterStr];
                     NSString *outputDateStr = [outputDateFormatter stringFromDate:value];
                     [params setObject:outputDateStr forKey:outPName];
                 } else if([dataType isEqualToString:@"NSLocale"]) {
                     [params setObject:[self stringFromLocale:value] forKey:outPName];
+                } else if ([dataType isEqualToString:@"NSArray"]) {
+                    // 配列の場合は、arrayFromRKZDataを呼び出して対応する
+                    [params setObject:[self arrayFromRKZData:value] forKey:outPName];
+                } else if ([dataType isEqualToString:@"RKZObjectData"]) {
+                    // TODO: 本当はRKZDataタイプか判定して処理を行いたい。(今は保留)
+                    // RKZDataTypeは convertToDictionaryFromRKZData を再帰実行する。
+                    [params setObject:[self dictionaryFromRKZData:value] forKey:outPName];
                 } else if([dataType isEqualToString:@"RKZSpotData"]) {
                     // TODO: 本当はRKZDataタイプか判定して処理を行いたい。(今は保留)
                     // RKZDataTypeは convertToDictionaryFromRKZData を再帰実行する。
@@ -124,8 +132,12 @@ static NSString *const kVALUE = @"values";
 - (NSMutableArray *) arrayFromRKZData:(NSMutableArray *)datas
 {
     NSMutableArray *_datas = [NSMutableArray new];
-    for (RKZData *data in datas) {
-        [_datas addObject:[self dictionaryFromRKZData:data]];
+    for (id data in datas) {
+        if ([data isKindOfClass:[RKZData class]]) {
+            [_datas addObject:[self dictionaryFromRKZData:data]];
+        } else {
+            [_datas addObject:data];
+        }
     }
     return _datas;
 }
@@ -142,7 +154,7 @@ static NSString *const kVALUE = @"values";
     unsigned int outCount, i;
     objc_property_t *props = class_copyPropertyList([data class], &outCount);
     NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithCapacity:0];
-    
+
     @try {
         for(i = 0; i < outCount; i++) {
             objc_property_t property = props[i];
@@ -154,13 +166,13 @@ static NSString *const kVALUE = @"values";
                 [dic setObject:propertyType forKey:propertyName];
             }
         }
-        
+
         // 開放
         free(props);
         return dic;
     }
     @catch (NSException *exception) {
-        
+
         // 開放
         free(props);
         return nil;
@@ -172,11 +184,11 @@ static const char * getPropertyType(objc_property_t property) {
     char buffer[1 + strlen(attributes)];
     strcpy(buffer, attributes);
     char *state = buffer, *attribute;
-    
+
     /* while以下を以下に変更 */
     while ((attribute = strsep(&state, ",")) != NULL) {
         if (attribute[0] == 'T' && attribute[1] != '@') {
-            
+
             NSString *name = [[NSString alloc] initWithBytes:attribute + 1 length:strlen(attribute) - 1 encoding:NSASCIIStringEncoding];
             return (const char *)[name cStringUsingEncoding:NSASCIIStringEncoding];
         }
@@ -190,7 +202,7 @@ static const char * getPropertyType(objc_property_t property) {
             return (const char *)[name cStringUsingEncoding:NSASCIIStringEncoding];
         }
     }
-    
+
     return "";
 }
 
@@ -221,11 +233,11 @@ static const char * getPropertyType(objc_property_t property) {
     NSDictionary *comp;
     NSArray *values = [languageCd componentsSeparatedByString:@"-"];
     NSString *language = [values objectAtIndex:0];
-    
+
     if (values.count > 1) {
         // 「言語-国」で構成されたロケールの場合
         NSString *country = [values objectAtIndex:1];
-        
+
         // 中国語：zhの場合は、ScriptCodeを特定して足す。
         if ([language isEqualToString:@"zh"]) {
             if ([country isEqualToString:@"CN"]) {

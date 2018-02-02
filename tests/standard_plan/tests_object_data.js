@@ -69,13 +69,15 @@ exports.suite = function(helper) {
                 RKZClient.getData(objectId, code,
                     function(data) {
                         expect(data).toBeDefined();
-                        expect(Object.keys(data).length).toEqual(7);
+                        expect(Object.keys(data).length).toEqual(9);
                         expect(data).toEqual(jasmine.objectContaining({object_id: 'beacon'}));
                         expect(data).toEqual(jasmine.objectContaining({code: '0001'}));
                         expect(data).toEqual(jasmine.objectContaining({name: '301'}));
                         expect(data).toEqual(jasmine.objectContaining({short_name: '場所A'}));
                         expect(data).toEqual(jasmine.objectContaining({sort_no: 1}));
                         expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
+                        expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(data).toEqual(jasmine.objectContaining({attributes: {not_delete_flg: '0', major: '', minor: '', not_edit_flg: '0', beacon_id: 'FD064A00300C', beacon_type_cd_name: 'BULETUS', beacon_type_cd: '0002' } }));
                         done();
                     }, function(error) {
@@ -572,5 +574,322 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
             }); // end of describe('全件削除', function()
         });  // end of describe('RKZClient.deleteData', function()
+
+        describe('RKZClient.getDataWithRelationObjects', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            // Failed
+                            expect(false).toBeTruthy(); done();
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });   // end of パラメータ:objectId
+            describe('パラメータ:code', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code;
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = null;
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = 1;
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                var code = "0004";
+                RKZClient.getDataWithRelationObjects(objectId, code,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(Object.keys(data).length).toEqual(9);
+                        expect(data).toEqual(jasmine.objectContaining({object_id: 'spot'}));
+                        expect(data).toEqual(jasmine.objectContaining({code: '0004'}));
+                        expect(data).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(data).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(data).toEqual(jasmine.objectContaining({sort_no: 3}));
+                        expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
+                        expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(Object.keys(data.attributes).length).toEqual(10);
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({latitude_longitude: ''}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_x: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon: "0005"}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(data.attributes.beacon_objects).toBeDefined();
+                        expect(data.attributes.beacon_objects.length).toEqual(1);
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({code: '0005'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({sort_no: '3'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd: '0001'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd_name: 'iBeacon'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_id: 'b0fc4601-14a6-43a1-abcd-cb9cfddb4013'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({major: ''}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({minor: ''}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_use_flg: '0'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブル外部結合検索単件
+
+        describe('RKZClient.getDataListWithRelationObjects', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            // Failed
+                            expect(false).toBeTruthy(); done();
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });   // end of パラメータ:objectId
+            describe('パラメータ:searchConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas).toBeDefined();
+                            expect(datas.length).toEqual(9);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions = "1";
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:searchConditions
+            describe('パラメータ:sortConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions = [];
+                    var sortConditions;
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas).toBeDefined();
+                            expect(datas.length).toEqual(9);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions = [];
+                    var sortConditions = "1";
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:sortConditions
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                var searchConditions = [
+                    RKZSearchCondition.equal("name", "A-1")
+                ];
+                var sortConditions = null;
+                RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                    function(datas) {
+                        expect(datas).toBeDefined();
+                        expect(datas.length).toEqual(1);
+                        expect(Object.keys(datas[0]).length).toEqual(9);
+                        expect(datas[0]).toEqual(jasmine.objectContaining({object_id: 'spot'}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({code: '0004'}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({sort_no: 3}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
+                        expect(datas[0].sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(datas[0].sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(Object.keys(datas[0].attributes).length).toEqual(10);
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({latitude_longitude: ''}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_x: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon: "0005"}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(datas[0].attributes.beacon_objects).toBeDefined();
+                        expect(datas[0].attributes.beacon_objects.length).toEqual(1);
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({code: '0005'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({sort_no: '3'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd: '0001'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd_name: 'iBeacon'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_id: 'b0fc4601-14a6-43a1-abcd-cb9cfddb4013'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({major: ''}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({minor: ''}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_use_flg: '0'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブル外部結合検索複数件
     });  // end of 汎用テーブル関連API
 };

@@ -93,11 +93,27 @@
 
 - (void) getDataList:(CDVInvokedUrlCommand*)command;
 
+- (void) getPaginateDataList:(CDVInvokedUrlCommand*)command;
+
 - (void) addData:(CDVInvokedUrlCommand*)command;
 
 - (void) editData:(CDVInvokedUrlCommand*)command;
 
 - (void) deleteData:(CDVInvokedUrlCommand*)command;
+
+- (void) getDataWithRelationObjects:(CDVInvokedUrlCommand*)command;
+
+- (void) getDataListWithRelationObjects:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateDataListWithRelationObjects:(CDVInvokedUrlCommand*)command;
+
+- (void) getDataWithLocation:(CDVInvokedUrlCommand*)command;
+
+- (void) getDataListWithLocation:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateDataListWithLocation:(CDVInvokedUrlCommand*)command;
+
+- (void) getFieldDataList:(CDVInvokedUrlCommand*)command;
 
 @end
 
@@ -170,6 +186,14 @@
 - (void) authModelChange:(CDVInvokedUrlCommand*)command;
 
 - (void) userAuth:(CDVInvokedUrlCommand*)command;
+
+- (void) updateUserAccessToken:(CDVInvokedUrlCommand*)command;
+
+- (void) beginUpdateUserAccessToken:(CDVInvokedUrlCommand*)command;
+
+- (void) commitUpdateUserAccessToken:(CDVInvokedUrlCommand*)command;
+
+- (void) getUserFieldDataList:(CDVInvokedUrlCommand*)command;
 
 @end
 

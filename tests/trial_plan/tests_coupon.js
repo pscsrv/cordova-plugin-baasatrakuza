@@ -47,9 +47,11 @@ exports.suite = function(helper) {
                         expect(coupon).toEqual(jasmine.objectContaining({image_url: null}));
                         expect(coupon).toEqual(jasmine.objectContaining({point: null}));
                         expect(coupon).toEqual(jasmine.objectContaining({not_use_flg: false}));
-                        expect(Object.keys(coupon.attributes).length).toEqual(2);
+                        expect(Object.keys(coupon.attributes).length).toEqual(4);
                         expect(coupon.attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
                         expect(coupon.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(coupon.attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(coupon.attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -149,9 +151,11 @@ exports.suite = function(helper) {
                         expect(coupons[0]).toEqual(jasmine.objectContaining({image_url: null}));
                         expect(coupons[0]).toEqual(jasmine.objectContaining({point: null}));
                         expect(coupons[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
-                        expect(Object.keys(coupons[0].attributes).length).toEqual(2);
+                        expect(Object.keys(coupons[0].attributes).length).toEqual(4);
                         expect(coupons[0].attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
                         expect(coupons[0].attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(coupons[0].attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(coupons[0].attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -331,9 +335,11 @@ exports.suite = function(helper) {
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({image_url: null}));
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({point: null}));
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({not_use_flg: false}));
-                            expect(Object.keys(datas[0].coupon.attributes).length).toEqual(2);
+                            expect(Object.keys(datas[0].coupon.attributes).length).toEqual(4);
                             expect(datas[0].coupon.attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
                             expect(datas[0].coupon.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                            expect(datas[0].coupon.attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                            expect(datas[0].coupon.attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -475,9 +481,11 @@ exports.suite = function(helper) {
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({image_url: null}));
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({point: null}));
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({not_use_flg: false}));
-                        expect(Object.keys(myCoupon.coupon.attributes).length).toEqual(2);
+                        expect(Object.keys(myCoupon.coupon.attributes).length).toEqual(4);
                         expect(myCoupon.coupon.attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
                         expect(myCoupon.coupon.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(myCoupon.coupon.attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(myCoupon.coupon.attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed

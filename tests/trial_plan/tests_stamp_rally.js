@@ -94,10 +94,12 @@ exports.suite = function(helper) {
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_end_date":"2116-12-31 00:00:00+0900"}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_image":""}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_image_url":null}));
-//                        expect(datas[0]).toEqual(jasmine.objectContaining({"complete_condition_name":null}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"complete_count_name":null}));
-//                        expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_expiration_date_name":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"attributes":{"not_edit_flg":"0", "not_delete_flg":"0"}}));
+                        expect(Object.keys(datas[0].attributes).length).toEqual(4);
+                        expect(datas[0].attributes.not_edit_flg).toEqual("0");
+                        expect(datas[0].attributes.not_delete_flg).toEqual("0");
+                        expect(datas[0].attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(datas[0].attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -258,7 +260,11 @@ exports.suite = function(helper) {
                         expect(datas[0]).toEqual(jasmine.objectContaining({"not_use_flg":false}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_cd":"0001"}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_name":"スタンプラリー1"}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"attributes":{"not_delete_flg":"0", "not_edit_flg":"0"}}));
+                        expect(Object.keys(datas[0].attributes).length).toEqual(4);
+                        expect(datas[0].attributes.not_edit_flg).toEqual("0");
+                        expect(datas[0].attributes.not_delete_flg).toEqual("0");
+                        expect(datas[0].attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(datas[0].attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         expect(Object.keys(datas[0].spot).length).toEqual(13);
                         expect(datas[0].spot).toEqual(jasmine.objectContaining({code: '0004'}));
                         expect(datas[0].spot).toEqual(jasmine.objectContaining({name: 'A-1'}));
@@ -272,10 +278,12 @@ exports.suite = function(helper) {
                         expect(datas[0].spot).toEqual(jasmine.objectContaining({pixel_position_y: ''}));
                         expect(datas[0].spot).toEqual(jasmine.objectContaining({beacon_range_for_android: null}));
                         expect(datas[0].spot).toEqual(jasmine.objectContaining({beacon_range_for_iphone: null}));
-                        expect(Object.keys(datas[0].spot.attributes).length).toEqual(3);
+                        expect(Object.keys(datas[0].spot.attributes).length).toEqual(5);
                         expect(datas[0].spot.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
                         expect(datas[0].spot.attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
                         expect(datas[0].spot.attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(datas[0].spot.attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(datas[0].spot.attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed

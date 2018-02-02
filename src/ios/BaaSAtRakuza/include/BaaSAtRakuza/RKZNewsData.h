@@ -64,6 +64,12 @@
 @property(nonatomic) NSDate *push_time;
 ///タイトル
 @property(nonatomic) NSString *title;
+
+///配信条件情報
+@property(nonatomic) NSMutableDictionary *news_segment_conditions;
+///配信条件一致フラグ
+@property(nonatomic) BOOL match_segment_flg;
+
 ///自由項目
 @property(nonatomic) NSMutableDictionary *attributes;
 

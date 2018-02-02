@@ -82,9 +82,11 @@ exports.suite = function(helper) {
                         expect(datas[0]).toEqual(jasmine.objectContaining({sort_no: 1}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({locale: 'ja'}));
-                        expect(Object.keys(datas[0].attributes).length).toEqual(2);
+                        expect(Object.keys(datas[0].attributes).length).toEqual(4);
                         expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_edit_flg: '1'}));
                         expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_delete_flg: '1'}));
+                        expect(datas[0].attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(datas[0].attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed

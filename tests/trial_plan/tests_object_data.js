@@ -69,13 +69,15 @@ exports.suite = function(helper) {
                 RKZClient.getData(objectId, code,
                     function(data) {
                         expect(data).toBeDefined();
-                        expect(Object.keys(data).length).toEqual(7);
+                        expect(Object.keys(data).length).toEqual(9);
                         expect(data).toEqual(jasmine.objectContaining({object_id: 'beacon'}));
                         expect(data).toEqual(jasmine.objectContaining({code: '0001'}));
                         expect(data).toEqual(jasmine.objectContaining({name: '301'}));
                         expect(data).toEqual(jasmine.objectContaining({short_name: '場所A'}));
                         expect(data).toEqual(jasmine.objectContaining({sort_no: 1}));
                         expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
+                        expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(data).toEqual(jasmine.objectContaining({attributes: {not_delete_flg: '0', major: '', minor: '', not_edit_flg: '0', beacon_id: 'FD064A00300C', beacon_type_cd_name: 'BULETUS', beacon_type_cd: '0002' } }));
                         done();
                     }, function(error) {
@@ -239,6 +241,251 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
         });  // end of 汎用テーブルを複数検索する場合
+
+        describe('RKZClient.getPaginateDataList', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:objectId
+            describe('パラメータ:limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = null;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== Number の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = "1";
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:limit
+            describe('パラメータ:offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== Number の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = "2";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ:searchConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.datas.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = "1";
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:searchConditions
+            describe('パラメータ:sortConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = [];
+                    var sortConditions;
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.datas.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = [];
+                    var sortConditions = "1";
+                    RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:sortConditions
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                var limit = 2;
+                var offset = 2;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("code")
+                ];
+                RKZClient.getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions,
+                    function(response) {
+                        expect(response).toBeDefined();
+                        expect(response.limit).toEqual(limit);
+                        expect(response.offset).toEqual(offset);
+                        expect(response.result_cnt).toEqual(9);
+                        expect(response.datas.length).toEqual(2);
+                        expect(response.datas[0].code).toEqual("0005");
+                        expect(response.datas[1].code).toEqual("0006");
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();    // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブルを複数検索する場合　[ページング機能]
 
         describe('RKZClient.addData', function() {
             it('追加データ=undefinedの場合エラーとなること', function(done) {
@@ -572,5 +819,822 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
             }); // end of describe('全件削除', function()
         });  // end of describe('RKZClient.deleteData', function()
+
+        describe('RKZClient.getDataWithRelationObjects', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = "";
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            // Failed
+                            expect(false).toBeTruthy(); done();
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });   // end of パラメータ:objectId
+            describe('パラメータ:code', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code;
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = null;
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = 1;
+                    RKZClient.getDataWithRelationObjects(objectId, code,
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                var code = "0004";
+                RKZClient.getDataWithRelationObjects(objectId, code,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(Object.keys(data).length).toEqual(9);
+                        expect(data).toEqual(jasmine.objectContaining({object_id: 'spot'}));
+                        expect(data).toEqual(jasmine.objectContaining({code: '0004'}));
+                        expect(data).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(data).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(data).toEqual(jasmine.objectContaining({sort_no: 3}));
+                        expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
+                        expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(Object.keys(data.attributes).length).toEqual(10);
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({latitude_longitude: ''}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_x: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon: "0005"}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(data.attributes.beacon_objects).toBeDefined();
+                        expect(data.attributes.beacon_objects.length).toEqual(1);
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({code: '0005'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({sort_no: '3'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd: '0001'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd_name: 'iBeacon'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_id: 'b0fc4601-14a6-43a1-abcd-cb9cfddb4013'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({major: ''}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({minor: ''}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_use_flg: '0'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(data.attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブル外部結合検索単件
+
+        describe('RKZClient.getDataListWithRelationObjects', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            // Failed
+                            expect(false).toBeTruthy(); done();
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });   // end of パラメータ:objectId
+            describe('パラメータ:searchConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas).toBeDefined();
+                            expect(datas.length).toEqual(9);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions = "1";
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:searchConditions
+            describe('パラメータ:sortConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions = [];
+                    var sortConditions;
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas).toBeDefined();
+                            expect(datas.length).toEqual(9);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var searchConditions = [];
+                    var sortConditions = "1";
+                    RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:sortConditions
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                var searchConditions = [
+                    RKZSearchCondition.equal("name", "A-1")
+                ];
+                var sortConditions = null;
+                RKZClient.getDataListWithRelationObjects(objectId, searchConditions, sortConditions,
+                    function(datas) {
+                        expect(datas).toBeDefined();
+                        expect(datas.length).toEqual(1);
+                        expect(Object.keys(datas[0]).length).toEqual(9);
+                        expect(datas[0]).toEqual(jasmine.objectContaining({object_id: 'spot'}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({code: '0004'}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({sort_no: 3}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
+                        expect(datas[0].sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(datas[0].sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(Object.keys(datas[0].attributes).length).toEqual(10);
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({latitude_longitude: ''}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_x: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon: "0005"}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(datas[0].attributes.beacon_objects).toBeDefined();
+                        expect(datas[0].attributes.beacon_objects.length).toEqual(1);
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({code: '0005'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({sort_no: '3'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd: '0001'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_type_cd_name: 'iBeacon'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({beacon_id: 'b0fc4601-14a6-43a1-abcd-cb9cfddb4013'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({major: ''}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({minor: ''}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_use_flg: '0'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(datas[0].attributes.beacon_objects[0]).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブル外部結合検索複数件
+
+        describe('RKZClient.getPaginateDataListWithRelationObjects', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:objectId
+            describe('パラメータ:limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = null;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== Number の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = "1";
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:limit
+            describe('パラメータ:offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== Number の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = "2";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:offset
+            describe('パラメータ:searchConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.datas.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = "1";
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:searchConditions
+            describe('パラメータ:sortConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = [];
+                    var sortConditions;
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.datas.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = [];
+                    var sortConditions = "1";
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:sortConditions
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                var limit = 2;
+                var offset = 2;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("code")
+                ];
+                RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, searchConditions, sortConditions,
+                    function(response) {
+                        expect(response).toBeDefined();
+                        expect(response.limit).toEqual(limit);
+                        expect(response.offset).toEqual(offset);
+                        expect(response.result_cnt).toEqual(9);
+                        expect(response.datas.length).toEqual(2);
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();    // Failed
+                    });
+            }, TIMEOUT);
+            describe('パラメータ:treeCount', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 2;
+                    var offset = 2;
+                    var treeCount;
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, treeCount, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of treeCount is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、正常に検索できること', function(done) {
+                    var objectId = "spot";
+                    var limit = 2;
+                    var offset = 2;
+                    var treeCount = null;
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, treeCount, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.limit).toEqual(limit);
+                            expect(response.offset).toEqual(offset);
+                            expect(response.result_cnt).toEqual(9);
+                            expect(response.datas.length).toEqual(2);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Number エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 2;
+                    var offset = 2;
+                    var treeCount = "1";
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, treeCount, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of treeCount is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= 4 の場合、サーバーの最大値以上のため、エラーになること', function(done) {
+                    var objectId = "spot";
+                    var limit = 2;
+                    var offset = 2;
+                    var treeCount = 4;
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, treeCount, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= 0 の場合、正しく取得できること', function(done) {
+                    var objectId = "spot";
+                    var limit = 2;
+                    var offset = 2;
+                    var treeCount = 0;
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithRelationObjects(objectId, limit, offset, treeCount, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.limit).toEqual(limit);
+                            expect(response.offset).toEqual(offset);
+                            expect(response.result_cnt).toEqual(9);
+                            expect(response.datas.length).toEqual(2);
+                            expect(response.datas[0].attributes.beacon_objects.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:treeCount
+        });  // end of 汎用テーブル外部結合検索複数件(リミット制限あり)
+
+        describe('RKZClient.getFieldDataList', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    RKZClient.getFieldDataList(objectId,
+                        function(fields) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    RKZClient.getFieldDataList(objectId,
+                        function(fields) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    RKZClient.getFieldDataList(objectId,
+                        function(fields) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:objectId
+            describe('パラメータ:visibleFieldOnly', function() {
+                it('= undefined の場合、表示項目のみ指定と同じ結果が帰ってくること', function(done) {
+                    var objectId = "spot";
+                    var visibleFieldOnly;
+                    RKZClient.getFieldDataList(objectId, visibleFieldOnly,
+                        function(fields) {
+                            expect(fields).toBeDefined();
+                            expect(fields.length).toEqual(12);
+                            expect(fields[0].sort_no).toEqual(10);
+                            expect(fields[1].sort_no).toEqual(20);
+                            expect(fields[2].sort_no).toEqual(30);
+                            expect(fields[3].sort_no).toEqual(40);
+                            expect(fields[4].sort_no).toEqual(50);
+                            expect(fields[5].sort_no).toEqual(60);
+                            expect(fields[6].sort_no).toEqual(70);
+                            expect(fields[7].sort_no).toEqual(80);
+                            expect(fields[8].sort_no).toEqual(90);
+                            expect(fields[9].sort_no).toEqual(110);
+                            expect(fields[10].sort_no).toEqual(120);
+                            expect(fields[11].sort_no).toEqual(130);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('= null の場合、表示項目のみ指定と同じ結果が帰ってくること', function(done) {
+                    var objectId = "spot";
+                    var visibleFieldOnly = null;
+                    RKZClient.getFieldDataList(objectId, visibleFieldOnly,
+                        function(fields) {
+                            expect(fields).toBeDefined();
+                            expect(fields.length).toEqual(12);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Boolean の場合、エラーとなること', function(done) {
+                    var objectId = "spot";
+                    var visibleFieldOnly = "TRUE";
+                    RKZClient.getFieldDataList(objectId, visibleFieldOnly,
+                        function(fields) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of visibleFieldOnly is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('== False の場合、隠しフィールドも取得すること', function(done) {
+                    var objectId = "spot";
+                    var visibleFieldOnly = false;
+                    RKZClient.getFieldDataList(objectId, visibleFieldOnly,
+                        function(fields) {
+                            expect(fields).toBeDefined();
+                            expect(fields.length).toEqual(13);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:visibleFieldOnly
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "spot";
+                RKZClient.getFieldDataList(objectId,
+                    function(fields) {
+                        expect(fields).toBeDefined();
+                        expect(fields.length).toEqual(12);
+                        expect(Object.keys(fields[0]).length).toEqual(12);
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"sort_no":10}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"field_name":"code"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"label_str":"コード"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"data_type_id":"0001"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"display_type":"0029"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"read_only_flg":"0"}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"is_required_flg":true}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"not_visible_flg":false}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"min_length":0}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"max_length":10}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":""}));
+                        expect(Object.keys(fields[0].attributes).length).toEqual(28);
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_related_field_no":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_unique_flg":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_format_pattern":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"choose_list":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"default_value":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"label_group":""}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"field_num":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"master_object_id":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"confirm_input_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_index_flg":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_field_no":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"parent_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_flg":"0"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_id":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"section_no":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"field_info":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_type":'1 '}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_field":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"style_txt":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_type":"1"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"system_field_id":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"link_url":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_name_kbn":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_field_disp_direction":null}));
+                        expect(fields[0].attributes.label_mult_str).toEqual(jasmine.objectContaining({"ja":"コード"}));
+                        expect(fields[0].attributes.label_mult_group).toEqual(jasmine.objectContaining({"ja":""}));
+                        expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":""}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of RKZClient.getFieldDataList
     });  // end of 汎用テーブル関連API
 };

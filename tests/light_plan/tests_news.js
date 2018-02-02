@@ -58,7 +58,7 @@ exports.suite = function(helper) {
                     RKZClient.getNews(params,
                         function(news) {
                             expect(news).toBeDefined();
-                            expect(Object.keys(news).length).toEqual(22);
+                            expect(Object.keys(news).length).toEqual(24);
                             expect(news.tenant_id).toBeDefined();
                             expect(news).toEqual(jasmine.objectContaining({"news_id":"1"}));
                             expect(news).toEqual(jasmine.objectContaining({"title":"テストニュース!"}));
@@ -80,8 +80,8 @@ exports.suite = function(helper) {
                             expect(news).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                             expect(news).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                             expect(news).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(Object.keys(news.attributes).length).toEqual(1);
-                            expect(news.attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト"}));
+                            expect(Object.keys(news.attributes).length).toEqual(3);
+                            expect(news.attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト", "news_segment_flg":"0","news_segment_only_flg":null}));
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -105,7 +105,7 @@ exports.suite = function(helper) {
                 RKZClient.getNews(params,
                     function(news) {
                         expect(news).toBeDefined();
-                        expect(Object.keys(news).length).toEqual(22);
+                        expect(Object.keys(news).length).toEqual(24);
                         expect(news.tenant_id).toBeDefined();
                         expect(news).toEqual(jasmine.objectContaining({"news_id":"1"}));
                         expect(news).toEqual(jasmine.objectContaining({"title":"テストニュース!"}));
@@ -127,8 +127,8 @@ exports.suite = function(helper) {
                         expect(news).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                         expect(news).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                         expect(news).toEqual(jasmine.objectContaining({"release_flg":true}));
-                        expect(Object.keys(news.attributes).length).toEqual(1);
-                        expect(news.attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト"}));
+                        expect(Object.keys(news.attributes).length).toEqual(3);
+                        expect(news.attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト", "news_segment_flg":"0","news_segment_only_flg":null}));
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -190,6 +190,7 @@ exports.suite = function(helper) {
                         function(datas) {
                             expect(datas).toBeDefined();
                             expect(datas.length).toEqual(2);
+                            expect(Object.keys(datas[0]).length).toEqual(24);
                             expect(datas[0]).toEqual(jasmine.objectContaining({news_id: "1"}));
                             expect(datas[0].tenant_id).toBeDefined();
                             expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"1"}));
@@ -212,8 +213,8 @@ exports.suite = function(helper) {
                             expect(datas[0]).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(Object.keys(datas[0].attributes).length).toEqual(1);
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト"}));
+                            expect(Object.keys(datas[0].attributes).length).toEqual(3);
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト", "news_segment_flg":"0","news_segment_only_flg":null}));
                             expect(datas[1]).toEqual(jasmine.objectContaining({news_id: "2"}));
                             done();
                         }, function(error) {
@@ -659,7 +660,11 @@ exports.suite = function(helper) {
                             expect(news.read_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                             expect(news.sort_no).not.toBeNull();
                             expect(news).toEqual(jasmine.objectContaining({"not_use_flg":false}));
-                            expect(news).toEqual(jasmine.objectContaining({ "attributes":{not_edit_flg: '0', not_delete_flg: '0'} }));
+                            expect(Object.keys(news.attributes).length).toEqual(4);
+                            expect(news.attributes.not_edit_flg).toEqual("0");
+                            expect(news.attributes.not_delete_flg).toEqual("0");
+                            expect(news.attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                            expect(news.attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed

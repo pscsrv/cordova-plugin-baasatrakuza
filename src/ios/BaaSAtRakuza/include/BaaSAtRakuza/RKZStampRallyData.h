@@ -13,7 +13,7 @@
 スタンプラリー情報を管理するクラス
 
 情報取得の際に使用します。
-**/
+*/
 @interface RKZStampRallyData : RKZData
 
 ///スタンプラリーID
@@ -61,6 +61,7 @@
 @property(nonatomic) NSNumber *sort_no;
 ///利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
+
 ///自由項目
 @property(nonatomic) NSMutableDictionary *attributes;
 

@@ -14,7 +14,6 @@
 
 #import "NSDate+RKZUtilities.h"
 
-
 @implementation RKZClient (News)
 
 typedef void (^getNewsBlock)(RKZNewsData *newsData, RKZResponseStatus *responseStatus);
@@ -51,6 +50,7 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
 {
     NSNumber *limit = [command.arguments objectAtIndex:0];
     if ([limit isEqual:[NSNull null]]) { limit = nil; }
+
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
@@ -68,14 +68,65 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
     }];
 }
 
+- (void) getSegmentNewsList:(CDVInvokedUrlCommand*)command
+{
+    NSNumber *limit = [command.arguments objectAtIndex:0];
+    if ([limit isEqual:[NSNull null]]) { limit = nil; }
+
+    NSString *userAccessToken = [command.arguments objectAtIndex:1];
+    BOOL onlyMatchSegment = [(NSNumber *)[command.arguments objectAtIndex:2] boolValue];;
+
+    NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:3]];
+    NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:4]];
+
+    [[RKZService sharedInstance] getSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSMutableArray *datas = [self arrayFromRKZData:newsDataArray];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:datas];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
 - (void) getReleasedNewsList:(CDVInvokedUrlCommand*)command
 {
     NSNumber *limit = [command.arguments objectAtIndex:0];
     if ([limit isEqual:[NSNull null]]) { limit = nil; }
+
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
     [[RKZService sharedInstance] getReleasedNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSMutableArray *datas = [self arrayFromRKZData:newsDataArray];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:datas];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getReleasedSegmentNewsList:(CDVInvokedUrlCommand*)command
+{
+    NSNumber *limit = [command.arguments objectAtIndex:0];
+    if ([limit isEqual:[NSNull null]]) { limit = nil; }
+
+    NSString *userAccessToken = [command.arguments objectAtIndex:1];
+    BOOL onlyMatchSegment = [(NSNumber *)[command.arguments objectAtIndex:2] boolValue];;
+
+    NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:3]];
+    NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:4]];
+
+    [[RKZService sharedInstance] getReleasedSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {

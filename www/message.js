@@ -5,7 +5,8 @@ var RKZMessages = (function() {
 
     _errorMessages["en"] = {
         "CDVE0001": "Type of {0} is not correct.",
-        "CDVE0002": "Failed to start beacon detection."
+        "CDVE0002": "Failed to start beacon detection.",
+        "CDVE0003": "Missing argument count {0} but {1}."
     };
 
     var RKZMessages = function() {};

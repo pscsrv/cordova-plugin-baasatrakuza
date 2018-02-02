@@ -80,10 +80,12 @@ exports.suite = function(helper) {
                         expect(spots[0]).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
                         expect(spots[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(spots[0]).toEqual(jasmine.objectContaining({beacon: ["0005"]}));
-                        expect(Object.keys(spots[0].attributes).length).toEqual(3);
+                        expect(Object.keys(spots[0].attributes).length).toEqual(5);
                         expect(spots[0].attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
                         expect(spots[0].attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
                         expect(spots[0].attributes).toEqual(jasmine.objectContaining({not_edit_flg: '0'}));
+                        expect(spots[0].attributes.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(spots[0].attributes.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
                         done();
                     },
                     function(response) {
@@ -141,4 +143,3 @@ exports.suite = function(helper) {
     });  // end of スポット関連API
 
 };
-

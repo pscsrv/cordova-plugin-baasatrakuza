@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="cordova-plugin-baasatrakuza"
-  version="1.0.3">
+  version="1.1.0">
 
   <!-- プラグイン名 -->
   <name>BaaSAtRakuza</name>
@@ -32,6 +32,9 @@
   </js-module>
   <js-module src="www/message.js" name="Messages">
     <clobbers target="RKZMessages"/>
+  </js-module>
+  <js-module src="www/file_type.js" name="FileType">
+    <clobbers target="RKZFileType"/>
   </js-module>
 
   <!-- Android用の設定 -->
@@ -92,6 +95,7 @@
 
     <source-file src="src/ios/BaaSAtRakuza/libBaaSAtRakuza.a" target-dir="BaaSAtRakuza" framework="true" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/NSDate+RKZUtilities.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
+    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/NSData+RKZUtilities.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/NSString+RKZUtilities.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZApplicationConfigData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZBeaconData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
@@ -100,12 +104,15 @@
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZContactData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZCouponData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
+    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZFieldData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZLocaleData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
+    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZLocation.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZMyCouponData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZMyStampHistoryData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZNewsData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZNewsReadHistoryData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZObjectData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
+    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZPagingData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZPointData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZResponseStatus.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZSearchCondition.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />

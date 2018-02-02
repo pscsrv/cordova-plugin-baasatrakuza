@@ -32,6 +32,11 @@
 @property(nonatomic) NSNumber *sort_no;
 ///使用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
+///登録日時
+@property(nonatomic) NSDate *sys_insert_date;
+///更新日時
+@property(nonatomic) NSDate *sys_update_date;
+
 ///自由項目
 @property(nonatomic) NSMutableDictionary *attributes;
 

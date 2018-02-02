@@ -112,6 +112,35 @@ public class NewsBridge extends BridgeBase {
     }
 
     /**
+     * 複数お知らせ情報（未公開も含む）を取得します。
+     */
+    private class GetSegmentNewsListBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer limit = (data.getString(0).toLowerCase().equals("null")) ? null : Integer.parseInt(data.getString(0));
+            final String userAccessToke = (data.getString(1).toLowerCase().equals("null")) ? null : data.getString(1);
+            final Boolean onlyMatchSegment = (data.getString(2).toLowerCase().equals("null")) ? false : data.getBoolean(2);
+            final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(3));
+            final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(4));
+
+            RKZClient.getInstance().getSegmentNewsList(limit, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, new OnGetNewsListListener() {
+                @Override
+                public void onGetNewsList(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
+                    // 復帰値を設定する
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(convertToJSONArray(list));
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
      * 複数お知らせ情報（公開中のもののみ）取得用ブリッジクラス
      */
     private class GetReleasedNewsListBridge implements RKZAPIBridge {
@@ -123,6 +152,35 @@ public class NewsBridge extends BridgeBase {
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(2));
 
             RKZClient.getInstance().getReleasedNewsList(limit, searchConditions, sortConditions, new OnGetReleasedNewsListListener() {
+                @Override
+                public void onGetReleasedNewsListListener(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
+                    // 復帰値を設定する
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(convertToJSONArray(list));
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
+     * 複数お知らせ情報（公開中のもののみ）取得用ブリッジクラス
+     */
+    private class GetReleasedSegmentNewsListBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer limit = (data.getString(0).toLowerCase().equals("null")) ? null : Integer.parseInt(data.getString(0));
+            final String userAccessToke = (data.getString(1).toLowerCase().equals("null")) ? null : data.getString(1);
+            final Boolean onlyMatchSegment = (data.getString(2).toLowerCase().equals("null")) ? false : data.getBoolean(2);
+            final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(3));
+            final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(4));
+
+            RKZClient.getInstance().getReleasedSegmentNewsList(limit, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, new OnGetReleasedNewsListListener() {
                 @Override
                 public void onGetReleasedNewsListListener(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -269,7 +327,9 @@ public class NewsBridge extends BridgeBase {
         final Map<String, RKZAPIBridge> tasks = new ConcurrentHashMap<String, RKZAPIBridge>();
         tasks.put("getNews", new GetNewsBridge());
         tasks.put("getNewsList", new GetNewsListBridge());
+        tasks.put("getSegmentNewsList", new GetSegmentNewsListBridge());
         tasks.put("getReleasedNewsList", new GetReleasedNewsListBridge());
+        tasks.put("getReleasedSegmentNewsList", new GetReleasedSegmentNewsListBridge());
         tasks.put("getNewsReadHistory", new GetNewsReadHistoryBridge());
         tasks.put("getNewsReadHistoryList", new GetNewsReadHistoryListBridge());
         tasks.put("registNewsReadHistory", new RegistNewsReadHistoryBridge());
