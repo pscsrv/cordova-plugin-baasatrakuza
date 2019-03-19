@@ -92,7 +92,9 @@ public class ApplicationBridge extends BridgeBase {
         @Override
         public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
             final String userAccessToken = data.getString(0);
-            final Locale locale = LocaleUtil.toLocale(data.getString(1));
+
+            String strLocale = data.getString(1).replace("_", "-");
+            final Locale locale = LocaleUtil.toLocale(strLocale);
 
             RKZClient.getInstance().setLocale(userAccessToken, locale, new OnSetLocaleListener() {
                 @Override
