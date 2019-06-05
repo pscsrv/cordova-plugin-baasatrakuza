@@ -133,6 +133,15 @@ public class ApplicationBridge extends BridgeBase {
             return true;
         }
     }
+    private class SetDefaultTimeoutBridge implements RKZAPIBridge {
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer timeout = Integer.parseInt(data.getString(0));
+            RKZClient.getInstance().setDefaultTimeout(timeout);
+            callbackContext.success();
+            return true;
+        }
+    }
 
     @Override
     public Map<String, RKZAPIBridge> getTasks() {
@@ -142,6 +151,7 @@ public class ApplicationBridge extends BridgeBase {
         tasks.put("getLocale", new GetLocaleBridge());
         tasks.put("setLocale", new SetLocaleBridge());
         tasks.put("getSystemDate", new GetSystemDateBridge());
+        tasks.put("setDefaultTimeout", new SetDefaultTimeoutBridge());
         return tasks;
     }
 }

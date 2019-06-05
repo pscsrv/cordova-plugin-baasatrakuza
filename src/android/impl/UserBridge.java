@@ -18,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import jp.co.pscsrv.android.baasatrakuza.client.RKZClient;
 import jp.co.pscsrv.android.baasatrakuza.core.RKZResponseStatus;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnAuthModelChangeListener;
+import jp.co.pscsrv.android.baasatrakuza.listener.OnClearPushDeviceTokenListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnEditPasswordListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnEditUserListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetRKZFieldDataListListener;
@@ -373,6 +374,32 @@ public final class UserBridge extends BridgeBase {
         }
     }
 
+
+    /**
+     * プッシュデバイストークン登録用ブリッジクラス
+     */
+    private class ClearPushDeviceTokenBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final String userAccessToken = data.getString(0);
+
+            RKZClient.getInstance().clearPushDeviceToken(userAccessToken, new OnClearPushDeviceTokenListener() {
+                @Override
+                public void onClearPushDeviceToken(final String statusCode, final RKZResponseStatus rkzResponseStatus) {
+                    // 復帰値を設定する
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(statusCode);
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
     @Override
     public Map<String, RKZAPIBridge> getTasks() {
         final Map<String, RKZAPIBridge> tasks = new ConcurrentHashMap<String, RKZAPIBridge>();
@@ -388,6 +415,7 @@ public final class UserBridge extends BridgeBase {
         tasks.put("beginUpdateUserAccessToken", new BeginUpdateUserAccessTokenBridge());
         tasks.put("commitUpdateUserAccessToken", new CommitUpdateUserAccessTokenBridge());
         tasks.put("getUserFieldDataList", new GetUserFieldDataListBridge());
+        tasks.put("clearPushDeviceToken", new ClearPushDeviceTokenBridge());
         return tasks;
     }
 }

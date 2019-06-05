@@ -23,6 +23,8 @@
 
 - (void) setTenantKey:(CDVInvokedUrlCommand*)command;
 
+- (void) setDefaultTimeout: (CDVInvokedUrlCommand*)command;
+
 - (NSMutableArray *) createSearchConditions:(NSArray *)jsonArray;
 
 - (NSMutableArray *) createSortConditions:(NSArray *)jsonArray;
@@ -115,6 +117,8 @@
 
 - (void) getFieldDataList:(CDVInvokedUrlCommand*)command;
 
+- (void) getDataFromQRCode:(CDVInvokedUrlCommand*)command;
+
 @end
 
 @interface RKZClient (News)
@@ -130,6 +134,8 @@
 - (void) getNewsReadHistoryList:(CDVInvokedUrlCommand*)command;
 
 - (void) registNewsReadHistory:(CDVInvokedUrlCommand*)command;
+
+- (void) readNews:(CDVInvokedUrlCommand*)command;
 
 @end
 
@@ -179,6 +185,8 @@
 
 - (void) registPushDeviceToken:(CDVInvokedUrlCommand*)command;
 
+- (void) clearPushDeviceToken:(CDVInvokedUrlCommand*)command;
+
 - (void) editPassword:(CDVInvokedUrlCommand*)command;
 
 - (void) registModelChangeCode:(CDVInvokedUrlCommand*)command;
@@ -194,6 +202,18 @@
 - (void) commitUpdateUserAccessToken:(CDVInvokedUrlCommand*)command;
 
 - (void) getUserFieldDataList:(CDVInvokedUrlCommand*)command;
+
+@end
+
+@interface RKZClient (Favorite)
+
+- (void) addFavoriteToObjectData:(CDVInvokedUrlCommand*)command;
+
+- (void) deleteFavoriteToObjectData:(CDVInvokedUrlCommand*)command;
+
+- (void) addFavoriteToNews:(CDVInvokedUrlCommand*)command;
+
+- (void) deleteFavoriteToNews:(CDVInvokedUrlCommand*)command;
 
 @end
 

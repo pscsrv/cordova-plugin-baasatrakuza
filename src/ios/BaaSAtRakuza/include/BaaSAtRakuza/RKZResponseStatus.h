@@ -102,6 +102,12 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
      @since BaaSAtRakuzaSDK v1.0
      */
     RKZApiStatusCodeConnectionError = 9030,
+
+    /**
+     タイムアウトエラー
+     @since BaaSAtRakuzaSDK v1.0
+     */
+    RKZApiStatusCodeConnectionTimeout = 9031,
 };
 
 /**
@@ -161,6 +167,14 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  楽座から取得されるエラーを返却するために用いられる。
  */
 - (id)initWithConnectionError:(NSError *)error;
+
+/**
+ コネクションタイムアウト
+
+ @param error 楽座以外から取得するエラー
+ 楽座から取得されるエラーを返却するために用いられる。
+ */
+- (id)initWithConnectionTimeout:(NSError *)error;
 
 /**
  楽座エラー (httpエラーなし)

@@ -78,7 +78,7 @@ exports.suite = function(helper) {
                         expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
-                        expect(data).toEqual(jasmine.objectContaining({attributes: {not_delete_flg: '0', major: '', minor: '', not_edit_flg: '0', beacon_id: 'FD064A00300C', beacon_type_cd_name: 'BULETUS', beacon_type_cd: '0002' } }));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_id: 'FD064A00300C', major: '', beacon_type_cd_name: 'BLUETUS', minor: '', beacon_type_cd: '0002', not_delete_flg: '0', not_edit_flg: '0'} ));
                         done();
                     }, function(error) {
                         // Failed
@@ -1601,7 +1601,7 @@ exports.suite = function(helper) {
                         expect(fields[0]).toEqual(jasmine.objectContaining({"min_length":0}));
                         expect(fields[0]).toEqual(jasmine.objectContaining({"max_length":10}));
                         expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":""}));
-                        expect(Object.keys(fields[0].attributes).length).toEqual(28);
+                        expect(Object.keys(fields[0].attributes).length).toEqual(33);
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_related_field_no":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_unique_flg":"1"}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_format_pattern":null}));
@@ -1627,9 +1627,14 @@ exports.suite = function(helper) {
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"link_url":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_name_kbn":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_field_disp_direction":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"master_object_label":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"master_object_key":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"section_name":"基本情報"}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"section_not_visible_flg":"0"}));
                         expect(fields[0].attributes.label_mult_str).toEqual(jasmine.objectContaining({"ja":"コード"}));
                         expect(fields[0].attributes.label_mult_group).toEqual(jasmine.objectContaining({"ja":""}));
                         expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":""}));
+                        expect(fields[0].attributes.section_mult_name).toEqual(jasmine.objectContaining({"ja":"基本情報"}));
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed

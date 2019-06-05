@@ -15,7 +15,7 @@
 //
 var TIMEOUT = 30000;
 var LICENSE_KEY = "{You.have.an.authentication_id}";
-var USER_ACCESS_TOKEN = "JFAkQnEzVExMZ1VwbVN6ZU53M3BOWHpOSlRNQS5tdFpMLg--";
+var USER_ACCESS_TOKEN = "JFAkQk5NTjljV2ZELlIyQjNrTDlHNTg1OUE4LmMuOHl6MA--";
 
 exports.suite = function(helper) {
 
@@ -168,65 +168,77 @@ exports.suite = function(helper) {
                         sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
-                            expect(datas.length).toEqual(3);
+                            expect(datas.length).toEqual(4);
                             expect(Object.keys(datas[0]).length).toEqual(24);
 
                             expect(datas[0].tenant_id).toBeDefined();
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"6"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"title":"テスト"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"description":"テスト"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"url":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"category_name":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_target_kbn_name":"管理者,利用者"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"rss_flg":false}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"genre_name":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"author":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"category":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"use_push_flg":true}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_from_date":"2017-03-08 00:00:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_end_date":"2118-03-08 16:52:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"date":"2017-03-08 00:00:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_target_kbn":"0001,0002"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"genre":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"photo":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"push_done_flg":false}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"push_time":"2017-03-08 16:52:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"match_segment_flg":true}));
+
+                            expect(datas[0]).toEqual(jasmine.objectContaining({news_id: '4'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_flg: true}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_from_date: '2016-10-27 16:59:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({push_time: '2016-12-27 20:58:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({title: 'テストニュース４'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({url: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({category_name: '通常'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_target_kbn_name: '管理者,利用者'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({rss_flg: false}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({genre_name: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({category: '0001'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({use_push_flg: true}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({match_segment_flg: false}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_end_date: '2117-10-27 16:59:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({date: '2016-10-27 00:00:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({push_done_flg: false}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_target_kbn: '0001,0002'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({photo: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({tenant_id: '21002'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({genre: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({author: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({description: 'テスト詳細4'}));
+
 
                             expect(Object.keys(datas[0].news_segment_conditions).length).toEqual(3);
-                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({"user_high_class_cd":"0001"}));
-                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({"condition_type":"input"}));
+                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({user_high_class_cd: '0001'}));
+                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({condition_type: 'input'}));
 
                             expect(Object.keys(datas[0].news_segment_conditions.conditions).length).toEqual(5);
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"field_name":"user_no"}));
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"search_type":"like_before"}));
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"search_value":"APP00723"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"field_name":"sex_cd"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"search_value":""}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"field_name":"age_config"}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"search_value":""}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"field_name":"business_class_cd"}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"search_value":""}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"field_name":"state_cd"}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"search_value":""}));
 
-                            expect(Object.keys(datas[0].attributes).length).toEqual(3);
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS確認用"}));
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"1"}));
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_only_flg":"1"}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({ field_name: 'user_no'}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({search_type: 'like_before'}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({search_value: 'APP01000'}));
 
-                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"5"}));
-                            expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"4"}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({ field_name: 'sex_cd'}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({field_name: 'age_config'}));
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({field_name: 'business_class_cd'}));
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({field_name: 'state_cd'}));
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(Object.keys(datas[0].attributes).length).toEqual(7);
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({ news_segment_flg: '1'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({news_segment_only_flg: '0'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({site_dir: 'https://baas.raku-za.jp/stage/unittest/sdk.0210/'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({data_id: '29'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({readed_flg: '0'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({readed_dte: null}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({tenant_name: 'BaaS SDK テスト'}));
+
+                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"3"}));
+                            expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"1"}));
 
                             done();
                         }, function(error) {
@@ -245,12 +257,11 @@ exports.suite = function(helper) {
                         searchConditions, sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
-                            expect(datas.length).toEqual(5);
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"6"}));
-                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"5"}));
-                            expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"4"}));
-                            expect(datas[3]).toEqual(jasmine.objectContaining({"news_id":"3"}));
-                            expect(datas[4]).toEqual(jasmine.objectContaining({"news_id":"2"}));
+                            expect(datas.length).toEqual(4);
+                            expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"4"}));
+                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"3"}));
+                            expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"1"}));
+                            expect(datas[3]).toEqual(jasmine.objectContaining({"news_id":"2"}));
 
                             done();
                         }, function(error) {
@@ -266,9 +277,9 @@ exports.suite = function(helper) {
                     function(datas) {
                         expect(datas).toBeDefined();
                         expect(datas.length).toEqual(4);
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"5"}));
-                        expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"4"}));
-                        expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"3"}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"4"}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"3"}));
+                        expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"1"}));
                         expect(datas[3]).toEqual(jasmine.objectContaining({"news_id":"2"}));
                         done();
                     }, function(error) {
@@ -413,65 +424,76 @@ exports.suite = function(helper) {
                         sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
-                            expect(datas.length).toEqual(3);
+                            expect(datas.length).toEqual(2);
                             expect(Object.keys(datas[0]).length).toEqual(24);
 
                             expect(datas[0].tenant_id).toBeDefined();
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"6"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"title":"テスト"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"description":"テスト"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"url":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"category_name":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_target_kbn_name":"管理者,利用者"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"rss_flg":false}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"genre_name":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"author":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"category":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"use_push_flg":true}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_from_date":"2017-03-08 00:00:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_end_date":"2118-03-08 16:52:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"date":"2017-03-08 00:00:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_target_kbn":"0001,0002"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"genre":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"photo":""}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"push_done_flg":false}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"push_time":"2017-03-08 16:52:00+0900"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"match_segment_flg":true}));
+
+                            expect(datas[0]).toEqual(jasmine.objectContaining({news_id: '4'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_flg: true}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_from_date: '2016-10-27 16:59:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({push_time: '2016-12-27 20:58:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({title: 'テストニュース４'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({url: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({category_name: '通常'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_target_kbn_name: '管理者,利用者'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({rss_flg: false}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({genre_name: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({category: '0001'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({use_push_flg: true}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({match_segment_flg: false}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_end_date: '2117-10-27 16:59:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({date: '2016-10-27 00:00:00+0900'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({push_done_flg: false}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({release_target_kbn: '0001,0002'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({photo: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({tenant_id: '21002'}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({genre: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({author: ''}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({description: 'テスト詳細4'}));
+
 
                             expect(Object.keys(datas[0].news_segment_conditions).length).toEqual(3);
-                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({"user_high_class_cd":"0001"}));
-                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({"condition_type":"input"}));
+                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({user_high_class_cd: '0001'}));
+                            expect(datas[0].news_segment_conditions).toEqual(jasmine.objectContaining({condition_type: 'input'}));
 
                             expect(Object.keys(datas[0].news_segment_conditions.conditions).length).toEqual(5);
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"field_name":"user_no"}));
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"search_type":"like_before"}));
-                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({"search_value":"APP00723"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"field_name":"sex_cd"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({"search_value":""}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"field_name":"age_config"}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({"search_value":""}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"field_name":"business_class_cd"}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({"search_value":""}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"object_name":"user_edit_form_individual"}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"field_name":"state_cd"}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"search_type":"equal"}));
-                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({"search_value":""}));
 
-                            expect(Object.keys(datas[0].attributes).length).toEqual(3);
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS確認用"}));
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"1"}));
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_only_flg":"1"}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({ field_name: 'user_no'}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({search_type: 'like_before'}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[0]).toEqual(jasmine.objectContaining({search_value: 'APP01000'}));
 
-                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"5"}));
-                            expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"4"}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({ field_name: 'sex_cd'}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[1]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({field_name: 'age_config'}));
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[2]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({field_name: 'business_class_cd'}));
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[3]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({field_name: 'state_cd'}));
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({search_type: 'equal'}));
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({object_name: 'user_edit_form_individual'}));
+                            expect(datas[0].news_segment_conditions.conditions[4]).toEqual(jasmine.objectContaining({search_value: ''}));
+
+                            expect(Object.keys(datas[0].attributes).length).toEqual(7);
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({ news_segment_flg: '1'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({news_segment_only_flg: '0'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({site_dir: 'https://baas.raku-za.jp/stage/unittest/sdk.0210/'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({data_id: '29'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({readed_flg: '0'}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({readed_dte: null}));
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({tenant_name: 'BaaS SDK テスト'}));
+
+                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"1"}));
 
                             done();
                         }, function(error) {
@@ -491,12 +513,9 @@ exports.suite = function(helper) {
                         sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
-                            expect(datas.length).toEqual(5);
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"6"}));
-                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"5"}));
-                            expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"4"}));
-                            expect(datas[3]).toEqual(jasmine.objectContaining({"news_id":"3"}));
-                            expect(datas[4]).toEqual(jasmine.objectContaining({"news_id":"2"}));
+                            expect(datas.length).toEqual(2);
+                            expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"4"}));
+                            expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"1"}));
 
                             done();
                         }, function(error) {
@@ -511,11 +530,9 @@ exports.suite = function(helper) {
                 RKZClient.getReleasedNewsList(limit, searchConditions, sortConditions,
                     function(datas) {
                         expect(datas).toBeDefined();
-                        expect(datas.length).toEqual(4);
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"5"}));
-                        expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"4"}));
-                        expect(datas[2]).toEqual(jasmine.objectContaining({"news_id":"3"}));
-                        expect(datas[3]).toEqual(jasmine.objectContaining({"news_id":"2"}));
+                        expect(datas.length).toEqual(2);
+                        expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"4"}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"news_id":"1"}));
 
                         done();
                     }, function(error) {

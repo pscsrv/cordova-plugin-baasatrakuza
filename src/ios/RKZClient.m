@@ -20,6 +20,10 @@ static NSString *const kTYPE = @"type";
 static NSString *const kNAME = @"columnName";
 static NSString *const kVALUE = @"values";
 
+static NSString *const kFAVORITE_COLUMN_PREFIX = @"sys_favorite:is_favorite";
+static NSString *const kREAD_NEWS_COLUMN_PREFIX = @"read_history_kbn";
+static NSString *const kFAVORITE_SUM_COLUMN_PREFIX = @"sys_favorite_sum:";
+
 @interface RKZClient()
 
 @end
@@ -40,12 +44,26 @@ static NSString *const kVALUE = @"values";
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
+- (void) setDefaultTimeout: (CDVInvokedUrlCommand*)command
+{
+    NSNumber *timeout = [command.arguments objectAtIndex:0];
+
+    [[RKZService sharedInstance] setDefaultTimeout:timeout.intValue];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
 - (NSMutableArray *) createSearchConditions:(NSArray *)jsonArray
 {
     NSMutableArray *conditions = [NSMutableArray new];
     // searchConditionのJSONを紐解いていき、RKZSerachConditionを生成する
     for (NSDictionary *json in jsonArray) {
-        [conditions addObject:[RKZSearchCondition initWithSearchConditionType:json[kTYPE] searchColumn:json[kNAME] searchValueArray:json[kVALUE]]];
+        if ([json[kNAME] hasPrefix:kFAVORITE_COLUMN_PREFIX]) {
+            [conditions addObject:[RKZSearchCondition initWithFavoriteType:json[kVALUE][0]]];
+        } else if ([json[kNAME] hasPrefix:kREAD_NEWS_COLUMN_PREFIX]) {
+        } else {
+            [conditions addObject:[RKZSearchCondition initWithSearchConditionType:json[kTYPE] searchColumn:json[kNAME] searchValueArray:json[kVALUE]]];
+        }
     }
     return conditions;
 }

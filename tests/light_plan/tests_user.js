@@ -142,8 +142,8 @@ exports.suite = function(helper) {
                     function(user) {
                         expect(false).toBeTruthy();  done();  // Failed
                     }, function(error) {
-                        expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
-                        expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : 不正なパラメータです。"}));
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "不正トークンエラー : 不正なパラメータです。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -377,8 +377,8 @@ exports.suite = function(helper) {
                     function(user) {
                         expect(false).toBeTruthy();  done();  // Failed
                     }, function(error) {
-                        expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
-                        expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : 不正なパラメータです。"}));
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "不正トークンエラー : 不正なパラメータです。"}));
                         done();
                     });
             }, TIMEOUT);
@@ -545,8 +545,8 @@ exports.suite = function(helper) {
                     function(modelChangeCode) {
                         expect(false).toBeTruthy(); done();  // Failed
                     }, function(error) {
-                        expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
-                        expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : 不正なパラメータです。"}));
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "不正トークンエラー : 不正なパラメータです。"}));
                         done();
                     });
             }, TIMEOUT);

@@ -24,8 +24,10 @@ import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsReadHistoryListListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsReadHistoryListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetReleasedNewsListListener;
+import jp.co.pscsrv.android.baasatrakuza.listener.OnReadNewsListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnRegistNewsReadHistoryListener;
 import jp.co.pscsrv.android.baasatrakuza.model.News;
+import jp.co.pscsrv.android.baasatrakuza.model.NewsExtensionAttribute;
 import jp.co.pscsrv.android.baasatrakuza.model.NewsReadHistory;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZSearchCondition;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZSortCondition;
@@ -95,7 +97,10 @@ public class NewsBridge extends BridgeBase {
             final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(1));
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(2));
 
-            RKZClient.getInstance().getNewsList(limit, searchConditions, sortConditions, new OnGetNewsListListener() {
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(3), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getNewsList(limit, searchConditions, sortConditions, extensionAttribute, new OnGetNewsListListener() {
                 @Override
                 public void onGetNewsList(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -124,7 +129,10 @@ public class NewsBridge extends BridgeBase {
             final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(3));
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(4));
 
-            RKZClient.getInstance().getSegmentNewsList(limit, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, new OnGetNewsListListener() {
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(5), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getSegmentNewsList(limit, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, extensionAttribute, new OnGetNewsListListener() {
                 @Override
                 public void onGetNewsList(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -151,7 +159,10 @@ public class NewsBridge extends BridgeBase {
             final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(1));
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(2));
 
-            RKZClient.getInstance().getReleasedNewsList(limit, searchConditions, sortConditions, new OnGetReleasedNewsListListener() {
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(3), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getReleasedNewsList(limit, searchConditions, sortConditions, extensionAttribute, new OnGetReleasedNewsListListener() {
                 @Override
                 public void onGetReleasedNewsListListener(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -180,7 +191,10 @@ public class NewsBridge extends BridgeBase {
             final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(3));
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(4));
 
-            RKZClient.getInstance().getReleasedSegmentNewsList(limit, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, new OnGetReleasedNewsListListener() {
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(5), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getReleasedSegmentNewsList(limit, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, extensionAttribute, new OnGetReleasedNewsListListener() {
                 @Override
                 public void onGetReleasedNewsListListener(final List<News> list, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -322,6 +336,49 @@ public class NewsBridge extends BridgeBase {
         }
     }
 
+    private class ReadNewsBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Gson gson = getGson();
+            final Map<String, String> params = gson.fromJson(data.getString(0), HashMap.class);
+            final String userAccessToke = data.getString(1);
+
+            // 指定されているパラメータ値を取得して呼び出すAPIを切り変える
+            final String newsId = params.get("news_id");
+
+            if (params.containsKey("tenant_id")) {
+                final String tenantId = params.get("tenant_id");
+                RKZClient.getInstance().readNews(newsId, tenantId, userAccessToke, new OnReadNewsListener() {
+                    @Override
+                    public void onReadNews(final String status, final RKZResponseStatus rkzResponseStatus) {
+                        // 復帰値を設定する
+                        callback(callbackContext, rkzResponseStatus, new Success() {
+                            @Override
+                            public void execute(CallbackContext callbackContext) throws JSONException {
+                                callbackContext.success(status);
+                            }
+                        });
+                    }
+                });
+            } else {
+                RKZClient.getInstance().readNews(newsId, userAccessToke, new OnReadNewsListener() {
+                    @Override
+                    public void onReadNews(final String status, final RKZResponseStatus rkzResponseStatus) {
+                        // 復帰値を設定する
+                        callback(callbackContext, rkzResponseStatus, new Success() {
+                            @Override
+                            public void execute(CallbackContext callbackContext) throws JSONException {
+                                callbackContext.success(status);
+                            }
+                        });
+                    }
+                });
+            }
+            return true;
+        }
+    }
+
     @Override
     public Map<String, RKZAPIBridge> getTasks() {
         final Map<String, RKZAPIBridge> tasks = new ConcurrentHashMap<String, RKZAPIBridge>();
@@ -333,6 +390,7 @@ public class NewsBridge extends BridgeBase {
         tasks.put("getNewsReadHistory", new GetNewsReadHistoryBridge());
         tasks.put("getNewsReadHistoryList", new GetNewsReadHistoryListBridge());
         tasks.put("registNewsReadHistory", new RegistNewsReadHistoryBridge());
+        tasks.put("readNews", new ReadNewsBridge());
         return tasks;
     }
 }

@@ -80,8 +80,8 @@ exports.suite = function(helper) {
                             expect(news).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                             expect(news).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                             expect(news).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(Object.keys(news.attributes).length).toEqual(3);
-                            expect(news.attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト", "news_segment_flg":"0","news_segment_only_flg":null}));
+                            expect(Object.keys(news.attributes).length).toEqual(7);
+                            expect(news.attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/","data_id":"26","readed_flg":"0","readed_dte":null,"tenant_name": "BaaS SDK テスト"}));
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -101,7 +101,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
             });  // end of describe('パラメータ:params', function()
             it('パラメータが正しい場合、正常に検索できること', function(done) {
-                var params = { news_id: "1", tenant_id: "20002" };
+                var params = { news_id: "1", tenant_id: "21002" };
                 RKZClient.getNews(params,
                     function(news) {
                         expect(news).toBeDefined();
@@ -127,8 +127,8 @@ exports.suite = function(helper) {
                         expect(news).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                         expect(news).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                         expect(news).toEqual(jasmine.objectContaining({"release_flg":true}));
-                        expect(Object.keys(news.attributes).length).toEqual(3);
-                        expect(news.attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト", "news_segment_flg":"0","news_segment_only_flg":null}));
+                        expect(Object.keys(news.attributes).length).toEqual(7);
+                        expect(news.attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/","data_id":"26","readed_flg":"0","readed_dte":null,"tenant_name": "BaaS SDK テスト"}));
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -213,9 +213,8 @@ exports.suite = function(helper) {
                             expect(datas[0]).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(Object.keys(datas[0].attributes).length).toEqual(3);
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"tenant_name":"BaaS SDK テスト", "news_segment_flg":"0","news_segment_only_flg":null}));
-                            expect(datas[1]).toEqual(jasmine.objectContaining({news_id: "2"}));
+                            expect(Object.keys(datas[0].attributes).length).toEqual(7);
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/","data_id":"26","readed_flg":"0","readed_dte":null,"tenant_name": "BaaS SDK テスト"}));
                             done();
                         }, function(error) {
                             expect(true).toBeTruthy(); done();  // Failed
@@ -294,7 +293,7 @@ exports.suite = function(helper) {
                     RKZClient.getReleasedNewsList(limit, searchConditions, sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
-                            expect(datas.length).toEqual(3);
+                            expect(datas.length).toEqual(2);
                             done();
                         }, function(error) {
                             expect(true).toBeTruthy(); done();  // Failed
@@ -307,7 +306,7 @@ exports.suite = function(helper) {
                     RKZClient.getReleasedNewsList(limit, searchConditions, sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
-                            expect(datas.length).toEqual(3);
+                            expect(datas.length).toEqual(2);
                             done();
                         }, function(error) {
                             expect(true).toBeTruthy(); done();  // Failed
@@ -340,7 +339,7 @@ exports.suite = function(helper) {
                             expect(datas).toBeDefined();
                             expect(datas.length).toEqual(2);
                             expect(datas[0]).toEqual(jasmine.objectContaining({news_id: "1"}));
-                            expect(datas[1]).toEqual(jasmine.objectContaining({news_id: "3"}));
+                            expect(datas[1]).toEqual(jasmine.objectContaining({news_id: "4"}));
                             done();
                         }, function(error) {
                             expect(true).toBeTruthy(); done();  // Failed
@@ -365,14 +364,14 @@ exports.suite = function(helper) {
                 it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
                     var limit = 2;
                     var searchConditions = [
-                        RKZSearchCondition.equal("news_id", "3"),
+                        RKZSearchCondition.equal("news_id", "4"),
                     ];
                     var sortConditions;
                     RKZClient.getReleasedNewsList(limit, searchConditions, sortConditions,
                         function(datas) {
                             expect(datas).toBeDefined();
                             expect(datas.length).toEqual(1);
-                            expect(datas[0]).toEqual(jasmine.objectContaining({news_id: "3"}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({news_id: "4"}));
                             done();
                         }, function(error) {
                             expect(true).toBeTruthy(); done();  // Failed
@@ -402,7 +401,7 @@ exports.suite = function(helper) {
                         expect(datas).toBeDefined();
                         expect(datas.length).toEqual(2);
                         expect(datas[0]).toEqual(jasmine.objectContaining({news_id: "4"}));
-                        expect(datas[1]).toEqual(jasmine.objectContaining({news_id: "3"}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({news_id: "1"}));
                         done();
                     }, function(error) {
                         expect(true).toBeTruthy(); done();  // Failed

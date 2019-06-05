@@ -25,6 +25,8 @@
 @class RKZUserEditWebView;
 @class RKZContactData;
 @class RKZEditPasswordWebView;
+@class RKZObjectDataExtensionAttribute;
+@class RKZNewsExtensionAttribute;
 
 /**
  BaaS@rakuza を利用するためのクラス
@@ -34,7 +36,9 @@
  @warning -setTenantKey: を実行する前に各APIのメソッド呼び出しを行うと初期化エラーとなります。
  */
 @interface RKZService : NSObject
-
+{
+    id manager;
+}
 
 ///------------------------------
 /// @name Properties
@@ -42,6 +46,7 @@
 
 /// RKZServiceが初期化されているか
 @property (nonatomic, readonly, getter=isInitialized) BOOL initialized;
+@property (nonatomic, readonly) NSNumber *_timeout;
 
 ///------------------------------
 /// @name Class Methods
@@ -65,6 +70,10 @@
  通信に成功するとテナント認証情報とシステム情報がUserdefaultsに保存され、 isInitialized がYESとなります。
  */
 - (RKZResponseStatus *)setTenantKey:(NSString *)tenantKey;
+
+- (RKZService *) setDefaultTimeout:(int)timeout;
+
+- (RKZService *) setTimeout:(int)timeout;
 
 @end
 
@@ -550,6 +559,22 @@
  お知らせ取得（公開中のみ）（ニュースID未指定）
  
  @param limit 取得件数を指定する(任意) nilを設定した場合は全件取得を行います
+ @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
+ @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( NSMutableArray(RKZNewsData) *newsDataArray, RKZResponseStatus *responseStatus )
+ 
+ */
+- (void)getReleasedNewsList:(NSNumber *)limit
+       searchConditionArray:(NSMutableArray *)searchConditionArray
+         sortConditionArray:(NSMutableArray *)sortConditionArray
+         extensionAttribute:(RKZNewsExtensionAttribute *)extensionAttribute
+                  withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
+
+/**
+ お知らせ取得（公開中のみ）（ニュースID未指定）
+ 
+ @param limit 取得件数を指定する(任意) nilを設定した場合は全件取得を行います
  @param userAccessToken ユーザーアクセストークン
  @param onlyMatchSegment 配信条件一致分のみ取得するか否か (YES:配信条件一致分のみ取得、NO:以外も取得)
  @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
@@ -566,6 +591,26 @@
                   withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
 
 /**
+ お知らせ取得（公開中のみ）（ニュースID未指定）
+ 
+ @param limit 取得件数を指定する(任意) nilを設定した場合は全件取得を行います
+ @param userAccessToken ユーザーアクセストークン
+ @param onlyMatchSegment 配信条件一致分のみ取得するか否か (YES:配信条件一致分のみ取得、NO:以外も取得)
+ @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
+ @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( NSMutableArray(RKZNewsData) *newsDataArray, RKZResponseStatus *responseStatus )
+ 
+ */
+- (void)getReleasedSegmentNewsList:(NSNumber *)limit
+                   userAccessToken:(NSString *)userAccessToken
+                  onlyMatchSegment:(BOOL)onlyMatchSegment
+              searchConditionArray:(NSMutableArray *)searchConditionArray
+                sortConditionArray:(NSMutableArray *)sortConditionArray
+                extensionAttribute:(RKZNewsExtensionAttribute *)extensionAttribute
+                         withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
+
+/**
  お知らせ取得（非公開含む）
 
  @param limit 取得件数を指定する(任意) nilを設定した場合は全件取得を行います
@@ -574,10 +619,25 @@
  @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
  ( NSMutableArray(RKZNewsData) *newsDataArray, RKZResponseStatus *responseStatus )
  */
-- (void)getNewsList:(NSNumber *)limit
+- (void) getNewsList:(NSNumber *)limit
 searchConditionArray:(NSMutableArray *)searchConditionArray
- sortConditionArray:(NSMutableArray *)sortConditionArray
-          withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
+  sortConditionArray:(NSMutableArray *)sortConditionArray
+           withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
+
+/**
+ お知らせ取得（非公開含む）
+ 
+ @param limit 取得件数を指定する(任意) nilを設定した場合は全件取得を行います
+ @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
+ @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( NSMutableArray(RKZNewsData) *newsDataArray, RKZResponseStatus *responseStatus )
+ */
+- (void) getNewsList:(NSNumber *)limit
+searchConditionArray:(NSMutableArray *)searchConditionArray
+  sortConditionArray:(NSMutableArray *)sortConditionArray
+  extensionAttribute:(RKZNewsExtensionAttribute *)extensionAttribute
+           withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
 
 /**
  お知らせ取得（非公開含む）
@@ -596,6 +656,25 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
 searchConditionArray:(NSMutableArray *)searchConditionArray
  sortConditionArray:(NSMutableArray *)sortConditionArray
           withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
+
+/**
+ お知らせ取得（非公開含む）
+ 
+ @param limit 取得件数を指定する(任意) nilを設定した場合は全件取得を行います
+ @param userAccessToken ユーザーアクセストークン
+ @param onlyMatchSegment 配信条件一致分のみ取得するか否か (YES:配信条件一致分のみ取得、NO:以外も取得)
+ @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
+ @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( NSMutableArray(RKZNewsData) *newsDataArray, RKZResponseStatus *responseStatus )
+ */
+- (void)getSegmentNewsList:(NSNumber *)limit
+           userAccessToken:(NSString *)userAccessToken
+          onlyMatchSegment:(BOOL)onlyMatchSegment
+      searchConditionArray:(NSMutableArray *)searchConditionArray
+        sortConditionArray:(NSMutableArray *)sortConditionArray
+        extensionAttribute:(RKZNewsExtensionAttribute *)extensionAttribute
+                 withBlock:(void (^)(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus))block;
 
 /**
  お知らせ既読情報取得（ニュースID指定）
@@ -658,6 +737,22 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
                      readDate:(NSDate *)readDate
                     withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
 
+/**
+ お知らせ既読情報登録 (New)
+ 
+ @param newsId ニュースID (必須)
+ @param user_access_token ユーザーアクセストークン (必須)
+ */
+- (void)readNews:(NSString *)newsId userAccessToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/**
+ お知らせ既読情報登録 (New)
+ 
+ @param newsId ニュースID (必須)
+ @param user_access_token ユーザーアクセストークン (必須)
+ */
+- (void)readNews:(NSString *)newsId tenantId:(NSString *)tenantId userAccessToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
 @end
 
 
@@ -696,6 +791,21 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
 /**
  データオブジェクト取得（キー指定なし）
  @param objectId オブジェクトID:object_id (必須)
+ @param userAccessToken ユーザーアクセストークン:userAccessToken (必須)
+ @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
+ @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( NSMutableArray(RKZTableData) *rkzTableDataArray, RKZResponseStatus *responseStatus )
+ */
+- (void) getDataList:(NSString *)objectId
+searchConditionArray:(NSMutableArray *)searchConditionArray
+  sortConditionArray:(NSMutableArray *)sortConditionArray
+  extensionAttribute:(RKZObjectDataExtensionAttribute *)extensionAttribute
+           withBlock:(void (^)(NSMutableArray *rkzObjectDataArray, RKZResponseStatus *responseStatus))block;
+
+/**
+ データオブジェクト取得（キー指定なし）
+ @param objectId オブジェクトID:object_id (必須)
  @param limit 取得件数
  @param offset 取得開始位置 0〜の開始位置(レコード位置)を指定
  @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
@@ -708,6 +818,25 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
                      offset:(NSNumber *)offset
        searchConditionArray:(NSMutableArray *)searchConditionArray
          sortConditionArray:(NSMutableArray *)sortConditionArray
+                  withBlock:(void (^)(RKZPagingData *pagingData, RKZResponseStatus *responseStatus))block;
+
+/**
+ データオブジェクト取得（キー指定なし）
+ @param objectId オブジェクトID:object_id (必須)
+ @param userAccessToken ユーザーアクセストークン:userAccessToken (必須)
+ @param limit 取得件数
+ @param offset 取得開始位置 0〜の開始位置(レコード位置)を指定
+ @param searchConditionArray NSMutableArray(RKZSearchCondition) 取得する情報の検索条件を指定する(任意)
+ @param sortConditionArray NSMutableArray(RKZSortCondition) 取得する情報のソート条件を指定する(任意)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZPagingData *pagingData, RKZResponseStatus *responseStatus )
+ */
+- (void)getPaginateDataList:(NSString *)objectId
+                      limit:(NSNumber *)limit
+                     offset:(NSNumber *)offset
+       searchConditionArray:(NSMutableArray *)searchConditionArray
+         sortConditionArray:(NSMutableArray *)sortConditionArray
+         extensionAttribute:(RKZObjectDataExtensionAttribute *)extensionAttribute
                   withBlock:(void (^)(RKZPagingData *pagingData, RKZResponseStatus *responseStatus))block;
 
 /**
@@ -956,6 +1085,16 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
  */
 - (void)getFieldDataList:(NSString *)objectId visibleFieldOnly:(BOOL)visibleFieldOnly withBlock:(void (^)(NSMutableArray *rkzFieldArray, RKZResponseStatus *responseStatus))block;
 
+/**
+ データオブジェクト取得（QRコード指定）
+ @param qrCode QRコード:qr_code (必須)
+ @param code キーコード:code (必須)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZObjectData* objectData, RKZResponseStatus *responseStatus )
+ */
+- (void)getDataFromQRCode:(NSString *)qrCode
+      withBlock:(void (^)(RKZObjectData* objectData, RKZResponseStatus *responseStatus))block;
+
 @end
 
 
@@ -1031,6 +1170,14 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
 - (void) registPushDeviceToken:(NSString *)userAccessToken
                    deviceToken:(NSString *)deviceToken
                      withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/**
+ プッシュトークン情報削除
+ @param userAccessToken ユーザーアクセストークン:user_access_token を指定する(必須)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/> (RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus)
+ */
+- (void) clearPushDeviceToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
 @end
 
 
@@ -1191,8 +1338,8 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
 
 #pragma mark コンタクト履歴
 /**
- @category RKZService(StampRally)
- スタンプラリーサービス
+ @category RKZService(Contact)
+ コンタクト履歴
  */
 @interface RKZService(Contact)
 
@@ -1227,3 +1374,51 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
 
 @end
 
+#pragma mark お気に入り
+/**
+ @category RKZService(Favorite)
+ スタンプラリーサービス
+ */
+@interface RKZService(Favorite)
+
+/**
+ オブジェクトデータをお気に入りに登録
+ 
+ @param objectData オブジェクトデータ
+ @param userAccessToken ユーザーアクセストークン
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
+ */
+- (void) addFavoriteToObjectData:(RKZObjectData *)objectData userAccessToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/**
+ オブジェクトデータをお気に入りから削除
+ 
+ @param objectData オブジェクトデータ
+ @param userAccessToken ユーザーアクセストークン
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
+ */
+- (void) deleteFavoriteToObjectData:(RKZObjectData *)objectData userAccessToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/**
+ お知らせをお気に入りに登録
+ 
+ @param newsData お知らせデータ
+ @param userAccessToken ユーザーアクセストークン
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
+ */
+- (void) addFavoriteToNews:(RKZNewsData *)newsData userAccessToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/**
+ お知らせをお気に入りから削除
+ 
+ @param newsData お知らせデータ
+ @param userAccessToken ユーザーアクセストークン
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
+ */
+- (void) deleteFavoriteToNews:(RKZNewsData *)newsData userAccessToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+@end

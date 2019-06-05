@@ -53,4 +53,18 @@ extern NSString *const RKZSortTypeDesc;
 + (id)initWithSortType:(NSString *)sortType
             sortColumn:(NSString *)sortColumn;
 
+/**
+ お気にり設定日をソート条件に設定するためのイニシャライザ
+ @param sortType   NSString ソート条件タイプ
+ @return id 初期化を行ったモデル情報
+ */
++ (id)initWithSortTypeForFavoriteUpdateDate:(NSString *)sortType;
+
+/**
+ お気にり登録件数をソート条件に設定するためのイニシャライザ
+ @param sortType   NSString ソート条件タイプ
+ @return id 初期化を行ったモデル情報
+ */
++ (id)initWithSortTypeForFavoriteCount:(NSString *)sortType;
+
 @end

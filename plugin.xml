@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="cordova-plugin-baasatrakuza"
-  version="1.1.2">
+  version="1.2.0">
 
   <!-- プラグイン名 -->
   <name>BaaSAtRakuza</name>
@@ -70,6 +70,7 @@
     <source-file src="src/android/impl/StampRallyBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
     <source-file src="src/android/impl/TenantBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
     <source-file src="src/android/impl/UserBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
+    <source-file src="src/android/impl/FavoriteBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
     <lib-file src="src/android/libs/BaaSAtRakuzaSDK_for_Android.jar" />
   </platform>
 
@@ -92,6 +93,7 @@
     <source-file src="src/ios/RKZClient+Spot.m" />
     <source-file src="src/ios/RKZClient+StampRally.m" />
     <source-file src="src/ios/RKZClient+User.m" />
+    <source-file src="src/ios/RKZClient+Favorite.m" />
 
     <source-file src="src/ios/BaaSAtRakuza/libBaaSAtRakuza.a" target-dir="BaaSAtRakuza" framework="true" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/NSDate+RKZUtilities.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
@@ -124,5 +126,7 @@
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZUploadFileData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZUserData.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
     <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZUserEditWebView.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
+    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZNewsExtensionAttribute.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
+    <header-file src="src/ios/BaaSAtRakuza/include/BaaSAtRakuza/RKZObjectDataExtensionAttribute.h" target-dir="BaaSAtRakuza/include/BaaSAtRakuza" />
   </platform>
 </plugin>

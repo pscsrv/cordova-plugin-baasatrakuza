@@ -78,7 +78,7 @@ exports.suite = function(helper) {
                         expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
-                        expect(data).toEqual(jasmine.objectContaining({attributes: {not_delete_flg: '0', major: '', minor: '', not_edit_flg: '0', beacon_id: 'FD064A00300C', beacon_type_cd_name: 'BULETUS', beacon_type_cd: '0002' } }));
+                        expect(data).toEqual(jasmine.objectContaining({attributes: {not_delete_flg: '0', major: '', minor: '', not_edit_flg: '0', beacon_id: 'FD064A00300C', beacon_type_cd_name: 'BLUETUS', beacon_type_cd: '0002' } }));
                         done();
                     }, function(error) {
                         // Failed

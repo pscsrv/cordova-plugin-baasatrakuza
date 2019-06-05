@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+@interface FavoriteForSearchCondition : NSObject
+@property(nonatomic) NSString *type;
+@end
+
+@interface ReadedNewsForSearchCondition : NSObject
+@property(nonatomic) NSString *type;
+@end
+
 /**
  楽座のデータ取得処理の検索条件を管理するクラス
  
@@ -90,6 +98,31 @@ extern NSString *const RKZSearchConditionLessThanInclude;
  */
 extern NSString *const RKZSearchConditionGreaterThanInclude;
 
+/**
+ お気に入り情報のみを検索条件に含めるための文字列です。
+ */
+extern NSString *const MyFavoriteOnlyForFavorite;
+/**
+ お気に入り情報以外を検索条件に含めるための文字列です。
+ */
+extern NSString *const NotMyFavoriteForFavorite;
+/**
+ 全てのお気に入り情報を検索条件に含めるための文字列です。
+ */
+extern NSString *const AllForFavorite;
+
+/**
+ お知らせ既読情報を検索条件に含めるための文字列です。
+ */
+extern NSString *const AlreadyReadForReadedNews;
+/**
+ お知らせ未読情報を検索条件に含めるための文字列です。
+ */
+extern NSString *const NonreadForReadedNews;
+/**
+ 全てのお知らせ情報を検索条件に含めるための文字列です。
+ */
+extern NSString *const AllForReadedNews;
 
 ///------------------------------
 /// @name Properties
@@ -136,6 +169,10 @@ extern NSString *const RKZSearchConditionGreaterThanInclude;
 @property(nonatomic) NSMutableArray *search_value;
 
 
+@property(nonatomic) FavoriteForSearchCondition *with_favorite;
+
+@property(nonatomic) ReadedNewsForSearchCondition *readed_news;
+
 ///------------------------------
 /// @name Initialization
 ///------------------------------
@@ -156,5 +193,15 @@ extern NSString *const RKZSearchConditionGreaterThanInclude;
 + (id)initWithSearchConditionType:(NSString *)searchConditionType
                      searchColumn:(NSString *)searchColumn
                  searchValueArray:(NSMutableArray *)searchValueArray;
+
+/**
+ お気に入り設定値の検索条件を有効にするイニシャライザ
+ */
++ (id)initWithFavoriteType:(NSString *)type;
+
+/**
+ 既読未読設定フラグの検索条件を作成するイニシャライザ
+ */
++ (id)initWithReadedNewsType:(NSString *)type;
 
 @end

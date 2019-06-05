@@ -20,7 +20,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="cordova-plugin-baasatrakuza-tests"
-    version="1.0.0">
+    version="1.2.0">
     <name>Cordova BaaSAtRakuza Plugin Tests</name>
     <license>Apache 2.0</license>
 
@@ -62,5 +62,12 @@
     <js-module src="standard_plan/tests_spot.js" name="standard_plan/tests_spot"></js-module>
     <js-module src="standard_plan/tests_stamp_rally.js" name="standard_plan/tests_stamp_rally"></js-module>
     <js-module src="standard_plan/tests_user.js" name="standard_plan/tests_user"></js-module>
+
+    <!-- v1.2.0 tests -->
+    <js-module src="v1_2_0/test_runner.js" name="v1_2_0/test_runner"></js-module>
+    <js-module src="v1_2_0/trial/test_runner.js" name="v1_2_0/trial/test_runner"></js-module>
+    <js-module src="v1_2_0/trial/tests_object_data.js" name="v1_2_0/trial/tests_object_data"></js-module>
+    <js-module src="v1_2_0/trial/tests_news.js" name="v1_2_0/trial/tests_news"></js-module>
+    <js-module src="v1_2_0/trial/tests_user.js" name="v1_2_0/trial/tests_user"></js-module>
 
 </plugin>

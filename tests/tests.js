@@ -37,6 +37,8 @@ exports.defineAutoTests = function () {
     // Test for standard plan
     require('./standard_plan/test_runner').suite(helper);
 
+    // Test for v1.2.0
+    require('./v1_2_0/test_runner').suite(helper);
 };
 
 exports.defineManualTests = function (contentEl, createActionButton) {
@@ -71,18 +73,143 @@ exports.defineManualTests = function (contentEl, createActionButton) {
             logMessage( window.JSON.stringify(error), "#FF0000");
         });
 
-    createActionButton('Click !', function() {
+    createActionButton('QRコード読み込み', function() {
         clearLog();
+        RKZClient.getDataFromQRCode(
+            '6d0d12a7c2496fe2ae2190a93e6b031a,e3fb0d02101edcea31731ee29239bf4d,LgMuJnqtiJMect5heHyVtDaHx78wxArwIkwqMbI2yng=',
+            function(data) {
+                logMessage( window.JSON.stringify(data) );
+            }, function(error) {
+                logMessage("Error >>>>>", "#FF0000");
+                logMessage( window.JSON.stringify(error), "#FF0000");
+            });
+    }, "dump_device1");
 
-        var searchConditions = [];
-        var sortConditions = [];
-        RKZClient.getSpotList(searchConditions, sortConditions,
+    createActionButton('マスタお気に入り削除', function() {
+        clearLog();
+        RKZClient.deleteFavoriteToObjectData({
+                object_id: 'spot',
+                code: '0001'
+            },
+            "JFAkQm1lQTI2MjFOb3ZXdkd3VFZSOS5mZnc0c3QzL2NIMQ--",
+            function(statusCode) {
+                logMessage( statusCode );
+            },
+            function(error) {
+                logMessage("Error >>>>>", "#FF0000");
+                logMessage( window.JSON.stringify(error), "#FF0000");
+            }
+        );
+    }, "dump_device1");
+
+    createActionButton('マスタお気に入り登録', function() {
+        clearLog();
+        RKZClient.addFavoriteToObjectData({
+                object_id: 'spot',
+                code: '0001'
+            },
+            "JFAkQm1lQTI2MjFOb3ZXdkd3VFZSOS5mZnc0c3QzL2NIMQ--",
+            function(statusCode) {
+                logMessage( statusCode );
+            },
+            function(error) {
+                logMessage("Error >>>>>", "#FF0000");
+                logMessage( window.JSON.stringify(error), "#FF0000");
+            }
+        );
+    }, "dump_device1");
+
+    var addFavoriteToNews = function() {
+        
+    };
+
+    var deleteFavoriteToNews = function() {
+        
+    };
+
+    var getDataList = function() {
+        var searchConditions = [
+            RKZSearchCondition.withFavorite.all()
+        ];
+        RKZClient.getDataList(
+            "spot",
+            searchConditions,
+            null,
+            {
+                user_access_token: "JFAkQm1lQTI2MjFOb3ZXdkd3VFZSOS5mZnc0c3QzL2NIMQ--"
+            },
             function(datas) {
                 logMessage( window.JSON.stringify(datas) );
             }, function(error) {
                 logMessage("Error >>>>>", "#FF0000");
                 logMessage( window.JSON.stringify(error), "#FF0000");
-            });
+            }
+        );
+};
+
+    createActionButton('Click !', function() {
+        clearLog();
+
+        RKZClient.clearPushDeviceToken(
+            "JFAkQm1lQTI2MjFOb3ZXdkd3VFZSOS5mZnc0c3QzL2NIMQ--",
+            function(status) {
+                logMessage( status );
+            }, function(error) {
+                logMessage("Error >>>>>", "#FF0000");
+                logMessage( window.JSON.stringify(error), "#FF0000");
+            }
+        );
+
+        // 通常
+        RKZClient.getDataList(
+            "spot",
+            null,
+            null,
+            function(datas) {
+                logMessage( window.JSON.stringify(datas) );
+                logMessage( '==============================' );
+                // サマリ表示
+                RKZClient.getDataList(
+                    "spot",
+                    null,
+                    null,
+                    {
+                        show_favorite_summary: true
+                    },
+                    function(datas) {
+                        logMessage( window.JSON.stringify(datas) );
+                        logMessage( '==============================' );
+                        // お気に入り登録状況を表示
+                        var searchConditions = [
+                            RKZSearchCondition.withFavorite.all()
+                        ];
+                        RKZClient.getDataList(
+                            "spot",
+                            searchConditions,
+                            null,
+                            {
+                                user_access_token: "JFAkQm1lQTI2MjFOb3ZXdkd3VFZSOS5mZnc0c3QzL2NIMQ--"
+                            },
+                            function(datas) {
+                                logMessage( window.JSON.stringify(datas) );
+                            }, function(error) {
+                                logMessage("Error >>>>>", "#FF0000");
+                                logMessage( window.JSON.stringify(error), "#FF0000");
+                            }
+                        );
+                    }, function(error) {
+                        logMessage("Error >>>>>", "#FF0000");
+                        logMessage( window.JSON.stringify(error), "#FF0000");
+                    }
+                );
+            }, function(error) {
+                logMessage("Error >>>>>", "#FF0000");
+                logMessage( window.JSON.stringify(error), "#FF0000");
+            }
+        );
+
+
+
 
     }, "dump_device1");
 };

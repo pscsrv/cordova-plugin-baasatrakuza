@@ -45,6 +45,28 @@ var SearchCondition = (function() {
         greaterThanInclude: function(columnName, value) {
             return new SearchCondition("greater_than_include", columnName, [ value ]);
         },
+        withFavorite: {
+            myFavoriteOnly: function() {
+                return new SearchCondition("equal", "sys_favorite:is_favorite", [ "1" ]);
+            },
+            notMyFavorite: function() {
+                return new SearchCondition("equal", "sys_favorite:is_favorite", [ "0" ]);
+            },
+            all: function() {
+                return new SearchCondition("equal", "sys_favorite:is_favorite", [ "ALL" ]);
+            }
+        },
+        readedNews: {
+            alreadyRead: function() {
+                return new SearchCondition("equal", "read_history_kbn", [ "0001" ]);
+            },
+            nonread: function() {
+                return new SearchCondition("equal", "read_history_kbn", [ "0002" ]);
+            },
+            all: function() {
+                return new SearchCondition("equal", "read_history_kbn", [ "ALL" ]);
+            }
+        },
         convertToJson: function() {
             // 設定された検索条件をJSON形式に変換する
             return {

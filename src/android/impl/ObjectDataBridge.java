@@ -1,10 +1,13 @@
 package jp.raku_za.baas.cordova.android.impl;
 
+import com.google.gson.Gson;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,6 +21,7 @@ import jp.co.pscsrv.android.baasatrakuza.listener.OnGetPagingDataListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetRKZFieldDataListListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetRKZObjectDataListListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetRKZObjectDataListener;
+import jp.co.pscsrv.android.baasatrakuza.model.ObjectDataExtensionAttribute;
 import jp.co.pscsrv.android.baasatrakuza.model.PagingData;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZLocation;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZFieldData;
@@ -72,7 +76,10 @@ public class ObjectDataBridge extends BridgeBase {
             final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(1));
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(2));
 
-            RKZClient.getInstance().getDataList(objectId, searchConditions, sortConditions, new OnGetRKZObjectDataListListener() {
+            final Gson gson = getGson();
+            final ObjectDataExtensionAttribute extensionAttribute = gson.fromJson(data.getString(3), ObjectDataExtensionAttribute.class);
+
+            RKZClient.getInstance().getDataList(objectId, searchConditions, sortConditions, extensionAttribute, new OnGetRKZObjectDataListListener() {
                 @Override
                 public void onGetRKZObjectDataList(final List<RKZObjectData> list, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -98,7 +105,10 @@ public class ObjectDataBridge extends BridgeBase {
             final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(3));
             final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(4));
 
-            RKZClient.getInstance().getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions, new OnGetPagingDataListener() {
+            final Gson gson = getGson();
+            final ObjectDataExtensionAttribute extensionAttribute = gson.fromJson(data.getString(5), ObjectDataExtensionAttribute.class);
+
+            RKZClient.getInstance().getPaginateDataList(objectId, limit, offset, searchConditions, sortConditions, extensionAttribute, new OnGetPagingDataListener() {
                 @Override
                 public void onGetPagingData(final PagingData pagingData, final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -398,6 +408,32 @@ public class ObjectDataBridge extends BridgeBase {
         }
     }
 
+    /**
+     * QRコードからオブジェクトデータを取得する
+     */
+    private class GetDataFromQRCode implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final String qrCode = data.getString(0);
+
+            RKZClient.getInstance().getDataFromQRCode(qrCode,
+                    new OnGetRKZObjectDataListener() {
+                        @Override
+                        public void onGetRKZObjectData(final RKZObjectData rkzObjectData, RKZResponseStatus rkzResponseStatus) {
+                            // 復帰値を設定する
+                            callback(callbackContext, rkzResponseStatus, new Success() {
+                                @Override
+                                public void execute(CallbackContext callbackContext) throws JSONException {
+                                    callbackContext.success(convertToJSONObject(rkzObjectData));
+                                }
+                            });
+                        }
+                    });
+            return true;
+        }
+    }
+
     @Override
     public Map<String, RKZAPIBridge> getTasks() {
         final Map<String, RKZAPIBridge> tasks = new ConcurrentHashMap<String, RKZAPIBridge>();
@@ -414,6 +450,7 @@ public class ObjectDataBridge extends BridgeBase {
         tasks.put("getDataListWithLocation", new GetDataListWithLocationBridge());
         tasks.put("getPaginateDataListWithLocation", new GetPaginateDataListWithLocationBridge());
         tasks.put("getFieldDataList", new GetFieldDataListBridge());
+        tasks.put("getDataFromQRCode", new GetDataFromQRCode());
         return tasks;
     }
 }

@@ -13,6 +13,7 @@
 
 #import "RKZObjectData.h"
 #import "RKZPagingData.h"
+#import "RKZObjectDataExtensionAttribute.h"
 #import "RKZLocation.h"
 
 @implementation RKZClient (ObjectData)
@@ -40,8 +41,9 @@
     NSString *tableName = [command.arguments objectAtIndex:0];
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
+    RKZObjectDataExtensionAttribute *extensionAttribute = [RKZObjectDataExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:3]];
 
-    [[RKZService sharedInstance] getDataList:tableName searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *rkzTableDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getDataList:tableName searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAttribute withBlock:^(NSMutableArray *rkzTableDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:rkzTableDataArray];
@@ -61,8 +63,9 @@
     NSNumber *offset = [command.arguments objectAtIndex:2];
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:3]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:4]];
+    RKZObjectDataExtensionAttribute *extensionAttribute = [RKZObjectDataExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:5]];
 
-    [[RKZService sharedInstance] getPaginateDataList:tableName limit:limit offset:offset searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(RKZPagingData *pagingData, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getPaginateDataList:tableName limit:limit offset:offset searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAttribute withBlock:^(RKZPagingData *pagingData, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSDictionary *data = [self dictionaryFromRKZData:pagingData];
@@ -267,6 +270,22 @@
         if (responseStatus.isSuccess) {
             NSMutableArray *resutlarray = [self arrayFromRKZData:rkzFieldDataArray];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resutlarray];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getDataFromQRCode:(CDVInvokedUrlCommand*)command
+{
+    NSString *qrCode = [command.arguments objectAtIndex:0];
+    [[RKZService sharedInstance] getDataFromQRCode:qrCode withBlock:^(RKZObjectData *objectData, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSDictionary *data = [self dictionaryFromRKZData:objectData];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];

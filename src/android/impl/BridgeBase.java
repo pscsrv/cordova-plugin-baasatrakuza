@@ -69,6 +69,38 @@ public abstract class BridgeBase {
         for (int i = 0; i < searchValues.length(); i++) {
             // SearchConditionのJSON値 -> Mapに変換
             final Map<String, Object> searchValue =  gson.fromJson(searchValues.getString(i), Map.class);
+
+            if (searchValue.get(COLUMN.NAME).equals("sys_favorite:is_favorite")) {
+                RKZSearchCondition sc = null;
+                List<String> values = (List<String>) searchValue.get(COLUMN.VALUE);
+                if (values.get(0).equals("1")) {
+                    sc = RKZSearchCondition.initWithFavoriteType(RKZSearchCondition.WithFavoriteType.MyFavoriteOnly);
+                } else if (values.get(0).equals("0")) {
+                    sc = RKZSearchCondition.initWithFavoriteType(RKZSearchCondition.WithFavoriteType.NotMyFavorite);
+                } else if (values.get(0).equals("ALL")) {
+                    sc = RKZSearchCondition.initWithFavoriteType(RKZSearchCondition.WithFavoriteType.All);
+                } else {
+                    // 用意してないパターンなので無視
+                }
+                if (sc != null) { searchConditions.add(sc); }
+                continue;
+            }
+            if (searchValue.get(COLUMN.NAME).equals("read_history_kbn")) {
+                RKZSearchCondition sc = null;
+                List<String> values = (List<String>) searchValue.get(COLUMN.VALUE);
+                if (values.get(0).equals("1")) {
+                    sc = RKZSearchCondition.initWithReadedNewsType(RKZSearchCondition.ReadedNewsType.AlreadyRead);
+                } else if (values.get(0).equals("0")) {
+                    sc = RKZSearchCondition.initWithReadedNewsType(RKZSearchCondition.ReadedNewsType.Nonread);
+                } else if (values.get(0).equals("ALL")) {
+                    sc = RKZSearchCondition.initWithReadedNewsType(RKZSearchCondition.ReadedNewsType.All);
+                } else {
+                    // 用意してないパターンなので無視
+                }
+                if (sc != null) { searchConditions.add(sc); }
+                continue;
+            }
+
             searchConditions.add(
                     new RKZSearchCondition(
                             (String) searchValue.get(COLUMN.TYPE),

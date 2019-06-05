@@ -11,6 +11,7 @@
 
 #import "RKZNewsData.h"
 #import "RKZNewsReadHistoryData.h"
+#import "RKZNewsExtensionAttribute.h"
 
 #import "NSDate+RKZUtilities.h"
 
@@ -54,7 +55,9 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
-    [[RKZService sharedInstance] getNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:3]];
+    
+    [[RKZService sharedInstance] getNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -79,7 +82,9 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:3]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:4]];
 
-    [[RKZService sharedInstance] getSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:5]];
+
+    [[RKZService sharedInstance] getSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -101,7 +106,9 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
-    [[RKZService sharedInstance] getReleasedNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:3]];
+
+    [[RKZService sharedInstance] getReleasedNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -126,7 +133,9 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:3]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:4]];
 
-    [[RKZService sharedInstance] getReleasedSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:5]];
+
+    [[RKZService sharedInstance] getReleasedSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -211,6 +220,34 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
         [[RKZService sharedInstance] registNewsReadHistory:newsId tenantId:tenantId userAccessToken:userAccessToken readDate:readDate withBlock:block];
     } else {
         [[RKZService sharedInstance] registNewsReadHistory:newsId userAccessToken:userAccessToken readDate:readDate withBlock:block];
+    }
+}
+
+- (void) readNews:(CDVInvokedUrlCommand*)command
+{
+    NSDictionary *params = [command.arguments objectAtIndex:0];
+    NSString *userAccessToken = [command.arguments objectAtIndex:1];
+    
+    NSString *newsId = [params objectForKey:@"news_id"];
+
+    registBlock block = ^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus){
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSNumber *code = [NSNumber numberWithInteger:statusCode];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[code stringValue]];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    };
+
+    if ([params.allKeys containsObject:@"tenant_id"]) {
+        // テナントIDがパラメータで渡された場合は、テナントIDを考慮する
+        NSString *tenantId = [params objectForKey:@"tenant_id"];
+        [[RKZService sharedInstance] readNews:newsId tenantId:tenantId userAccessToken:userAccessToken withBlock:block];
+    } else {
+        [[RKZService sharedInstance] readNews:newsId userAccessToken:userAccessToken withBlock:block];
     }
 }
 
