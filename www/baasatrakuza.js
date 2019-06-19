@@ -74,14 +74,14 @@ var BaaSAtRakuza = (function() {
         /**
          * APIリクエスト時のデフォルトタイムアウト値を設定
          *
-         * @param {Number} tenantKey テナント認証キー(必須)
+         * @param {Number} timeout タイムアウト時間(単位：秒)(必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
         setDefaultTimeout: function(timeout, success, error) {
             if (!is("Number", timeout)) { error(RKZMessages.error("CDVE0001", "timeout"));return; }
-            var _timeout = timeout || 30;
-            cordova.exec( success, error, featureName, "setDefaultTimeout", [ _timeout ] );
+            if (timeout <= 0) { timeout = -1; }
+            cordova.exec( success, error, featureName, "setDefaultTimeout", [ timeout ] );
         },
         /**
          * アプリケーション設定情報を取得します。
