@@ -22,7 +22,6 @@
     id="cordova-plugin-baasatrakuza-tests"
     version="1.2.0">
     <name>Cordova BaaSAtRakuza Plugin Tests</name>
-    <license>Apache 2.0</license>
 
     <js-module src="tests.js" name="tests"></js-module>
     <js-module src="tests_helper.js" name="tests_helper"></js-module>

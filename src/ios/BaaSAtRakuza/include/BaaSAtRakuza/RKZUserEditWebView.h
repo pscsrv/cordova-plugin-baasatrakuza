@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 @class RKZUserData;
 
@@ -17,7 +18,7 @@
  
  @warning 指定イニシャライザに必要項目を設定していない場合、nilを返します
  */
-@interface RKZUserEditWebView : UIWebView <UIWebViewDelegate>
+@interface RKZUserEditWebView : WKWebView <WKNavigationDelegate>
 
 
 ///------------------------------
