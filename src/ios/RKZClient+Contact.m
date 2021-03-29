@@ -7,8 +7,6 @@
 //
 
 #import "RKZClient.h"
-#import "RKZService.h"
-#import "RKZContactData.h"
 
 @implementation RKZClient (Contact)
 

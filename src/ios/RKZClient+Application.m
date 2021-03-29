@@ -9,11 +9,6 @@
 #import <Cordova/CDVPlugin.h>
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZApplicationConfigData.h"
-#import "RKZLocaleData.h"
-
 
 @implementation RKZClient (Application)
 

@@ -9,8 +9,6 @@
 #import <Cordova/CDVPlugin.h>
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
 
 @implementation RKZClient (StampRally)
 

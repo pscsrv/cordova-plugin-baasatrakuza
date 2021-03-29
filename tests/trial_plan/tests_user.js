@@ -60,7 +60,7 @@ exports.suite = function(helper) {
                     sex_cd : "0001",
                     age_config : "0005",
                     business_class_cd : "0001",
-                    point : 0,
+                    point : 20,
                     state_cd : "0010",
                     birth_day: '2016-01-01',
                     attributes : {
@@ -87,7 +87,7 @@ exports.suite = function(helper) {
                         expect(user).toEqual(jasmine.objectContaining({"user_first_furigana" : "タロウ"}));
                         expect(user).toEqual(jasmine.objectContaining({"user_last_furigana" : "コルドバカナ"}));
                         expect(user).toEqual(jasmine.objectContaining({"birth_day" : "2016-01-01 00:00:00+0900"}));
-                        expect(user).toEqual(jasmine.objectContaining({"point" : 0}));
+                        expect(user).toEqual(jasmine.objectContaining({"point" : 20}));
                         expect(user.last_update_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
 
                         expect(Object.keys(user.attributes).length).toEqual(17);
@@ -221,10 +221,12 @@ exports.suite = function(helper) {
                 it('正しく編集されること', function(done) {
                     // 抜き取ったデータを使って、更新処理を実施
                     _user.user_first_name = _user.user_first_name + "【修正】";
+                    _user.birth_day = '2020-10-21'
                     RKZClient.editUser(_user,
                         function(user) {
                             expect(user).toBeDefined();
                             expect(user.user_name).toEqual(_user.user_last_name + _user.user_first_name);
+                            expect(user.birth_day).toEqual('2020-10-21 00:00:00+0900');
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -1260,7 +1262,7 @@ exports.suite = function(helper) {
                     RKZClient.getUserFieldDataList(visibleFieldOnly,
                         function(fields) {
                             expect(fields).toBeDefined();
-                            expect(fields.length).toEqual(43);
+                            expect(fields.length).toEqual(44);
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -1283,7 +1285,7 @@ exports.suite = function(helper) {
                         expect(fields[0]).toEqual(jasmine.objectContaining({"not_visible_flg":false}));
                         expect(fields[0]).toEqual(jasmine.objectContaining({"min_length":0}));
                         expect(fields[0]).toEqual(jasmine.objectContaining({"max_length":24}));
-                        expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":""}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":"ヘルプテキスト"}));
                         expect(Object.keys(fields[0].attributes).length).toEqual(33);
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_related_field_no":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_unique_flg":"1"}));
@@ -1316,7 +1318,7 @@ exports.suite = function(helper) {
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"section_not_visible_flg":"0"}));
                         expect(fields[0].attributes.label_mult_str).toEqual(jasmine.objectContaining({"ja":"ユーザーNo"}));
                         expect(fields[0].attributes.label_mult_group).toEqual(jasmine.objectContaining({"ja":""}));
-                        expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":""}));
+                        expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":"ヘルプテキスト"}));
                         expect(fields[0].attributes.section_mult_name).toEqual(jasmine.objectContaining({"en":"プロフィール", "ja":"プロフィール"}));
                         done();
                     }, function(error) {

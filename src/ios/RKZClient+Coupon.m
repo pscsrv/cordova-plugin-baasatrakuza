@@ -6,10 +6,6 @@
 //
 //
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZCouponData.h"
-#import "RKZMyCouponData.h"
 
 @implementation RKZClient (Coupon)
 

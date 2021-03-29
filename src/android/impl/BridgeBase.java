@@ -73,11 +73,11 @@ public abstract class BridgeBase {
             if (searchValue.get(COLUMN.NAME).equals("sys_favorite:is_favorite")) {
                 RKZSearchCondition sc = null;
                 List<String> values = (List<String>) searchValue.get(COLUMN.VALUE);
-                if (values.get(0).equals("1")) {
+                if (values.get(0).equals(RKZSearchCondition.WithFavoriteType.MyFavoriteOnly.getString())) {
                     sc = RKZSearchCondition.initWithFavoriteType(RKZSearchCondition.WithFavoriteType.MyFavoriteOnly);
-                } else if (values.get(0).equals("0")) {
+                } else if (values.get(0).equals(RKZSearchCondition.WithFavoriteType.NotMyFavorite.getString())) {
                     sc = RKZSearchCondition.initWithFavoriteType(RKZSearchCondition.WithFavoriteType.NotMyFavorite);
-                } else if (values.get(0).equals("ALL")) {
+                } else if (values.get(0).equals(RKZSearchCondition.WithFavoriteType.All.getString())) {
                     sc = RKZSearchCondition.initWithFavoriteType(RKZSearchCondition.WithFavoriteType.All);
                 } else {
                     // 用意してないパターンなので無視
@@ -88,11 +88,11 @@ public abstract class BridgeBase {
             if (searchValue.get(COLUMN.NAME).equals("read_history_kbn")) {
                 RKZSearchCondition sc = null;
                 List<String> values = (List<String>) searchValue.get(COLUMN.VALUE);
-                if (values.get(0).equals("1")) {
+                if (values.get(0).equals(RKZSearchCondition.ReadedNewsType.AlreadyRead.getString())) {
                     sc = RKZSearchCondition.initWithReadedNewsType(RKZSearchCondition.ReadedNewsType.AlreadyRead);
-                } else if (values.get(0).equals("0")) {
+                } else if (values.get(0).equals(RKZSearchCondition.ReadedNewsType.Nonread.getString())) {
                     sc = RKZSearchCondition.initWithReadedNewsType(RKZSearchCondition.ReadedNewsType.Nonread);
-                } else if (values.get(0).equals("ALL")) {
+                } else if (values.get(0).equals(RKZSearchCondition.ReadedNewsType.All.getString())) {
                     sc = RKZSearchCondition.initWithReadedNewsType(RKZSearchCondition.ReadedNewsType.All);
                 } else {
                     // 用意してないパターンなので無視

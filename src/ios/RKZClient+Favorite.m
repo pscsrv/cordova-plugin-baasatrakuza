@@ -6,12 +6,6 @@
 //
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZObjectData.h"
-#import "RKZNewsData.h"
-
-#import "NSDate+RKZUtilities.h"
 
 @implementation RKZClient (Favorite)
 

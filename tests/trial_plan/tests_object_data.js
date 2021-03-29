@@ -204,6 +204,81 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
 
+            it('検索条件値=undefinedの場合、条件未指定と同じ結果が取得できること', function(done) {
+                var objectId = 'spot';
+                var searchConditions = [
+                    RKZSearchCondition.likeOr('beacon', undefined)
+                ];
+                var sortConditions = [
+                    RKZSortCondition.desc('code')
+                ];
+                RKZClient.getDataList(objectId, searchConditions, sortConditions,
+                  function(datas) {
+                      expect(datas).toBeDefined();
+                      expect(datas.length).toEqual(9);
+                      done();
+                  }, function(error) {
+                      expect(false).toBeTruthy(); done();    // Failed
+                  });
+            }, TIMEOUT);
+
+            it('検索条件値=nullの場合、条件未指定と同じ結果が取得できること', function(done) {
+                var objectId = 'spot';
+                var searchConditions = [
+                    RKZSearchCondition.likeOr('beacon', null)
+                ];
+                var sortConditions = [
+                    RKZSortCondition.desc('code')
+                ];
+                RKZClient.getDataList(objectId, searchConditions, sortConditions,
+                  function(datas) {
+                      expect(datas).toBeDefined();
+                      expect(datas.length).toEqual(9);
+                      done();
+                  }, function(error) {
+                      expect(false).toBeTruthy(); done();    // Failed
+                  });
+            }, TIMEOUT);
+
+            it('検索条件値(複数)!==Arrayの場合、エラーとなること', function(done) {
+                var objectId = 'spot';
+                var searchConditions = [
+                    RKZSearchCondition.likeOr('beacon', '0005')
+                ];
+                var sortConditions = [
+                    RKZSortCondition.desc('code')
+                ];
+                RKZClient.getDataList(objectId, searchConditions, sortConditions,
+                  function(data) {
+                      // Failed
+                      expect(false).toBeTruthy(); done();
+                  }, function(error) {
+                      expect(error).toBeDefined();
+                      expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                      expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                      done();
+                  });
+            }, TIMEOUT);
+
+            it('検索条件値(複数)===Arrayの場合、正常に検索できること', function(done) {
+                var objectId = 'spot';
+                var searchConditions = [
+                    RKZSearchCondition.likeOr('beacon', ['0005'])
+                ];
+                var sortConditions = [
+                    RKZSortCondition.desc('code')
+                ];
+                RKZClient.getDataList(objectId, searchConditions, sortConditions,
+                  function(datas) {
+                      expect(datas).toBeDefined();
+                      expect(datas.length).toEqual(1);
+                      expect(datas[0]).toEqual(jasmine.objectContaining({code: '0004'}));
+                      done();
+                  }, function(error) {
+                      expect(false).toBeTruthy(); done();    // Failed
+                  });
+            }, TIMEOUT);
+
             it('パラメータが正しい場合、正常に検索できること', function(done) {
                 var objectId = "beacon";
                 var searchConditions = [
@@ -928,17 +1003,17 @@ exports.suite = function(helper) {
                         expect(data).toEqual(jasmine.objectContaining({object_id: 'spot'}));
                         expect(data).toEqual(jasmine.objectContaining({code: '0004'}));
                         expect(data).toEqual(jasmine.objectContaining({name: 'A-1'}));
-                        expect(data).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(data).toEqual(jasmine.objectContaining({short_name: 'A1'}));
                         expect(data).toEqual(jasmine.objectContaining({sort_no: 3}));
                         expect(data).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(data.sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(data.sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(Object.keys(data.attributes).length).toEqual(10);
-                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: ""}));
-                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: ""}));
-                        expect(data.attributes).toEqual(jasmine.objectContaining({latitude_longitude: ''}));
-                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_x: ""}));
-                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: "-80"}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: "-80"}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({latitude_longitude: '34.602446∀133.765669∀'}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_x: "10"}));
+                        expect(data.attributes).toEqual(jasmine.objectContaining({pixel_position_y: "20"}));
                         expect(data.attributes).toEqual(jasmine.objectContaining({beacon: "0005"}));
                         expect(data.attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
                         expect(data.attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
@@ -961,6 +1036,21 @@ exports.suite = function(helper) {
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
                     });
+            }, TIMEOUT);
+            it('0件の場合、エラーになること', function(done) {
+                var objectId = "spot";
+                var code = "9999";
+                RKZClient.getDataWithRelationObjects(objectId, code,
+                  function(data) {
+                      // Failed
+                      expect(false).toBeTruthy(); done();
+                  }, function(error) {
+                      expect(error).toBeDefined();
+                      expect(error).toEqual(jasmine.objectContaining({status_code: "9011"}));
+                      if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "API整合性エラー : ゼロ件の取得エラー"})); }
+                      else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "API整合性エラー"})); }
+                      done();
+                  });
             }, TIMEOUT);
         });  // end of 汎用テーブル外部結合検索単件
 
@@ -1101,17 +1191,17 @@ exports.suite = function(helper) {
                         expect(datas[0]).toEqual(jasmine.objectContaining({object_id: 'spot'}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({code: '0004'}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({short_name: ''}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({short_name: 'A1'}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({sort_no: 3}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(datas[0].sys_insert_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(datas[0].sys_update_date).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         expect(Object.keys(datas[0].attributes).length).toEqual(10);
-                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: ""}));
-                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: ""}));
-                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({latitude_longitude: ''}));
-                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_x: ""}));
-                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_y: ""}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_android: "-80"}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_range_for_iphone: "-80"}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({latitude_longitude: '34.602446∀133.765669∀'}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_x: "10"}));
+                        expect(datas[0].attributes).toEqual(jasmine.objectContaining({pixel_position_y: "20"}));
                         expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon: "0005"}));
                         expect(datas[0].attributes).toEqual(jasmine.objectContaining({beacon_name: 'A-1'}));
                         expect(datas[0].attributes).toEqual(jasmine.objectContaining({not_delete_flg: '0'}));
@@ -1600,7 +1690,7 @@ exports.suite = function(helper) {
                         expect(fields[0]).toEqual(jasmine.objectContaining({"not_visible_flg":false}));
                         expect(fields[0]).toEqual(jasmine.objectContaining({"min_length":0}));
                         expect(fields[0]).toEqual(jasmine.objectContaining({"max_length":10}));
-                        expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":""}));
+                        expect(fields[0]).toEqual(jasmine.objectContaining({"help_txt":"ヘルプテキスト"}));
                         expect(Object.keys(fields[0].attributes).length).toEqual(33);
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"search_related_field_no":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"is_unique_flg":"1"}));
@@ -1625,7 +1715,7 @@ exports.suite = function(helper) {
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"related_check_type":"1"}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"system_field_id":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"link_url":null}));
-                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_name_kbn":null}));
+                        expect(fields[0].attributes).toEqual(jasmine.objectContaining({"display_name_kbn":"1"}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"group_field_disp_direction":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"master_object_label":null}));
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"master_object_key":null}));
@@ -1633,7 +1723,7 @@ exports.suite = function(helper) {
                         expect(fields[0].attributes).toEqual(jasmine.objectContaining({"section_not_visible_flg":"0"}));
                         expect(fields[0].attributes.label_mult_str).toEqual(jasmine.objectContaining({"ja":"コード"}));
                         expect(fields[0].attributes.label_mult_group).toEqual(jasmine.objectContaining({"ja":""}));
-                        expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":""}));
+                        expect(fields[0].attributes.help_mult_txt).toEqual(jasmine.objectContaining({"ja":"ヘルプテキスト"}));
                         expect(fields[0].attributes.section_mult_name).toEqual(jasmine.objectContaining({"ja":"基本情報"}));
                         done();
                     }, function(error) {

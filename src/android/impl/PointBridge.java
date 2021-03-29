@@ -63,15 +63,18 @@ public class PointBridge extends BridgeBase {
             final String userAccessToke = data.getString(0);
             final Integer point = data.getInt(1);
 
-            final Calendar addDate = (Calendar) Calendar.getInstance().clone();
-            final DateFormat df = new SimpleDateFormat(STRING_TO_CALENDAR_PATTERN);
-            df.setTimeZone(TimeZone.getDefault());
-            try {
-                addDate.setTime(df.parse(data.getString(2)));
-            } catch (ParseException e) {
-                final JSONException ex = new JSONException(e.getMessage());
-                ex.initCause(e);
-                throw ex;
+            Calendar addDate = null;
+            if (!data.isNull(2)) {
+                addDate = (Calendar) Calendar.getInstance().clone();
+                final DateFormat df = new SimpleDateFormat(STRING_TO_CALENDAR_PATTERN);
+                df.setTimeZone(TimeZone.getDefault());
+                try {
+                    addDate.setTime(df.parse(data.getString(2)));
+                } catch (ParseException e) {
+                    final JSONException ex = new JSONException(e.getMessage());
+                    ex.initCause(e);
+                    throw ex;
+                }
             }
 
             RKZClient.getInstance().addPoint(userAccessToke, point, addDate, new OnGetPointListener() {

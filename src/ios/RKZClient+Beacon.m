@@ -7,10 +7,6 @@
 //
 
 #import "RKZClient.h"
-#import "RKZService.h"
-#import "RKZContactData.h"
-
-#import "NSDate+RKZUtilities.h"
 
 @implementation RKZClient (Beacon)
 

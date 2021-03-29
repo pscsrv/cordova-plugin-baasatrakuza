@@ -7,11 +7,6 @@
 //
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZPointData.h"
-
-#import "NSDate+RKZUtilities.h"
 
 @implementation RKZClient (Point)
 

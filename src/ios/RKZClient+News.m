@@ -7,13 +7,6 @@
 //
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZNewsData.h"
-#import "RKZNewsReadHistoryData.h"
-#import "RKZNewsExtensionAttribute.h"
-
-#import "NSDate+RKZUtilities.h"
 
 @implementation RKZClient (News)
 

@@ -67,6 +67,7 @@
     <js-module src="v1_2_0/trial/test_runner.js" name="v1_2_0/trial/test_runner"></js-module>
     <js-module src="v1_2_0/trial/tests_object_data.js" name="v1_2_0/trial/tests_object_data"></js-module>
     <js-module src="v1_2_0/trial/tests_news.js" name="v1_2_0/trial/tests_news"></js-module>
+    <js-module src="v1_2_0/trial/tests_news_favorite.js" name="v1_2_0/trial/tests_news_favorite"></js-module>
     <js-module src="v1_2_0/trial/tests_user.js" name="v1_2_0/trial/tests_user"></js-module>
 
 </plugin>

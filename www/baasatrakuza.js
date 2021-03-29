@@ -9,6 +9,10 @@ var BaaSAtRakuza = (function() {
         if (!is("Array", conditions)) throw new TypeError("CDVE0001");
         var _conditions = [];
         for (var i = 0; i < conditions.length; i++) {
+            var values = conditions[i].values;
+            if (values != null && !is("Array", values)) {
+                throw new TypeError("CDVE0001");
+            }
             _conditions.push( conditions[i].convertToJson() );
         }
         return _conditions;
@@ -182,7 +186,7 @@ var BaaSAtRakuza = (function() {
         },
         /**
          * プッシュデバイストークンをクリアします。
-         * 
+         *
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
@@ -457,8 +461,8 @@ var BaaSAtRakuza = (function() {
             var _userAccessToken = userAccessToken || "";
             if (!is("Number", point)) { error(RKZMessages.error("CDVE0001", "point"));return; }
             var _point = point || null;
-            if (!is("Date", addDate)) { error(RKZMessages.error("CDVE0001", "addDate"));return; }
-            var _addDate = formatDate(addDate);
+            if (addDate != null && !is("Date", addDate)) { error(RKZMessages.error("CDVE0001", "addDate"));return; }
+            var _addDate = addDate && formatDate(addDate);
             cordova.exec(success, error, featureName, "addPoint", [ _userAccessToken, _point, _addDate ]);
         },
         //--------------------------------------------------------------------------------
@@ -843,9 +847,9 @@ var BaaSAtRakuza = (function() {
         /**
          * お知らせの既読情報の登録を行います。
          * @param {Object.<String, Object>} params  連想配列パラメータ
-         * @param {*} userAccessToken 
-         * @param {*} success 
-         * @param {*} error 
+         * @param {*} userAccessToken
+         * @param {*} success
+         * @param {*} error
          */
         readNews: function(params, userAccessToken, success, error) {
             if (!is("Object", params)) { error(RKZMessages.error("CDVE0001", "params"));return; }
@@ -1462,7 +1466,7 @@ var BaaSAtRakuza = (function() {
         },
         /**
          * オブジェクトデータのQRコードからオブジェクトデータを取得する
-         * 
+         *
          * @param {String} qrCode オブジェクトデータを表すQRコード値
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
@@ -1706,7 +1710,7 @@ var BaaSAtRakuza = (function() {
         //--------------------------------------------------------------------------------
         /**
          * オブジェクトデータをお気に入りに登録する
-         * 
+         *
          * @param {Object} data オブジェクトデータ (必須)
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
@@ -1722,7 +1726,7 @@ var BaaSAtRakuza = (function() {
         },
         /**
          * オブジェクトデータのお気に入りを削除する
-         * 
+         *
          * @param {Object} data オブジェクトデータ (必須)
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
@@ -1738,7 +1742,7 @@ var BaaSAtRakuza = (function() {
         },
         /**
          * お知らせをお気に入りに登録する
-         * 
+         *
          * @param {Object} news お知らせ情報 (必須)
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
@@ -1754,7 +1758,7 @@ var BaaSAtRakuza = (function() {
         },
         /**
          * お知らせのお気に入りを削除する
-         * 
+         *
          * @param {Object} news お知らせ情報 (必須)
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数

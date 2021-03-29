@@ -9,12 +9,6 @@
 #import <Cordova/CDVPlugin.h>
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZObjectData.h"
-#import "RKZPagingData.h"
-#import "RKZObjectDataExtensionAttribute.h"
-#import "RKZLocation.h"
 
 @implementation RKZClient (ObjectData)
 

@@ -11,9 +11,7 @@
 
 #import <Cordova/CDVPlugin.h>
 
-#import "RKZData.h"
-
-#import "RKZResponseStatus.h"
+#import <BaaSAtRakuza/BaaSAtRakuza.h>
 
 @interface RKZClient : CDVPlugin
 {

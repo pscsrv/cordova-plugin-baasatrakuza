@@ -64,6 +64,7 @@ exports.suite = function(helper) {
                 var contact = {
                     contact_class_cd: "0015",
                     contact_method_class_cd: "0007",
+                    point: 1
                 };
                 RKZClient.addContact(helper.userAccessToken, contact,
                     function(statusCode) {
@@ -72,6 +73,20 @@ exports.suite = function(helper) {
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
                     });
+            }, TIMEOUT);
+            it('ポイントを減算できること', function(done) {
+              var contact = {
+                contact_class_cd: "0015",
+                contact_method_class_cd: "0007",
+                point: -1
+              };
+              RKZClient.addContact(helper.userAccessToken, contact,
+                function(statusCode) {
+                  expect(statusCode).toEqual("1001");
+                  done();
+                }, function(error) {
+                  expect(false).toBeTruthy(); done();  // Failed
+                });
             }, TIMEOUT);
             it('contactのプロパティが正しく設定されていない場合、エラーが返されること', function(done) {
                 var contact = {};
@@ -173,34 +188,48 @@ exports.suite = function(helper) {
                 RKZClient.getContactList(helper.userAccessToken, searchConditions, sortConditions,
                     function(datas) {
                         expect(datas).toBeDefined();
-                        expect(datas.length).toEqual(2);
+                        expect(datas.length).toEqual(3);
                         expect(Object.keys(datas[0]).length).toEqual(20);
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"contact_method_class_cd":"0007"}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"entry_no":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"contact_item_no":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"deposit_no":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"contact_item_name":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"contact_class_cd":"0015"}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"rssi":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"coupon_cd":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_cd":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"beacon_id":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_spot_cd":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"remarks":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"beacon_spot_cd":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"quantity":null}));
-                        expect(datas[0].contact_no).toBeDefined();
-                        expect(datas[0].contact_no).not.toBeNull();
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"place_cd":null}));
-                        expect(datas[0].contact_date).toBeDefined();
-                        expect(datas[0].contact_date).not.toBeNull();
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"point":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"status_cd":null}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"attributes": {"beacon_spot_cd_name":null,"status_cd_name":null,"place_cd_name":null,"contact_class_cd_name":"スタンプコンプリート","stamp_rally_cd_name":null,"coupon_cd_name":null,"stamp_rally_spot_cd_name":null,"contact_method_class_cd_name":"管理者代行","ticket_cd":null,"ticket_no":null,"ticket_name":null} }));
+
+                        expect(datas[0]).toEqual(jasmine.objectContaining({"point":-1}));
+
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"contact_method_class_cd":"0007"}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"entry_no":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"contact_item_no":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"deposit_no":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"contact_item_name":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"contact_class_cd":"0015"}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"rssi":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"coupon_cd":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"stamp_rally_cd":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"beacon_id":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"stamp_rally_spot_cd":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"remarks":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"beacon_spot_cd":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"quantity":null}));
+                        expect(datas[1].contact_no).toBeDefined();
+                        expect(datas[1].contact_no).not.toBeNull();
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"place_cd":null}));
+                        expect(datas[1].contact_date).toBeDefined();
+                        expect(datas[1].contact_date).not.toBeNull();
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"point":1}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"status_cd":null}));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"attributes": {"beacon_spot_cd_name":null,"status_cd_name":null,"place_cd_name":null,"contact_class_cd_name":"スタンプコンプリート","stamp_rally_cd_name":null,"coupon_cd_name":null,"stamp_rally_spot_cd_name":null,"contact_method_class_cd_name":"管理者代行","ticket_cd":null,"ticket_no":null,"ticket_name":null} }));
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
                     });
+            }, TIMEOUT);
+            it('ポイント加減算が正しく行われていること', function(done) {
+              RKZClient.getPoint(helper.userAccessToken,
+                function(point) {
+                  expect(point).toBeDefined();
+                  expect(point.user_id).not.toBeNull();
+                  expect(point).toEqual(jasmine.objectContaining({point: 1}));
+                  done();
+                }, function(error) {
+                  expect(false).toBeTruthy(); done();  // Failed
+                });
             }, TIMEOUT);
         });  // end of 取得する場合
     });  // end of コンタクト履歴関連API

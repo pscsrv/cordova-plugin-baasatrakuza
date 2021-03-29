@@ -62,6 +62,7 @@ exports.suite = function(helper) {
 
             require('./v1_2_0/trial/tests_object_data').suite(helper);
             require('./v1_2_0/trial/tests_news').suite(helper);
+            require('./v1_2_0/trial/tests_news_favorite').suite(helper);
             require('./v1_2_0/trial/tests_user').suite(helper);
         });
 

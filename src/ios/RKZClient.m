@@ -11,10 +11,6 @@
 #import "objc/runtime.h"
 
 #import "RKZClient.h"
-#import "RKZService.h"
-
-#import "RKZSearchCondition.h"
-#import "RKZSortCondition.h"
 
 static NSString *const kTYPE = @"type";
 static NSString *const kNAME = @"columnName";
@@ -61,6 +57,7 @@ static NSString *const kFAVORITE_SUM_COLUMN_PREFIX = @"sys_favorite_sum:";
         if ([json[kNAME] hasPrefix:kFAVORITE_COLUMN_PREFIX]) {
             [conditions addObject:[RKZSearchCondition initWithFavoriteType:json[kVALUE][0]]];
         } else if ([json[kNAME] hasPrefix:kREAD_NEWS_COLUMN_PREFIX]) {
+            [conditions addObject:[RKZSearchCondition initWithReadedNewsType:json[kVALUE][0]]];
         } else {
             [conditions addObject:[RKZSearchCondition initWithSearchConditionType:json[kTYPE] searchColumn:json[kNAME] searchValueArray:json[kVALUE]]];
         }

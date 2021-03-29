@@ -10,10 +10,6 @@
 
 #import "RKZClient.h"
 
-#import "RKZService.h"
-#import "RKZUserData.h"
-
-
 @implementation RKZClient (User)
 
 - (void) registUser:(CDVInvokedUrlCommand*)command
