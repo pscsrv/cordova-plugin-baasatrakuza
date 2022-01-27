@@ -184,7 +184,9 @@ exports.suite = function(helper) {
                 var searchConditions = [
                     RKZSearchCondition.equal("contact_class_cd", "0015"),
                 ];
-                var sortConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.desc('contact_no'),
+                ];
                 RKZClient.getContactList(helper.userAccessToken, searchConditions, sortConditions,
                     function(datas) {
                         expect(datas).toBeDefined();

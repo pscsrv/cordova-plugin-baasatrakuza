@@ -1,4 +1,6 @@
-# Mac
+.tags*
 .DS_Store
-
-# BaaS@rakuza
+.vscode/
+.idea/
+node_modules
+npm-debug.log

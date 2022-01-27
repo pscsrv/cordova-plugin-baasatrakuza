@@ -1731,5 +1731,630 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
         });  // end of RKZClient.getFieldDataList
+
+        describe('RKZClient.getDataWithLocation', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var code = "";
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var code = "";
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var code = "";
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = "";
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            // Failed
+                            expect(false).toBeTruthy(); done();
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });   // end of パラメータ:objectId
+            describe('パラメータ:code', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code;
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = null;
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var code = 1;
+                    RKZClient.getDataWithLocation(objectId, code, {},
+                        function(data) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of code is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('指定した範囲内の場合、取得できること', function(done) {
+                var objectId = "stamp_rally_spot";
+                var code = "0002";
+                var location = {
+                    latitude: 34.601825,
+                    longitude: 133.76701,
+                    range: 0.12
+                };
+                RKZClient.getDataWithLocation(objectId, code, location,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data).toEqual(jasmine.objectContaining({code: '0002'}));
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+            it('指定した範囲外の場合、エラーになること', function(done) {
+                var objectId = "stamp_rally_spot";
+                var code = "0002";
+                var location = {
+                    latitude: 34.601825,
+                    longitude: 133.76701,
+                    range: 0.06
+                };
+                RKZClient.getDataWithLocation(objectId, code, location,
+                    function(data) {
+                        // Failed
+                        expect(false).toBeTruthy(); done();
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9011"}));
+                        if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "API整合性エラー : ゼロ件の取得エラー"})); }
+                        else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "API整合性エラー"})); }
+                        done();
+                    });
+            }, TIMEOUT);
+            it('0件の場合、エラーになること', function(done) {
+                var objectId = "stamp_rally_spot";
+                var code = "9999";
+                RKZClient.getDataWithLocation(objectId, code, {},
+                    function(data) {
+                        // Failed
+                        expect(false).toBeTruthy(); done();
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9011"}));
+                        if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "API整合性エラー : ゼロ件の取得エラー"})); }
+                        else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "API整合性エラー"})); }
+                        done();
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブル位置情報検索単件
+
+        describe('RKZClient.getDataListWithLocation', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーとなること', function(done) {
+                    var objectId = "";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            // Failed
+                            expect(false).toBeTruthy(); done();
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });   // end of パラメータ:objectId
+            describe('パラメータ:searchConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas).toBeDefined();
+                            expect(datas.length).toEqual(4);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var searchConditions = "1";
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:searchConditions
+            describe('パラメータ:sortConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var searchConditions = [];
+                    var sortConditions;
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(datas).toBeDefined();
+                            expect(datas.length).toEqual(4);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var searchConditions = [];
+                    var sortConditions = "1";
+                    RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:sortConditions
+            it('条件なしの場合、緯度経度を設定している全件取得できること', function(done) {
+                var objectId = "stamp_rally_spot";
+                var searchConditions = [];
+                var sortConditions = [];
+                RKZClient.getDataListWithLocation(objectId, {}, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.length).toEqual(4);
+                        expect(data[0].code).toEqual('0001');
+                        expect(data[1].code).toEqual('0002');
+                        expect(data[2].code).toEqual('0003');
+                        expect(data[3].code).toEqual('0005');
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+            it('指定した範囲内のデータを取得できること', function(done) {
+                var objectId = "stamp_rally_spot";
+                var location = {
+                    latitude: 34.601825,
+                    longitude: 133.76701,
+                    range: 0.12
+                };
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("code")
+                ];
+                RKZClient.getDataListWithLocation(objectId, location, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.length).toEqual(3);
+                        expect(data[0].code).toEqual('0002');
+                        expect(data[1].code).toEqual('0003');
+                        expect(data[2].code).toEqual('0005');
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+            it('指定した範囲外のデータが取得されないこと', function(done) {
+                var objectId = "stamp_rally_spot";
+                var location = {
+                    latitude: 34.601825,
+                    longitude: 133.76701,
+                    range: 0.06
+                };
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("code")
+                ];
+                RKZClient.getDataListWithLocation(objectId, location, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.length).toEqual(0);
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+            describe('spot項目が複数ある場合', function() {
+                it('spotFieldNameに指定した項目(設定あり)が検索されること', function(done) {
+                    var objectId = "location_test";
+                    var location = {
+                        latitude: 34.601825,
+                        longitude: 133.76701,
+                        range: 0.12
+                    };
+                    var spotFieldName = 'spot1';
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getDataListWithLocation(objectId, location, spotFieldName, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.length).toEqual(1);
+                            expect(data[0].code).toEqual('0001');
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('spotFieldNameに指定した項目(未設定)が検索されること', function(done) {
+                    var objectId = "location_test";
+                    var location = {
+                        latitude: 34.601825,
+                        longitude: 133.76701,
+                        range: 0.12
+                    };
+                    var spotFieldName = 'spot2';
+                    var searchConditions = [];
+                    var sortConditions = [
+                        RKZSortCondition.asc("code")
+                    ];
+                    RKZClient.getDataListWithLocation(objectId, location, spotFieldName, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.length).toEqual(0);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+            });
+        });  // end of 汎用テーブル位置情報検索複数件
+
+        describe('RKZClient.getPaginateDataListWithLocation', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = null;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーとなること', function(done) {
+                    var objectId = 1;
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:objectId
+            describe('パラメータ:limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = null;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== Number の場合、エラーとなること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = "1";
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:limit
+            describe('パラメータ:offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== Number の場合、エラーとなること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset = "2";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ:searchConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.datas.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = "1";
+                    var sortConditions = [
+                        RKZSortCondition.desc("code")
+                    ];
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:searchConditions
+            describe('パラメータ:sortConditions', function() {
+                it('= undefined の場合、条件未指定と同じ結果が取得できること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = [];
+                    var sortConditions;
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(response).toBeDefined();
+                            expect(response.datas.length).toEqual(1);
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        });
+                }, TIMEOUT);
+                it('!== Object の場合、エラーになること', function(done) {
+                    var objectId = "stamp_rally_spot";
+                    var limit = 1;
+                    var offset = 2;
+                    var searchConditions = [];
+                    var sortConditions = "1";
+                    RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of パラメータ:sortConditions
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var objectId = "stamp_rally_spot";
+                var limit = 2;
+                var offset = 1;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.desc("code")
+                ];
+                RKZClient.getPaginateDataListWithLocation(objectId, limit, offset, {}, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.result_cnt).toEqual(4);
+                        expect(data.datas.length).toEqual(2);
+                        expect(data.datas[0].code).toEqual('0003');
+                        expect(data.datas[1].code).toEqual('0002');
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });  // end of 汎用テーブル位置情報検索複数件(リミット制限あり)
     });  // end of 汎用テーブル関連API
 };

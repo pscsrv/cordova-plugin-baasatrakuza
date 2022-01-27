@@ -74,6 +74,18 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
     RKZApiStatusCodeSendMailError = 9005,
     
     /**
+     楽座メンテナンス中エラー
+     @since BaaSAtRakuzaSDK v2.5.0
+     */
+    RKZApiStatusCodeUnderMaintenanceError = 9009,
+    
+    /**
+     楽座システム障害エラー
+     @since BaaSAtRakuzaSDK v2.5.0
+     */
+    RKZApiStatusCodeSystemFailureError = 9010,
+    
+    /**
      API整合性エラー
      @since BaaSAtRakuzaSDK v1.0
      */
@@ -218,6 +230,13 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  @param detailErrorMessage 詳細エラーメッセージ
  */
 - (id)initWithInitializeError:(NSString *)detailErrorMessage;
+
+/**
+ 楽座システム障害エラー
+ @param error 楽座以外から取得するエラー
+ 楽座から取得されるエラーを返却するために用いられる。
+ */
+- (id)initWithSystemFailureError:(NSError *)error;
 
 /**
  API整合性エラー

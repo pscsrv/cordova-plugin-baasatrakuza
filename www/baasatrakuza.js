@@ -327,7 +327,7 @@ var BaaSAtRakuza = (function() {
                 _error = error;
             }
 
-            if (!is("Boolean", _visibleFieldOnly) && !is("Null", _visibleFieldOnly) && !is("Undefined", _visibleFieldOnly)) { error(RKZMessages.error("CDVE0001", "visibleFieldOnly"));return; }
+            if (!is("Boolean", _visibleFieldOnly) && !is("Null", _visibleFieldOnly) && !is("Undefined", _visibleFieldOnly)) { _error(RKZMessages.error("CDVE0001", "visibleFieldOnly"));return; }
             if (is("Null", _visibleFieldOnly) || is("Undefined", _visibleFieldOnly)) {
                 _visibleFieldOnly = true;
             }
@@ -643,20 +643,20 @@ var BaaSAtRakuza = (function() {
                 _error = error;
             }
 
-            if (!is("Number", _limit) && !is("Undefined", _limit) && !is("Null", _limit)) { error(RKZMessages.error("CDVE0001", "limit"));return; }
+            if (!is("Number", _limit) && !is("Undefined", _limit) && !is("Null", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
             _limit = _limit || null;
 
-            if (!is("String", _userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
             _userAccessToken = _userAccessToken || "";
 
-            if (!is("Boolean", _onlyMatchSegment)) { error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
+            if (!is("Boolean", _onlyMatchSegment)) { _error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
             _onlyMatchSegment = _onlyMatchSegment || false;
 
             try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
-                error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
             try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
-                error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
 
             if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
@@ -759,20 +759,20 @@ var BaaSAtRakuza = (function() {
                 _error = error;
             }
 
-            if (!is("Number", _limit) && !is("Undefined", _limit) && !is("Null", _limit)) { error(RKZMessages.error("CDVE0001", "limit"));return; }
+            if (!is("Number", _limit) && !is("Undefined", _limit) && !is("Null", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
             _limit = _limit || null;
 
-            if (!is("String", _userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
             _userAccessToken = _userAccessToken || "";
 
-            if (!is("Boolean", _onlyMatchSegment)) { error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
+            if (!is("Boolean", _onlyMatchSegment)) { _error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
             _onlyMatchSegment = _onlyMatchSegment || false;
 
             try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
-                error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
             try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
-                error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
             }
 
             if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
@@ -783,7 +783,7 @@ var BaaSAtRakuza = (function() {
             var sfs = _extensionAttributes.show_favorite_summary;
             if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
 
-            cordova.exec(success, error, featureName, "getSegmentNewsList", [ _limit, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions, _extensionAttributes ]);
+            cordova.exec(_success, _error, featureName, "getSegmentNewsList", [ _limit, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions, _extensionAttributes ]);
         },
         /**
          * 単一お知らせ既読情報を取得します。
@@ -1457,7 +1457,7 @@ var BaaSAtRakuza = (function() {
             if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
             _objectId = _objectId || "";
 
-            if (!is("Boolean", _visibleFieldOnly) && !is("Null", _visibleFieldOnly) && !is("Undefined", _visibleFieldOnly)) { error(RKZMessages.error("CDVE0001", "visibleFieldOnly"));return; }
+            if (!is("Boolean", _visibleFieldOnly) && !is("Null", _visibleFieldOnly) && !is("Undefined", _visibleFieldOnly)) { _error(RKZMessages.error("CDVE0001", "visibleFieldOnly"));return; }
             if (is("Null", _visibleFieldOnly) || is("Undefined", _visibleFieldOnly)) {
                 _visibleFieldOnly = true;
             }
