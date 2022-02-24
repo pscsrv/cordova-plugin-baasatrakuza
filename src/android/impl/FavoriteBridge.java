@@ -17,6 +17,7 @@ import jp.co.pscsrv.android.baasatrakuza.listener.OnAddFavoriteListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnDeleteFavoriteListener;
 import jp.co.pscsrv.android.baasatrakuza.model.News;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZObjectData;
+import jp.co.pscsrv.android.baasatrakuza.model.UserDetail;
 import jp.raku_za.baas.cordova.android.RKZAPIBridge;
 
 public class FavoriteBridge extends BridgeBase {
@@ -25,7 +26,7 @@ public class FavoriteBridge extends BridgeBase {
         super(cordova);
     }
 
-    private class AddFavoriteToObjectDataBridge implements RKZAPIBridge {
+    private class AddObjectDataToFavoriteBridge implements RKZAPIBridge {
 
         @Override
         public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -35,7 +36,7 @@ public class FavoriteBridge extends BridgeBase {
             final RKZObjectData objectData = new RKZObjectData().getInstance(data.getString(0));
             final String userAccessToke = data.getString(1);
 
-            RKZClient.getInstance().addFavoriteToObjecttData(objectData, userAccessToke, new OnAddFavoriteListener() {
+            RKZClient.getInstance().addObjectDataToFavorite(objectData, userAccessToke, new OnAddFavoriteListener() {
                 @Override
                 public void onAddFavorite(final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -51,7 +52,7 @@ public class FavoriteBridge extends BridgeBase {
         }
     }
 
-    private class DeleteFavoriteToObjectDataBridge implements RKZAPIBridge {
+    private class DeleteObjectDataFromFavoriteBridge implements RKZAPIBridge {
 
         @Override
         public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -61,7 +62,7 @@ public class FavoriteBridge extends BridgeBase {
             final RKZObjectData objectData = new RKZObjectData().getInstance(data.getString(0));
             final String userAccessToke = data.getString(1);
 
-            RKZClient.getInstance().deleteFavoriteToObjectData(objectData, userAccessToke, new OnDeleteFavoriteListener() {
+            RKZClient.getInstance().deleteObjectDataFromFavorite(objectData, userAccessToke, new OnDeleteFavoriteListener() {
                 @Override
                 public void onDeleteFavorite(final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -77,7 +78,7 @@ public class FavoriteBridge extends BridgeBase {
         }
     }
 
-    private class AddFavoriteToNewsBridge implements RKZAPIBridge {
+    private class AddNewsToFavoriteBridge implements RKZAPIBridge {
 
         @Override
         public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -87,7 +88,7 @@ public class FavoriteBridge extends BridgeBase {
             final News news = new News().getInstance(data.getString(0));
             final String userAccessToke = data.getString(1);
 
-            RKZClient.getInstance().addFavoriteToNews(news, userAccessToke, new OnAddFavoriteListener() {
+            RKZClient.getInstance().addNewsToFavorite(news, userAccessToke, new OnAddFavoriteListener() {
                 @Override
                 public void onAddFavorite(final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -103,7 +104,7 @@ public class FavoriteBridge extends BridgeBase {
         }
     }
 
-    private class DeleteFavoriteToNewsBridge implements RKZAPIBridge {
+    private class DeleteNewsFromFavoriteBridge implements RKZAPIBridge {
 
         @Override
         public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -113,7 +114,7 @@ public class FavoriteBridge extends BridgeBase {
             final News news = new News().getInstance(data.getString(0));
             final String userAccessToke = data.getString(1);
 
-            RKZClient.getInstance().deleteFavoriteToNews(news, userAccessToke, new OnDeleteFavoriteListener() {
+            RKZClient.getInstance().deleteNewsFromFavorite(news, userAccessToke, new OnDeleteFavoriteListener() {
                 @Override
                 public void onDeleteFavorite(final RKZResponseStatus rkzResponseStatus) {
                     // 復帰値を設定する
@@ -125,6 +126,52 @@ public class FavoriteBridge extends BridgeBase {
                     });
                 }
             });
+            return true;
+        }
+    }
+
+    private class AddUserDetailToFavoriteBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final UserDetail userDetail = new UserDetail().getInstance(data.getString(0));
+            final String userAccessToken = data.getString(1);
+
+            RKZClient.getInstance().addUserDetailToFavorite(userDetail, userAccessToken, new OnAddFavoriteListener() {
+                @Override
+                public void onAddFavorite(RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(rkzResponseStatus.getStatusCode());
+                        }
+                    });
+                }
+            });
+
+            return true;
+        }
+    }
+
+    private class DeleteUserDetailFromFavoriteBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final UserDetail userDetail = new UserDetail().getInstance(data.getString(0));
+            final String userAccessToken = data.getString(1);
+
+            RKZClient.getInstance().deleteUserDetailFromFavorite(userDetail, userAccessToken, new OnDeleteFavoriteListener() {
+                @Override
+                public void onDeleteFavorite(RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(rkzResponseStatus.getStatusCode());
+                        }
+                    });
+                }
+            });
+
             return true;
         }
     }
@@ -132,10 +179,12 @@ public class FavoriteBridge extends BridgeBase {
     @Override
     public Map<String, RKZAPIBridge> getTasks() {
         final Map<String, RKZAPIBridge> tasks = new ConcurrentHashMap<String, RKZAPIBridge>();
-        tasks.put("addFavoriteToObjectData", new FavoriteBridge.AddFavoriteToObjectDataBridge());
-        tasks.put("deleteFavoriteToObjectData", new FavoriteBridge.DeleteFavoriteToObjectDataBridge());
-        tasks.put("addFavoriteToNews", new FavoriteBridge.AddFavoriteToNewsBridge());
-        tasks.put("deleteFavoriteToNews", new FavoriteBridge.DeleteFavoriteToNewsBridge());
+        tasks.put("addObjectDataToFavorite", new FavoriteBridge.AddObjectDataToFavoriteBridge());
+        tasks.put("deleteObjectDataFromFavorite", new FavoriteBridge.DeleteObjectDataFromFavoriteBridge());
+        tasks.put("addNewsToFavorite", new FavoriteBridge.AddNewsToFavoriteBridge());
+        tasks.put("deleteNewsFromFavorite", new FavoriteBridge.DeleteNewsFromFavoriteBridge());
+        tasks.put("addUserDetailToFavorite", new FavoriteBridge.AddUserDetailToFavoriteBridge());
+        tasks.put("deleteUserDetailFromFavorite", new FavoriteBridge.DeleteUserDetailFromFavoriteBridge());
         return tasks;
     }
 }

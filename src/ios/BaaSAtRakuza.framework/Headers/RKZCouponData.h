@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  クーポン情報を管理するクラス
  
@@ -21,31 +23,31 @@
 ///------------------------------
 
 ///クーポンコード
-@property(nonatomic)NSString* code;
+@property(nonatomic, nullable)NSString* code;
 ///クーポン名
-@property(nonatomic)NSString* name;
+@property(nonatomic, nullable)NSString* name;
 ///クーポン画像
-@property(nonatomic)NSString* image;
+@property(nonatomic, nullable)NSString* image;
 ///クーポン画像(url)
-@property(nonatomic)NSString* image_url;
+@property(nonatomic, nullable)NSString* image_url;
 ///クーポン取得可能日時（FROM）
-@property(nonatomic)NSDate* possible_from_dte;
+@property(nonatomic, nullable)NSDate* possible_from_dte;
 ///クーポン取得可能日時（TO）
-@property(nonatomic)NSDate* possible_to_dte;
+@property(nonatomic, nullable)NSDate* possible_to_dte;
 ///クーポン利用可能日時（FROM）
-@property(nonatomic)NSDate* enable_from_dte;
+@property(nonatomic, nullable)NSDate* enable_from_dte;
 ///クーポン利用可能日時（TO）
-@property(nonatomic)NSDate* enable_to_dte;
+@property(nonatomic, nullable)NSDate* enable_to_dte;
 ///クーポン交換ポイント数
-@property(nonatomic)NSNumber *point;
+@property(nonatomic, nullable)NSNumber *point;
 ///ソート番号
-@property(nonatomic)NSNumber *sort_no;
+@property(nonatomic, nullable)NSNumber *sort_no;
 ///使用不可フラグ
 @property(nonatomic)BOOL not_use_flg;
 /**
  自由項目
  */
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 
 ///------------------------------
@@ -57,6 +59,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

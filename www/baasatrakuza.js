@@ -609,6 +609,64 @@ var BaaSAtRakuza = (function() {
          * 複数お知らせ情報（公開中のもののみ）を取得します。
          *
          * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateReleasedNewsList: function(limit, offset, searchConditions, sortConditions, extensionAttributes, success, error) {
+            var _limit, _offset, _extensionAttributes;
+            var _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 6) {
+                // 引数が 6 の場合は、extensionAttributesがない
+                _limit = arguments[0];
+                _offset = arguments[1];
+                _searchConditions = arguments[2];
+                _sortConditions = arguments[3];
+                _extensionAttributes = {}
+                _success = arguments[4];
+                _error = arguments[5];
+            } else {
+                // 引数が 6 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _limit = limit;
+                _offset = offset;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+            _limit = _limit || null;
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+            _offset = _offset || null;
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var uat = _extensionAttributes.user_access_token;
+            if (!is("String", uat) && !is("Undefined", uat) && !is("Null", uat)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.user_access_token"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getPaginateReleasedNewsList", [ _limit, _offset, _searchConditions, _sortConditions, _extensionAttributes ]);
+        },
+        /**
+         * 複数お知らせ情報（公開中のもののみ）を取得します。
+         *
+         * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
          * @param {String} userAccessToken セグメント配信を取得するユーザーのアクセストークン (必須)
          * @param {Boolean} onlyMatchSegment セグメント配信情報のみ取得するか (true:セグメント配信のみ取得, false:全て取得) (必須) nullの場合は、false:全て取得
          * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
@@ -670,6 +728,76 @@ var BaaSAtRakuza = (function() {
             cordova.exec(_success, _error, featureName, "getReleasedSegmentNewsList", [ _limit, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions, _extensionAttributes ]);
         },
         /**
+         * 複数お知らせ情報（公開中のもののみ）を取得します。
+         *
+         * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {String} userAccessToken セグメント配信を取得するユーザーのアクセストークン (必須)
+         * @param {Boolean} onlyMatchSegment セグメント配信情報のみ取得するか (true:セグメント配信のみ取得, false:全て取得) (必須) nullの場合は、false:全て取得
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateReleasedSegmentNewsList: function(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions, extensionAttributes, success, error) {
+            var _limit, _offset, _userAccessToken, _onlyMatchSegment, _extensionAttributes;
+            var _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 8) {
+                // 引数が 8 の場合は、extensionAttributesがない
+                _limit = arguments[0];
+                _offset = arguments[1];
+                _userAccessToken = arguments[2];
+                _onlyMatchSegment = arguments[3];
+                _searchConditions = arguments[4];
+                _sortConditions = arguments[5];
+                _extensionAttributes = {}
+                _success = arguments[6];
+                _error = arguments[7];
+            } else {
+                // 引数が 8 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _limit = limit;
+                _offset = offset;
+                _userAccessToken = userAccessToken;
+                _onlyMatchSegment = onlyMatchSegment;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+            _limit = _limit || null;
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+            _offset = _offset || null;
+
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("Boolean", _onlyMatchSegment)) { _error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
+            _onlyMatchSegment = _onlyMatchSegment || false;
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var uat = _extensionAttributes.user_access_token;
+            if (!is("String", uat) && !is("Undefined", uat) && !is("Null", uat)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.user_access_token"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getPaginateReleasedSegmentNewsList", [ _limit, _offset, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions, _extensionAttributes ]);
+        },
+        /**
          * 複数お知らせ情報（未公開も含む）を取得します。
          *
          * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
@@ -720,6 +848,64 @@ var BaaSAtRakuza = (function() {
             if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
 
             cordova.exec(_success, _error, featureName, "getNewsList", [ _limit, _searchConditions, _sortConditions, _extensionAttributes ]);
+        },
+        /**
+         * 複数お知らせ情報（未公開も含む）を取得します。
+         *
+         * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateNewsList: function(limit, offset, searchConditions, sortConditions, extensionAttributes, success, error) {
+            var _limit, _offset, _extensionAttributes;
+            var _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 6) {
+                // 引数が 6 の場合は、extensionAttributesがない
+                _limit = arguments[0];
+                _offset = arguments[1];
+                _searchConditions = arguments[2];
+                _sortConditions = arguments[3];
+                _extensionAttributes = {}
+                _success = arguments[4];
+                _error = arguments[5];
+            } else {
+                // 引数が 6 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _limit = limit;
+                _offset = offset;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+            _limit = _limit || null;
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+            _offset = _offset || null;
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var uat = _extensionAttributes.user_access_token;
+            if (!is("String", uat) && !is("Undefined", uat) && !is("Null", uat)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.user_access_token"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getPaginateNewsList", [ _limit, _offset, _searchConditions, _sortConditions, _extensionAttributes ]);
         },
         /**
          * 複数お知らせ情報（未公開も含む）を取得します。
@@ -784,6 +970,76 @@ var BaaSAtRakuza = (function() {
             if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
 
             cordova.exec(_success, _error, featureName, "getSegmentNewsList", [ _limit, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions, _extensionAttributes ]);
+        },
+        /**
+         * 複数お知らせ情報（未公開も含む）を取得します。
+         *
+         * @param {Number} limit 取得件数。すべてを取得する場合はnullを指定します。
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {String} userAccessToken セグメント配信を取得するユーザーのアクセストークン (必須)
+         * @param {Boolean} onlyMatchSegment セグメント配信情報のみ取得するか (true:セグメント配信のみ取得, false:全て取得) (必須) nullの場合は、false:全て取得
+         * @param {Array.<RKZSearchCondition>|null} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>|null} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateSegmentNewsList: function(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions, extensionAttributes, success, error) {
+            var _limit, _offset, _userAccessToken, _onlyMatchSegment, _extensionAttributes;
+            var _searchConditions, _sortConditions;
+            var _success, _error;
+
+            if (arguments.length == 8) {
+                // 引数が 8 の場合は、extensionAttributesがない
+                _limit = arguments[0];
+                _offset = arguments[1];
+                _userAccessToken = arguments[2];
+                _onlyMatchSegment = arguments[3];
+                _searchConditions = arguments[4];
+                _sortConditions = arguments[5];
+                _extensionAttributes = {}
+                _success = arguments[6];
+                _error = arguments[7];
+            } else {
+                // 引数が 8 以外の場合は、どこに何が格納されているか判断できないので、デフォルトのまま処理する
+                _limit = limit;
+                _offset = offset;
+                _userAccessToken = userAccessToken;
+                _onlyMatchSegment = onlyMatchSegment;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+            _limit = _limit || null;
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+            _offset = _offset || null;
+
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("Boolean", _onlyMatchSegment)) { _error(RKZMessages.error("CDVE0001", "onlyMatchSegment"));return; }
+            _onlyMatchSegment = _onlyMatchSegment || false;
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var uat = _extensionAttributes.user_access_token;
+            if (!is("String", uat) && !is("Undefined", uat) && !is("Null", uat)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.user_access_token"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getPaginateSegmentNewsList", [ _limit, _offset, _userAccessToken, _onlyMatchSegment, _searchConditions, _sortConditions, _extensionAttributes ]);
         },
         /**
          * 単一お知らせ既読情報を取得します。
@@ -1715,6 +1971,7 @@ var BaaSAtRakuza = (function() {
          * @param {String} userAccessToken ユーザーアクセストークン (必須)
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
+         * @deprecated このメソッドは{@link addObjectDataToFavorite}に置き換えられました。
          */
         addFavoriteToObjectData: function(data, userAccessToken, success, error) {
             if (!is("Object", data)) { error(RKZMessages.error("CDVE0001", "data"));return; }
@@ -1722,7 +1979,35 @@ var BaaSAtRakuza = (function() {
             if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
             var _userAccessToken = userAccessToken || "";
 
-            cordova.exec(success, error, featureName, "addFavoriteToObjectData", [ _data, _userAccessToken ]);
+            cordova.exec(success, error, featureName, "addObjectDataToFavorite", [ _data, _userAccessToken ]);
+        },
+        /**
+         * オブジェクトデータをお気に入りに登録する
+         *
+         * @param {Object} data オブジェクトデータ (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        addObjectDataToFavorite: function(data, userAccessToken, success, error) {
+            this.addFavoriteToObjectData(data, userAccessToken, success, error);
+        },
+        /**
+         * オブジェクトデータのお気に入りを削除する
+         *
+         * @param {Object} data オブジェクトデータ (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         * @deprecated このメソッドは{@link deleteObjectDataFromFavorite}に置き換えられました。
+         */
+        deleteFavoriteToObjectData: function(data, userAccessToken, success, error) {
+            if (!is("Object", data)) { error(RKZMessages.error("CDVE0001", "data"));return; }
+            var _data = data || {};
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            cordova.exec(success, error, featureName, "deleteObjectDataFromFavorite", [ _data, _userAccessToken ]);
         },
         /**
          * オブジェクトデータのお気に入りを削除する
@@ -1732,13 +2017,25 @@ var BaaSAtRakuza = (function() {
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
-        deleteFavoriteToObjectData: function(data, userAccessToken, success, error) {
-            if (!is("Object", data)) { error(RKZMessages.error("CDVE0001", "data"));return; }
-            var _data = data || {};
+        deleteObjectDataFromFavorite: function(data, userAccessToken, success, error) {
+            this.deleteFavoriteToObjectData(data, userAccessToken, success, error);
+        },
+        /**
+         * お知らせをお気に入りに登録する
+         *
+         * @param {Object} news お知らせ情報 (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         * @deprecated このメソッドは{@link addNewsToFavorite}に置き換えられました。
+         */
+        addFavoriteToNews: function(news, userAccessToken, success, error) {
+            if (!is("Object", news)) { error(RKZMessages.error("CDVE0001", "news"));return; }
+            var _news = news || {};
             if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
             var _userAccessToken = userAccessToken || "";
 
-            cordova.exec(success, error, featureName, "deleteFavoriteToObjectData", [ _data, _userAccessToken ]);
+            cordova.exec(success, error, featureName, "addNewsToFavorite", [ _news, _userAccessToken ]);
         },
         /**
          * お知らせをお気に入りに登録する
@@ -1748,13 +2045,25 @@ var BaaSAtRakuza = (function() {
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
-        addFavoriteToNews: function(news, userAccessToken, success, error) {
+        addNewsToFavorite: function(news, userAccessToken, success, error) {
+            this.addFavoriteToNews(news, userAccessToken, success, error);
+        },
+        /**
+         * お知らせのお気に入りを削除する
+         *
+         * @param {Object} news お知らせ情報 (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         * @deprecated このメソッドは{@link deleteNewsFromFavorite}に置き換えられました。
+         */
+        deleteFavoriteToNews: function(news, userAccessToken, success, error) {
             if (!is("Object", news)) { error(RKZMessages.error("CDVE0001", "news"));return; }
             var _news = news || {};
             if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
             var _userAccessToken = userAccessToken || "";
 
-            cordova.exec(success, error, featureName, "addFavoriteToNews", [ _news, _userAccessToken ]);
+            cordova.exec(success, error, featureName, "deleteNewsFromFavorite", [ _news, _userAccessToken ]);
         },
         /**
          * お知らせのお気に入りを削除する
@@ -1764,14 +2073,386 @@ var BaaSAtRakuza = (function() {
          * @param {Function} success 成功時コールバック関数
          * @param {Function} error 失敗時のコールバック関数
          */
-        deleteFavoriteToNews: function(news, userAccessToken, success, error) {
-            if (!is("Object", news)) { error(RKZMessages.error("CDVE0001", "news"));return; }
-            var _news = news || {};
+        deleteNewsFromFavorite: function(news, userAccessToken, success, error) {
+            this.deleteFavoriteToNews(news, userAccessToken, success, error);
+        },
+        /**
+         * ユーザー詳細をお気に入りに追加
+         *
+         * @param {Object} userDetail 編集するユーザー詳細(モデル内のobjectIdとidは必須項目)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        addUserDetailToFavorite: function(userDetail, userAccessToken, success, error) {
+            if (!is("Object", userDetail)) { error(RKZMessages.error("CDVE0001", "userDetail"));return; }
+            var _userDetail = userDetail || {};
+
             if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
             var _userAccessToken = userAccessToken || "";
 
-            cordova.exec(success, error, featureName, "deleteFavoriteToNews", [ _news, _userAccessToken ]);
-        }
+            cordova.exec(success, error, featureName, "addUserDetailToFavorite", [ _userDetail, _userAccessToken ]);
+        },
+        /**
+         * ユーザー詳細をお気に入りから削除
+         *
+         * @param {Object} userDetail 削除するユーザー詳細(モデル内のobjectIdとidは必須項目)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        deleteUserDetailFromFavorite: function(userDetail, userAccessToken, success, error) {
+            if (!is("Object", userDetail)) { error(RKZMessages.error("CDVE0001", "userDetail"));return; }
+            var _userDetail = userDetail || {};
+
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            cordova.exec(success, error, featureName, "deleteUserDetailFromFavorite", [ _userDetail, _userAccessToken ]);
+        },
+        //--------------------------------------------------------------------------------
+        // ユーザー詳細API
+        //--------------------------------------------------------------------------------
+        /**
+         * ユーザー詳細を1件取得
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {String} userDetailId ユーザー詳細ID (必須)
+         * @param {Object} extensionAttributes 拡張オブジェクト検索条件値
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getUserDetail: function(objectId, userAccessToken, userDetailId, extensionAttributes, success, error) {
+            var _objectId, _userAccessToken, _userDetailId, _extensionAttributes, _success, _error;
+
+            if (arguments.length === 5) {
+                _objectId = arguments[0];
+                _userAccessToken = arguments[1];
+                _userDetailId = arguments[2];
+                _extensionAttributes = {}
+                _success = arguments[3];
+                _error = arguments[4];
+            } else {
+                _objectId = objectId;
+                _userAccessToken = userAccessToken;
+                _userDetailId = userDetailId;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("String", _userDetailId)) { _error(RKZMessages.error("CDVE0001", "userDetailId"));return; }
+            _userDetailId = _userDetailId || "";
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getUserDetail", [ _objectId, _userAccessToken, _userDetailId, _extensionAttributes ]);
+        },
+        /**
+         * ユーザー詳細を複数件取得
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Array.<RKZSearchCondition>} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>} sortConditions 取得する情報のソート条件
+         * @param {Object} extensionAttributes 拡張オブジェクト検索条件値
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getUserDetailList: function(objectId, userAccessToken, searchConditions, sortConditions, extensionAttributes, success, error) {
+            var _objectId, _userAccessToken, _searchConditions, _sortConditions, _extensionAttributes, _success, _error;
+
+            if (arguments.length === 6) {
+                _objectId = arguments[0];
+                _userAccessToken = arguments[1];
+                _searchConditions = arguments[2];
+                _sortConditions = arguments[3];
+                _extensionAttributes = {}
+                _success = arguments[4];
+                _error = arguments[5];
+            } else {
+                _objectId = objectId;
+                _userAccessToken = userAccessToken;
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getUserDetailList", [ _objectId, _userAccessToken, _searchConditions, _sortConditions, _extensionAttributes ]);
+        },
+        /**
+         * ユーザー詳細を複数件取得
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Number} limit 取得件数 (必須)
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {Array.<RKZSearchCondition>} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>} sortConditions 取得する情報のソート条件
+         * @param {Object} extensionAttributes 拡張オブジェクト検索条件値
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateUserDetailList: function(objectId, userAccessToken, limit, offset, searchConditions, sortConditions, extensionAttributes, success, error) {
+            var _objectId, _userAccessToken, _limit, _offset, _searchConditions, _sortConditions, _extensionAttributes, _success, _error;
+
+            if (arguments.length === 8) {
+                _objectId = arguments[0];
+                _userAccessToken = arguments[1];
+                _limit = arguments[2];
+                _offset = arguments[3];
+                _searchConditions = arguments[4];
+                _sortConditions = arguments[5];
+                _extensionAttributes = {}
+                _success = arguments[6];
+                _error = arguments[7];
+            } else {
+                _objectId = objectId;
+                _userAccessToken = userAccessToken;
+                _limit = limit
+                _offset = offset
+                _searchConditions = searchConditions;
+                _sortConditions = sortConditions;
+                _extensionAttributes = extensionAttributes;
+                _success = success;
+                _error = error;
+            }
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _userAccessToken)) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            if (!is("Object", _extensionAttributes)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes"));return; }
+            var sf = _extensionAttributes.show_favorite;
+            if (!is("Boolean", sf) && !is("Undefined", sf) && !is("Null", sf)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite"));return; }
+            var sfs = _extensionAttributes.show_favorite_summary;
+            if (!is("Boolean", sfs) && !is("Undefined", sfs) && !is("Null", sfs)) { _error(RKZMessages.error("CDVE0001", "extensionAttributes.show_favorite_summary"));return; }
+
+            cordova.exec(_success, _error, featureName, "getPaginateUserDetailList", [ _objectId, _userAccessToken, _limit, _offset, _searchConditions, _sortConditions, _extensionAttributes ]);
+        },
+        /**
+         * 公開されているユーザー詳細を1件取得
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン
+         * @param {String} userDetailId ユーザー詳細ID (必須)
+         * @param {Array.<String>} visibility 取得対象の公開範囲
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getSharedUserDetail: function(objectId, userAccessToken, userDetailId, visibility, success, error) {
+            var _objectId, _userAccessToken, _userDetailId, _visibility, _success, _error;
+
+            _objectId = objectId;
+            _userAccessToken = userAccessToken;
+            _userDetailId = userDetailId;
+            _visibility = visibility;
+            _success = success;
+            _error = error;
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _userAccessToken) && _userAccessToken != null) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("String", _userDetailId)) { _error(RKZMessages.error("CDVE0001", "userDetailId"));return; }
+            _userDetailId = _userDetailId || "";
+
+            if (!is("Array", _visibility) && _visibility != null) { _error(RKZMessages.error("CDVE0001", "visibility"));return; }
+            _visibility = _visibility || [];
+
+            cordova.exec(_success, _error, featureName, "getSharedUserDetail", [ _objectId, _userAccessToken, _userDetailId, _visibility ]);
+        },
+        /**
+         * 公開されているユーザー詳細を複数件取得
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン
+         * @param {Array.<String>} visibility 取得対象の公開範囲
+         * @param {Array.<RKZSearchCondition>} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getSharedUserDetailList: function(objectId, userAccessToken, visibility, searchConditions, sortConditions, success, error) {
+            var _objectId, _userAccessToken, _visibility, _searchConditions, _sortConditions, _success, _error;
+
+            _objectId = objectId;
+            _userAccessToken = userAccessToken;
+            _visibility = visibility;
+            _searchConditions = searchConditions;
+            _sortConditions = sortConditions;
+            _success = success;
+            _error = error;
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _userAccessToken) && _userAccessToken != null) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("Array", _visibility) && _visibility != null) { _error(RKZMessages.error("CDVE0001", "visibility"));return; }
+            _visibility = _visibility || [];
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            cordova.exec(_success, _error, featureName, "getSharedUserDetailList", [ _objectId, _userAccessToken, _visibility, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * 公開されているユーザー詳細を複数件取得
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン
+         * @param {Number} limit 取得件数 (必須)
+         * @param {Number} offset 取得開始位置 (必須)　0~の開始位置(レコード位置)を指定する
+         * @param {Array.<String>} visibility 取得対象の公開範囲
+         * @param {Array.<RKZSearchCondition>} searchConditions 取得する情報の検索条件
+         * @param {Array.<RKZSortCondition>} sortConditions 取得する情報のソート条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        getPaginateSharedUserDetailList: function(objectId, userAccessToken, limit, offset, visibility, searchConditions, sortConditions, success, error) {
+            var _objectId, _userAccessToken, _limit, _offset, _visibility, _searchConditions, _sortConditions, _success, _error;
+
+            _objectId = objectId;
+            _userAccessToken = userAccessToken;
+            _limit = limit;
+            _offset = offset;
+            _visibility = visibility;
+            _searchConditions = searchConditions;
+            _sortConditions = sortConditions;
+            _success = success;
+            _error = error;
+
+            if (!is("String", _objectId)) { _error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            _objectId = _objectId || "";
+
+            if (!is("String", _userAccessToken) && _userAccessToken != null) { _error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            _userAccessToken = _userAccessToken || "";
+
+            if (!is("Number", _limit)) { _error(RKZMessages.error("CDVE0001", "limit"));return; }
+
+            if (!is("Number", _offset)) { _error(RKZMessages.error("CDVE0001", "offset"));return; }
+
+            if (!is("Array", _visibility) && _visibility != null) { _error(RKZMessages.error("CDVE0001", "visibility"));return; }
+            _visibility = _visibility || [];
+
+            try { _searchConditions = convertConditionToJson(_searchConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+            try { _sortConditions   = convertConditionToJson(_sortConditions); } catch (ex) {
+                _error(RKZMessages.error(ex.message, "sortConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            cordova.exec(_success, _error, featureName, "getPaginateSharedUserDetailList", [ _objectId, _userAccessToken, _limit, _offset, _visibility, _searchConditions, _sortConditions ]);
+        },
+        /**
+         * ユーザー詳細を1件追加
+         *
+         * @param {Object} userDetail 追加するユーザー詳細(モデル内のobjectIdは必須項目)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        addUserDetail: function(userDetail, userAccessToken, success, error) {
+            if (!is("Object", userDetail)) { error(RKZMessages.error("CDVE0001", "userDetail"));return; }
+            var _userDetail = userDetail || null;
+
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            cordova.exec(success, error, featureName, "addUserDetail", [ _userDetail, _userAccessToken ]);
+        },
+        /**
+         * ユーザー詳細を1件編集
+         *
+         * @param {Object} userDetail 編集するユーザー詳細(モデル内のobjectIdとcodeは必須項目)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        editUserDetail: function(userDetail, userAccessToken, success, error) {
+            if (!is("Object", userDetail)) { error(RKZMessages.error("CDVE0001", "userDetail"));return; }
+            var _userDetail = userDetail || null;
+
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            cordova.exec(success, error, featureName, "editUserDetail", [ _userDetail, _userAccessToken ]);
+        },
+        /**
+         * 指定した条件のユーザー詳細を削除
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Array.<RKZSearchCondition>} searchConditions 取得する情報の検索条件
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        deleteUserDetail: function(objectId, userAccessToken, searchConditions, success, error) {
+            if (!is("String", objectId)) { error(RKZMessages.error("CDVE0001", "objectId"));return; }
+            var _objectId = objectId || null;
+
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+
+            try { var _searchConditions = convertConditionToJson(searchConditions); } catch (ex) {
+                error(RKZMessages.error(ex.message, "searchConditions"));return;    // messageにERROR_STATUSが入るので注意
+            }
+
+            cordova.exec(success, error, featureName, "deleteUserDetail", [ _objectId, _userAccessToken, _searchConditions ]);
+        },
     };
     return BaaSAtRakuza;
 })();

@@ -37,7 +37,7 @@
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
     RKZObjectDataExtensionAttribute *extensionAttribute = [RKZObjectDataExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:3]];
 
-    [[RKZService sharedInstance] getDataList:tableName searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAttribute withBlock:^(NSMutableArray *rkzTableDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getDataList:tableName searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAttribute withBlock:^(NSArray<RKZObjectData *> *rkzTableDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:rkzTableDataArray];
@@ -151,7 +151,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:2]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:3]];
 
-    [[RKZService sharedInstance] getDataListWithRelationObjects:tableName treeCount:treeCount searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *rkzTableDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getDataListWithRelationObjects:tableName treeCount:treeCount searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZObjectData *>  *rkzTableDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:rkzTableDataArray];
@@ -215,7 +215,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:3]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:4]];
 
-    [[RKZService sharedInstance] getDataListWithLocation:tableName location:location spotFieldName:spotFieldName searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *rkzObjectDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getDataListWithLocation:tableName location:location spotFieldName:spotFieldName searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZObjectData *> *rkzObjectDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -259,7 +259,7 @@
     NSString *tableName = [command.arguments objectAtIndex:0];
     BOOL visibleFieldOnly = [(NSNumber *)[command.arguments objectAtIndex:1] boolValue];;
 
-    [[RKZService sharedInstance] getFieldDataList:tableName visibleFieldOnly:visibleFieldOnly withBlock:^(NSMutableArray *rkzFieldDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getFieldDataList:tableName visibleFieldOnly:visibleFieldOnly withBlock:^(NSArray<RKZFieldData *> *rkzFieldDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *resutlarray = [self arrayFromRKZData:rkzFieldDataArray];

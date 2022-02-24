@@ -9,12 +9,12 @@
 
 @implementation RKZClient (Favorite)
 
-- (void) addFavoriteToObjectData:(CDVInvokedUrlCommand*)command
+- (void) addObjectDataToFavorite:(CDVInvokedUrlCommand*)command
 {
     RKZObjectData *objectData = [RKZObjectData initWithResultSet:[command.arguments objectAtIndex:0]];
     NSString *userAccessToken = [command.arguments objectAtIndex:1];
 
-    [[RKZService sharedInstance] addFavoriteToObjectData:objectData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] addObjectDataToFavorite:objectData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -28,13 +28,13 @@
     }];
 }
 
-- (void) deleteFavoriteToObjectData:(CDVInvokedUrlCommand*)command
+- (void) deleteObjectDataFromFavorite:(CDVInvokedUrlCommand*)command
 {
     RKZObjectData *objectData = [RKZObjectData initWithResultSet:[command.arguments objectAtIndex:0]];
     NSString *userAccessToken = [command.arguments objectAtIndex:1];
-    
-    [[RKZService sharedInstance] deleteFavoriteToObjectData:objectData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
-        
+
+    [[RKZService sharedInstance] deleteObjectDataFromFavorite:objectData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
+
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSNumber *code = [NSNumber numberWithInteger:statusCode];
@@ -47,13 +47,13 @@
     }];
 }
 
-- (void) addFavoriteToNews:(CDVInvokedUrlCommand*)command
+- (void) addNewsToFavorite:(CDVInvokedUrlCommand*)command
 {
     RKZNewsData *newsData = [RKZNewsData initWithResultSet:[command.arguments objectAtIndex:0]];
     NSString *userAccessToken = [command.arguments objectAtIndex:1];
 
-    [[RKZService sharedInstance] addFavoriteToNews:newsData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
-        
+    [[RKZService sharedInstance] addNewsToFavorite:newsData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
+
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSNumber *code = [NSNumber numberWithInteger:statusCode];
@@ -66,13 +66,49 @@
     }];
 }
 
-- (void) deleteFavoriteToNews:(CDVInvokedUrlCommand*)command
+- (void) deleteNewsFromFavorite:(CDVInvokedUrlCommand*)command
 {
     RKZNewsData *newsData = [RKZNewsData initWithResultSet:[command.arguments objectAtIndex:0]];
     NSString *userAccessToken = [command.arguments objectAtIndex:1];
-    
-    [[RKZService sharedInstance] deleteFavoriteToNews:newsData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
-        
+
+    [[RKZService sharedInstance] deleteNewsFromFavorite:newsData userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
+
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSNumber *code = [NSNumber numberWithInteger:statusCode];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[code stringValue]];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void)addUserDetailToFavorite:(CDVInvokedUrlCommand *)command
+{
+    RKZUserDetailData *userDetail = [RKZUserDetailData initWithResultSet:command.arguments[0]];
+    NSString *userAccessToken = command.arguments[1];
+
+    [[RKZService sharedInstance] addUserDetailToFavorite:userDetail userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus * _Nonnull responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSNumber *code = [NSNumber numberWithInteger:statusCode];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[code stringValue]];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void)deleteUserDetailFromFavorite:(CDVInvokedUrlCommand *)command
+{
+    RKZUserDetailData *userDetail = [RKZUserDetailData initWithResultSet:command.arguments[0]];
+    NSString *userAccessToken = command.arguments[1];
+
+    [[RKZService sharedInstance] deleteUserDetailFromFavorite:userDetail userAccessToken:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus * _Nonnull responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSNumber *code = [NSNumber numberWithInteger:statusCode];

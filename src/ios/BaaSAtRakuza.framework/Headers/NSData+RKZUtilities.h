@@ -9,13 +9,17 @@
 #ifndef NSData_RKZUtilities_h
 #define NSData_RKZUtilities_h
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSData (RKZUtilities)
 
 
 /**
  */
-+(NSData *) dataFromBase64String:(NSString *)base64string;
++(nullable NSData *) dataFromBase64String:(nullable NSString *)base64string;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* NSData_RKZUtilities_h */

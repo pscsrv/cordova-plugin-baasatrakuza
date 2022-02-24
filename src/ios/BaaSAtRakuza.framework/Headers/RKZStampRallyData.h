@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
 スタンプラリー情報を管理するクラス
 
@@ -17,59 +19,61 @@
 @interface RKZStampRallyData : RKZData
 
 ///スタンプラリーID
-@property(nonatomic) NSString *code;
+@property(nonatomic, nullable) NSString *code;
 ///スタンプラリー名称
-@property(nonatomic) NSString *name;
+@property(nonatomic, nullable) NSString *name;
 ///略称
-@property(nonatomic) NSString *short_name;
+@property(nonatomic, nullable) NSString *short_name;
 ///スタンプラリー詳細
-@property(nonatomic) NSString *stamp_rally_detail;
+@property(nonatomic, nullable) NSString *stamp_rally_detail;
 ///イメージ画像　(ファイル名)
-@property(nonatomic) NSString *stamp_rally_image;
+@property(nonatomic, nullable) NSString *stamp_rally_image;
 /**
  イメージ画像　(URL)
  @warning イメージ画像　(URL)は検索項目には指定できません。
  */
-@property(nonatomic) NSString *stamp_rally_image_url;
+@property(nonatomic, nullable) NSString *stamp_rally_image_url;
 ///開催期間　開始日
-@property(nonatomic) NSDate *stamp_rally_start_date;
+@property(nonatomic, nullable) NSDate *stamp_rally_start_date;
 ///開催期間　終了日
-@property(nonatomic) NSDate *stamp_rally_end_date;
+@property(nonatomic, nullable) NSDate *stamp_rally_end_date;
 ///コンプリート可能回数コード
-@property(nonatomic) NSString *complete_count_cd;
+@property(nonatomic, nullable) NSString *complete_count_cd;
 /**
  コンプリート可能回数名称
  @warning コンプリート可能回数名称は検索項目には指定できません。
  */
-@property(nonatomic) NSString *complete_count_name;
+@property(nonatomic, nullable) NSString *complete_count_name;
 ///コンプリート条件コード
-@property(nonatomic) NSString *complete_condition_cd;
+@property(nonatomic, nullable) NSString *complete_condition_cd;
 /**
  コンプリート条件名称
  @warning コンプリート条件名称は検索項目には指定できません。
  */
-@property(nonatomic) NSString *complete_condition_name;
+@property(nonatomic, nullable) NSString *complete_condition_name;
 ///取得スタンプ有効期限コード
-@property(nonatomic) NSString *stamp_expiration_date_cd;
+@property(nonatomic, nullable) NSString *stamp_expiration_date_cd;
 /**
  取得スタンプ有効期限名称
  @warning 取得スタンプ有効期限名称は検索項目には指定できません。
  */
-@property(nonatomic) NSString *stamp_expiration_date_name;
+@property(nonatomic, nullable) NSString *stamp_expiration_date_name;
 
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 /**
  指定イニシャライザ
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

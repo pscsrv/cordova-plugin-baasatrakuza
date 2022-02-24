@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  ユーザー情報を管理するクラス
  
@@ -21,48 +23,48 @@
 ///------------------------------
 
 ///ユーザー番号
-@property(nonatomic) NSString *user_no;
+@property(nonatomic, nullable) NSString *user_no;
 ///性別
-@property(nonatomic) NSString *sex_cd;
+@property(nonatomic, nullable) NSString *sex_cd;
 ///年代
-@property(nonatomic) NSString *age_config;
+@property(nonatomic, nullable) NSString *age_config;
 ///職業
-@property(nonatomic) NSString *business_class_cd;
+@property(nonatomic, nullable) NSString *business_class_cd;
 ///都道府県
-@property(nonatomic) NSString *state_cd;
+@property(nonatomic, nullable) NSString *state_cd;
 ///登録日
-@property(nonatomic) NSDate *join_dte;
+@property(nonatomic, nullable) NSDate *join_dte;
 
 ///ログインID
-@property(nonatomic) NSString *login_id;
+@property(nonatomic, nullable) NSString *login_id;
 ///名称
-@property(nonatomic) NSString *user_name;
+@property(nonatomic, nullable) NSString *user_name;
 ///姓
-@property(nonatomic) NSString *user_last_name;
+@property(nonatomic, nullable) NSString *user_last_name;
 ///名
-@property(nonatomic) NSString *user_first_name;
+@property(nonatomic, nullable) NSString *user_first_name;
 ///フリガナ
-@property(nonatomic) NSString *user_furigana;
+@property(nonatomic, nullable) NSString *user_furigana;
 ///フリガナ姓
-@property(nonatomic) NSString *user_last_furigana;
+@property(nonatomic, nullable) NSString *user_last_furigana;
 ///フリガナ名
-@property(nonatomic) NSString *user_first_furigana;
+@property(nonatomic, nullable) NSString *user_first_furigana;
 ///生年月日
-@property(nonatomic) NSDate *birth_day;
+@property(nonatomic, nullable) NSDate *birth_day;
 
 ///ポイント数
-@property(nonatomic) NSNumber *point;
+@property(nonatomic, nullable) NSNumber *point;
 
 ///最終更新日
-@property(nonatomic) NSDate *last_update_dte;
+@property(nonatomic, nullable) NSDate *last_update_dte;
 
 ///ユーザーアクセストークン
-@property(nonatomic) NSString *user_access_token;
+@property(nonatomic, nullable) NSString *user_access_token;
 ///ユーザーID
-@property(nonatomic) NSString *user_id;
+@property(nonatomic, nullable) NSString *user_id;
 
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 ///------------------------------
 /// @name Initialization
@@ -73,6 +75,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
                       
 @end
+
+NS_ASSUME_NONNULL_END

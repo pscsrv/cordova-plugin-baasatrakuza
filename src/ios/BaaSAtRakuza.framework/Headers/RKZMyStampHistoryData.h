@@ -12,6 +12,7 @@
 #ifndef RKZMyStampData_h
 #define RKZMyStampData_h
 
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  スタンプ取得履歴を管理するクラス
@@ -25,23 +26,23 @@
 ///------------------------------
 
 ///種別
-@property(nonatomic)NSString *contact_class_cd;
+@property(nonatomic, nullable)NSString *contact_class_cd;
 ///スタンプラリーコード
-@property(nonatomic)NSString *stamp_rally_cd;
+@property(nonatomic, nullable)NSString *stamp_rally_cd;
 /**
  スタンプラリー名称
  @warning スタンプラリー名称は検索項目には指定できません。
  */
-@property(nonatomic)NSString *stamp_rally_name;
+@property(nonatomic, nullable)NSString *stamp_rally_name;
 ///取得スポットコード
-@property(nonatomic)NSString *stamp_rally_spot_cd;
+@property(nonatomic, nullable)NSString *stamp_rally_spot_cd;
 /**
  取得スポット名称
  @warning 取得スポット名称は検索項目には指定できません。
  */
-@property(nonatomic)NSString *stamp_rally_spot_name;
+@property(nonatomic, nullable)NSString *stamp_rally_spot_name;
 ///取得日時
-@property(nonatomic)NSDate *contact_date;
+@property(nonatomic, nullable)NSDate *contact_date;
 
 
 ///------------------------------
@@ -53,8 +54,10 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* RKZMyStampData_h */

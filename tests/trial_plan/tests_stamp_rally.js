@@ -93,7 +93,7 @@ exports.suite = function(helper) {
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_start_date":"2016-01-01 00:00:00+0900"}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_end_date":"2116-12-31 00:00:00+0900"}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_image":"960_95_148_1578615922886.png"}));
-                        expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_image_url":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/960_95_148_1578615922886.png"}));
+                        expect(datas[0]).toEqual(jasmine.objectContaining({"stamp_rally_image_url":helper.TENANT_BASE_URL + "Image/users/960_95_148_1578615922886.png"}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({"complete_count_name":null}));
                         expect(Object.keys(datas[0].attributes).length).toEqual(4);
                         expect(datas[0].attributes.not_edit_flg).toEqual("0");

@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
+#import "RKZBeaconData.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  ビーコンスポット情報を管理するクラス
@@ -21,28 +24,28 @@
 ///------------------------------
 
 ///Beaconスポットコード
-@property(nonatomic) NSString *code;
+@property(nonatomic, nullable) NSString *code;
 ///Beaconスポット名
-@property(nonatomic) NSString *name;
+@property(nonatomic, nullable) NSString *name;
 ///略名称
-@property(nonatomic) NSString *short_name;
+@property(nonatomic, nullable) NSString *short_name;
 /**
  ビーコンコード
  @warning 検索条件タイプは RKZSearchConditionLikeOr のみ指定可能です。
  */
-@property(nonatomic) NSArray *beacon_code;
+@property(nonatomic, nullable) NSArray<NSString *> *beacon_code;
 ///検知距離iPhone用(RSSi)
-@property(nonatomic) NSNumber *beacon_range_for_iphone;
+@property(nonatomic, nullable) NSNumber *beacon_range_for_iphone;
 ///検知距離Android用(RSSi)
-@property(nonatomic) NSNumber *beacon_range_for_android;
+@property(nonatomic, nullable) NSNumber *beacon_range_for_android;
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 ///ビーコン情報
-@property(nonatomic) NSMutableArray *beaconDataArray;
+@property(nonatomic, nullable) NSArray<RKZBeaconData *> *beaconDataArray;
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 ///------------------------------
 /// @name Initialization
@@ -53,6 +56,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

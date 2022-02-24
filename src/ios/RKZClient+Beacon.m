@@ -15,8 +15,8 @@
 {
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
-    
-    [[RKZService sharedInstance] getBeaconList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *beaconDataArray, RKZResponseStatus *responseStatus) {
+
+    [[RKZService sharedInstance] getBeaconList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZBeaconData *> *beaconDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -38,9 +38,9 @@
     NSString *rssi = [command.arguments objectAtIndex:3];
     NSDate *detectBeaconDatetime = [NSDate getDateFromRakuzaStr:[command.arguments objectAtIndex:4]];
     NSString *remarks = [command.arguments objectAtIndex:5];
-    
+
     [[RKZService sharedInstance] addDetectBeaconContact:userAccessToken beaconId:beaconId contactDate:detectBeaconDatetime beaconSpotCd:spotCd rssi:rssi remarks:remarks withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
-        
+
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSNumber *code = [NSNumber numberWithInteger:statusCode];
@@ -58,9 +58,9 @@
     NSString *userAccessToken = [command.arguments objectAtIndex:0];
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
-    
-    [[RKZService sharedInstance] getDetectBeaconContact:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *detectBeaconContactArray, RKZResponseStatus *responseStatus) {
-        
+
+    [[RKZService sharedInstance] getDetectBeaconContact:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZBeaconDetectContactData *> *detectBeaconContactArray, RKZResponseStatus *responseStatus) {
+
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:detectBeaconContactArray];

@@ -23,7 +23,7 @@ exports.suite = function(helper) {
                         expect(data[5]).toEqual(jasmine.objectContaining({code: "0001"}));
 
                         // 検索結果にお気に入り情報が含まれないこと
-                        expect(data[0].attributes["sys_favorite"]).toBeFalsy();
+                        expect(data[0].sys_favorite).toBeFalsy();
 
                         // 以降の処理でお気に入り登録するので保持
                         _objectData = data[0];
@@ -55,7 +55,7 @@ exports.suite = function(helper) {
                         expect(data.datas[1]).toEqual(jasmine.objectContaining({code: "0007"}));
 
                         // 検索結果にお気に入り情報が含まれないこと
-                        expect(data.datas[0].attributes["sys_favorite"]).toBeFalsy();
+                        expect(data.datas[0].sys_favorite).toBeFalsy();
 
                         done();
                     }, function(error) {
@@ -65,11 +65,11 @@ exports.suite = function(helper) {
             }, TIMEOUT);
         });   // end of RKZClient.getPaginateDataList
 
-        describe('RKZClient.addFavoriteToObjectData', function() {
+        describe('RKZClient.addObjectDataToFavorite', function() {
             describe('オブジェクトデータ', function() {
                 it('==undefinedの場合、エラーとなること', function(done) {
                     var objectData;
-                    RKZClient.addFavoriteToObjectData(
+                    RKZClient.addObjectDataToFavorite(
                         objectData,
                         helper.userAccessToken,
                         function(data) {
@@ -83,7 +83,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('==nullの場合、エラーとなること', function(done) {
                     var objectData = null;
-                    RKZClient.addFavoriteToObjectData(
+                    RKZClient.addObjectDataToFavorite(
                         objectData,
                         helper.userAccessToken,
                         function(data) {
@@ -97,7 +97,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('.type!==Objectの場合、エラーとなること', function(done) {
                     var objectData = 1234;
-                    RKZClient.addFavoriteToObjectData(
+                    RKZClient.addObjectDataToFavorite(
                         objectData,
                         helper.userAccessToken,
                         function(data) {
@@ -113,7 +113,7 @@ exports.suite = function(helper) {
             describe('ユーザーアクセストークン', function() {
                 it('=undefinedの場合、エラーとなること', function(done) {
                     var userAccessToken;
-                    RKZClient.addFavoriteToObjectData(
+                    RKZClient.addObjectDataToFavorite(
                         _objectData,
                         userAccessToken,
                         function(data) {
@@ -127,7 +127,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('.type!=Stringの場合、エラーとなること', function(done) {
                     var userAccessToken = 1234;
-                    RKZClient.addFavoriteToObjectData(
+                    RKZClient.addObjectDataToFavorite(
                         _objectData,
                         userAccessToken,
                         function(data) {
@@ -141,7 +141,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
             });
             it('正しく登録されること', function(done) {
-                RKZClient.addFavoriteToObjectData(
+                RKZClient.addObjectDataToFavorite(
                     _objectData,
                     helper.userAccessToken,
                     function(statusCode) {
@@ -155,7 +155,7 @@ exports.suite = function(helper) {
             });
             it('登録日の並び替え用に別のマスタをお気に入り登録する。', function(done) {
                 var intervalId = setInterval(function() {
-                    RKZClient.addFavoriteToObjectData(
+                    RKZClient.addObjectDataToFavorite(
                         {
                             object_id: 'beacon',
                             code: '0003'
@@ -172,7 +172,7 @@ exports.suite = function(helper) {
                     clearInterval(intervalId);
                 }, (60 * 1000));
             }, ((60 + 30) * 1000));
-        });  // end of RKZClient.addFavoriteToObjectData
+        });  // end of RKZClient.addObjectDataToFavorite
 
         describe('RKZClient.getDataList', function() {
             describe('extensionAttrribute', function() {
@@ -320,15 +320,15 @@ exports.suite = function(helper) {
                         expect(data[5]).toEqual(jasmine.objectContaining({code: "0001"}));
 
                         // 検索結果にお気に入り情報が含まれること
-                        expect(data[0].attributes["sys_favorite"]).toBeTruthy();
-                        expect(data[0].attributes["sys_favorite"]["is_favorite"]).toEqual('1');
-                        expect(data[0].attributes["sys_favorite"]["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
-                        expect(data[0].attributes["sys_favorite_sum"]).toBeFalsy();
+                        expect(data[0].sys_favorite).toBeTruthy();
+                        expect(data[0].sys_favorite["is_favorite"]).toBeTruthy();
+                        expect(data[0].sys_favorite["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(data[0].sys_favorite_sum).toBeFalsy();
                         // お気に入りしていない情報はお気に入りになってないこと
-                        expect(data[5].attributes["sys_favorite"]).toBeTruthy();
-                        expect(data[5].attributes["sys_favorite"]["is_favorite"]).toEqual('0');
-                        expect(data[5].attributes["sys_favorite"]["favorite_date"]).toEqual(null);
-                        expect(data[5].attributes["sys_favorite_sum"]).toBeFalsy();
+                        expect(data[5].sys_favorite).toBeTruthy();
+                        expect(data[5].sys_favorite["is_favorite"]).toBeFalsy();
+                        expect(data[5].sys_favorite["favorite_date"]).toEqual(null);
+                        expect(data[5].sys_favorite_sum).toBeFalsy();
 
                         done();
                     }, function(error) {
@@ -357,13 +357,13 @@ exports.suite = function(helper) {
                         expect(data[5]).toEqual(jasmine.objectContaining({code: "0001"}));
 
                         // 検索結果にお気に入り情報が含まれること
-                        expect(data[0].attributes["sys_favorite"]).toBeFalsy();
-                        expect(data[0].attributes["sys_favorite_sum"]).toBeTruthy();
-                        expect(data[0].attributes["sys_favorite_sum"]["favorite_count"]).toBeGreaterThan(0);
+                        expect(data[0].sys_favorite).toBeFalsy();
+                        expect(data[0].sys_favorite_sum).toBeTruthy();
+                        expect(data[0].sys_favorite_sum["favorite_count"]).toBeGreaterThan(0);
                         // お気に入りしていない情報はお気に入りになってないこと
-                        expect(data[5].attributes["sys_favorite"]).toBeFalsy();
-                        expect(data[5].attributes["sys_favorite_sum"]).toBeTruthy();
-                        expect(data[5].attributes["sys_favorite_sum"]["favorite_count"]).toEqual(0);
+                        expect(data[5].sys_favorite).toBeFalsy();
+                        expect(data[5].sys_favorite_sum).toBeTruthy();
+                        expect(data[5].sys_favorite_sum["favorite_count"]).toEqual(0);
 
                         done();
                     }, function(error) {
@@ -479,14 +479,14 @@ exports.suite = function(helper) {
                             expect(data.length).toEqual(6);
                             expect(data[0]).toEqual(jasmine.objectContaining({code: "0003"}));
                             expect(data[5]).toEqual(jasmine.objectContaining({code: "0001"}));
-    
+
                             // 検索結果にお気に入り情報が含まれること
-                            expect(data[0].attributes["sys_favorite"]).toBeTruthy();
-                            expect(data[0].attributes["sys_favorite"]["is_favorite"]).toEqual('1');
-                            expect(data[0].attributes["sys_favorite"]["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
-                            expect(data[0].attributes["sys_favorite_sum"]).toBeTruthy();
-                            expect(data[0].attributes["sys_favorite_sum"]["favorite_count"]).toBeGreaterThan(0);
-    
+                            expect(data[0].sys_favorite).toBeTruthy();
+                            expect(data[0].sys_favorite["is_favorite"]).toBeTruthy();
+                            expect(data[0].sys_favorite["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                            expect(data[0].sys_favorite_sum).toBeTruthy();
+                            expect(data[0].sys_favorite_sum["favorite_count"]).toBeGreaterThan(0);
+
                             done();
                         }, function(error) {
                             console.log( window.JSON.stringify(error) );
@@ -514,14 +514,14 @@ exports.suite = function(helper) {
                                 expect(data.length).toEqual(6);
                                 expect(data[0]).toEqual(jasmine.objectContaining({code: "0003"}));
                                 expect(data[1]).toEqual(jasmine.objectContaining({code: "0008"}));
-        
+
                                 // 検索結果にお気に入り情報が含まれること
-                                expect(data[0].attributes["sys_favorite"]).toBeTruthy();
-                                expect(data[0].attributes["sys_favorite"]["is_favorite"]).toEqual('1');
-                                expect(data[0].attributes["sys_favorite"]["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
-                                expect(data[0].attributes["sys_favorite_sum"]).toBeTruthy();
-                                expect(data[0].attributes["sys_favorite_sum"]["favorite_count"]).toBeGreaterThan(0);
-        
+                                expect(data[0].sys_favorite).toBeTruthy();
+                                expect(data[0].sys_favorite["is_favorite"]).toBeTruthy();
+                                expect(data[0].sys_favorite["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                                expect(data[0].sys_favorite_sum).toBeTruthy();
+                                expect(data[0].sys_favorite_sum["favorite_count"]).toBeGreaterThan(0);
+
                                 done();
                             }, function(error) {
                                 console.log( window.JSON.stringify(error) );
@@ -690,15 +690,15 @@ exports.suite = function(helper) {
                         expect(data.datas[1]).toEqual(jasmine.objectContaining({code: "0007"}));
 
                         // 検索結果にお気に入り情報が含まれること
-                        expect(data.datas[0].attributes["sys_favorite"]).toBeTruthy();
-                        expect(data.datas[0].attributes["sys_favorite"]["is_favorite"]).toEqual('1');
-                        expect(data.datas[0].attributes["sys_favorite"]["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
-                        expect(data.datas[0].attributes["sys_favorite_sum"]).toBeFalsy();
+                        expect(data.datas[0].sys_favorite).toBeTruthy();
+                        expect(data.datas[0].sys_favorite["is_favorite"]).toBeTruthy();
+                        expect(data.datas[0].sys_favorite["favorite_date"]).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
+                        expect(data.datas[0].sys_favorite_sum).toBeFalsy();
                         // お気に入りしていない情報はお気に入りになってないこと
-                        expect(data.datas[1].attributes["sys_favorite"]).toBeTruthy();
-                        expect(data.datas[1].attributes["sys_favorite"]["is_favorite"]).toEqual('0');
-                        expect(data.datas[1].attributes["sys_favorite"]["favorite_date"]).toEqual(null);
-                        expect(data.datas[1].attributes["sys_favorite_sum"]).toBeFalsy();
+                        expect(data.datas[1].sys_favorite).toBeTruthy();
+                        expect(data.datas[1].sys_favorite["is_favorite"]).toBeFalsy();
+                        expect(data.datas[1].sys_favorite["favorite_date"]).toEqual(null);
+                        expect(data.datas[1].sys_favorite_sum).toBeFalsy();
 
                         done();
                     }, function(error) {
@@ -729,13 +729,13 @@ exports.suite = function(helper) {
                         expect(data.datas[1]).toEqual(jasmine.objectContaining({code: "0007"}));
 
                         // 検索結果にお気に入り情報が含まれること
-                        expect(data.datas[0].attributes["sys_favorite"]).toBeFalsy();
-                        expect(data.datas[0].attributes["sys_favorite_sum"]).toBeTruthy();
-                        expect(data.datas[0].attributes["sys_favorite_sum"]["favorite_count"]).toBeGreaterThan(0);
+                        expect(data.datas[0].sys_favorite).toBeFalsy();
+                        expect(data.datas[0].sys_favorite_sum).toBeTruthy();
+                        expect(data.datas[0].sys_favorite_sum["favorite_count"]).toBeGreaterThan(0);
                         // お気に入りしていない情報はお気に入りになってないこと
-                        expect(data.datas[1].attributes["sys_favorite"]).toBeFalsy();
-                        expect(data.datas[1].attributes["sys_favorite_sum"]).toBeTruthy();
-                        expect(data.datas[1].attributes["sys_favorite_sum"]["favorite_count"]).toEqual(0);
+                        expect(data.datas[1].sys_favorite).toBeFalsy();
+                        expect(data.datas[1].sys_favorite_sum).toBeTruthy();
+                        expect(data.datas[1].sys_favorite_sum["favorite_count"]).toEqual(0);
 
                         done();
                     }, function(error) {
@@ -837,11 +837,11 @@ exports.suite = function(helper) {
 
         });   // end of RKZClient.getPaginateDataList
 
-        describe('RKZClient.deleteFavoriteToObjectData', function() {
+        describe('RKZClient.deleteObjectDataFromFavorite', function() {
             describe('オブジェクトデータ', function() {
                 it('=undefinedの場合、エラーとなること', function(done) {
                     var objectData;
-                    RKZClient.deleteFavoriteToObjectData(
+                    RKZClient.deleteObjectDataFromFavorite(
                         objectData,
                         helper.userAccessToken,
                         function(data) {
@@ -858,7 +858,7 @@ exports.suite = function(helper) {
             describe('ユーザーアクセストークン', function() {
                 it('=undefinedの場合、エラーとなること', function(done) {
                     var userAccessToken;
-                    RKZClient.deleteFavoriteToObjectData(
+                    RKZClient.deleteObjectDataFromFavorite(
                         _objectData,
                         userAccessToken,
                         function(data) {
@@ -873,7 +873,7 @@ exports.suite = function(helper) {
 
                 it('.type!=Stringの場合、エラーとなること', function(done) {
                     var userAccessToken = 1234;
-                    RKZClient.deleteFavoriteToObjectData(
+                    RKZClient.deleteObjectDataFromFavorite(
                         _objectData,
                         userAccessToken,
                         function(data) {
@@ -888,7 +888,7 @@ exports.suite = function(helper) {
             });
 
             it('正しく削除されること', function(done) {
-                RKZClient.deleteFavoriteToObjectData(
+                RKZClient.deleteObjectDataFromFavorite(
                     _objectData,
                     helper.userAccessToken,
                     function(statusCode) {
@@ -920,10 +920,10 @@ exports.suite = function(helper) {
                         expect(data.length).toEqual(6);
 
                         // 検索結果にお気に入り情報が含まれること
-                        expect(data[0].attributes["sys_favorite"]).toBeTruthy();
-                        expect(data[0].attributes["sys_favorite"]["is_favorite"]).toEqual('0');
-                        expect(data[0].attributes["sys_favorite"]["favorite_date"]).toEqual(null);
-                        expect(data[0].attributes["sys_favorite_sum"]).toBeFalsy();
+                        expect(data[0].sys_favorite).toBeTruthy();
+                        expect(data[0].sys_favorite["is_favorite"]).toBeFalsy();
+                        expect(data[0].sys_favorite["favorite_date"]).toEqual(null);
+                        expect(data[0].sys_favorite_sum).toBeFalsy();
 
                         done();
                     }, function(error) {
@@ -931,7 +931,7 @@ exports.suite = function(helper) {
                         expect(false).toBeTruthy(); done();    // Failed
                     });
             }, TIMEOUT);
-        });   // end of RKZClient.deleteFavoriteToObjectData
+        });   // end of RKZClient.deleteObjectDataFromFavorite
 
         describe('RKZClient.getDataFromQRCode', function() {
             describe('QRコード', function() {

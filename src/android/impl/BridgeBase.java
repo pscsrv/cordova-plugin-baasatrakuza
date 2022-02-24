@@ -28,6 +28,7 @@ import java.util.TimeZone;
 import jp.co.pscsrv.android.baasatrakuza.core.RKZResponseStatus;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZSearchCondition;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZSortCondition;
+import jp.co.pscsrv.android.baasatrakuza.model.UserDetail;
 import jp.raku_za.baas.cordova.android.RKZAPIBridge;
 import jp.raku_za.baas.cordova.android.RKZErrorResponse;
 
@@ -135,9 +136,18 @@ public abstract class BridgeBase {
         return sortConditions;
     }
 
+    protected List<String> createStringList(final JSONArray jsonArray) throws JSONException {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            list.add(jsonArray.getString(i));
+        }
+        return list;
+    }
+
     protected GsonBuilder getGsonBuilder() {
         final GsonBuilder gb = new GsonBuilder().serializeNulls();
         gb.registerTypeHierarchyAdapter(Calendar.class, new SimpleCalendarJsonAdapter());
+        gb.registerTypeHierarchyAdapter(UserDetail.VisibilityType.class, new VisibilityTypeJsonAdapter());
         return gb;
     }
 
@@ -210,6 +220,19 @@ public abstract class BridgeBase {
             final DateFormat df = new SimpleDateFormat(CALENDAR_TO_STRING_PATTERN);
             df.setTimeZone(TimeZone.getDefault());
             return context.serialize(df.format(src.getTime()));
+        }
+    }
+
+    protected class VisibilityTypeJsonAdapter implements JsonSerializer<UserDetail.VisibilityType>, JsonDeserializer<UserDetail.VisibilityType> {
+
+        @Override
+        public UserDetail.VisibilityType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            return UserDetail.VisibilityType.of(json.getAsString());
+        }
+
+        @Override
+        public JsonElement serialize(UserDetail.VisibilityType src, Type typeOfSrc, JsonSerializationContext context) {
+            return context.serialize(src.getString());
         }
     }
 }

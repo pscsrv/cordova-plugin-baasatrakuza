@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  スポット情報を管理するクラス
  
@@ -21,43 +23,43 @@
 ///------------------------------
 
 ///スポットコード
-@property(nonatomic) NSString *code;
+@property(nonatomic, nullable) NSString *code;
 ///スポット名
-@property(nonatomic) NSString *name;
+@property(nonatomic, nullable) NSString *name;
 ///略名称
-@property(nonatomic) NSString *short_name;
+@property(nonatomic, nullable) NSString *short_name;
 
 /**
  ビーコン
  @warning 検索条件タイプは RKZSearchConditionLikeOr のみ指定可能です。
  */
-@property(nonatomic) NSArray *beacon;
+@property(nonatomic, nullable) NSArray<NSString *> *beacon;
 ///検知距離iPhone用(RSSI)
-@property(nonatomic) NSNumber *beacon_range_for_iphone;
+@property(nonatomic, nullable) NSNumber *beacon_range_for_iphone;
 ///検知距離Android用(RSSI)
-@property(nonatomic) NSNumber *beacon_range_for_android;
+@property(nonatomic, nullable) NSNumber *beacon_range_for_android;
 
 /**
  緯度
  @warning 緯度は検索項目には指定できません。
  */
-@property(nonatomic) NSString* latitude;
+@property(nonatomic, nullable) NSString* latitude;
 /**
  経度
  @warning 経度は検索項目には指定できません。
  */
-@property(nonatomic) NSString* longitude;
+@property(nonatomic, nullable) NSString* longitude;
 //ピクセル位置(x)
-@property(nonatomic) NSString* pixel_position_x;
+@property(nonatomic, nullable) NSString* pixel_position_x;
 //ピクセル位置(y)
-@property(nonatomic) NSString* pixel_position_y;
+@property(nonatomic, nullable) NSString* pixel_position_y;
 
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 
 
@@ -70,6 +72,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

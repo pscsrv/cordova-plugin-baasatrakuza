@@ -18,3 +18,6 @@ exports.dateFormat = {
 
 /** テスト全体で利用する Common 変数 */
 exports.userAccessToken = null;
+exports.LICENSE_KEY = null;
+exports.TENANT_BASE_URL = null;
+exports.USER_ACCESS_TOKEN = null;

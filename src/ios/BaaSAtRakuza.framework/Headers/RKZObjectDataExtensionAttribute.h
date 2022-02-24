@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  データ管理APIの拡張属性を管理するクラス
  
@@ -18,7 +20,7 @@
 @interface RKZObjectDataExtensionAttribute : NSObject
 
 ///ユーザーアクセストークン
-@property(nonatomic) NSString *user_access_token;
+@property(nonatomic, nullable) NSString *user_access_token;
 ///お気に入り表示有無
 @property(nonatomic) BOOL show_favorite;
 ///お気に入り件数表示有無
@@ -30,10 +32,12 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 - (NSDictionary *)createExtensionAttribute;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* RKZObjectDataExtensionAttribute_h */

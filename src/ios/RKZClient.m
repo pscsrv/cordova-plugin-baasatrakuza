@@ -129,6 +129,10 @@ static NSString *const kFAVORITE_SUM_COLUMN_PREFIX = @"sys_favorite_sum:";
                     // TODO: 本当はRKZDataタイプか判定して処理を行いたい。(今は保留)
                     // RKZDataTypeは convertToDictionaryFromRKZData を再帰実行する。
                     [params setObject:[self dictionaryFromRKZData:value] forKey:outPName];
+                } else if([dataType isEqualToString:@"RKZFavoriteData"]) {
+                    [params setObject:[self dictionaryFromRKZData:value] forKey:outPName];
+                } else if([dataType isEqualToString:@"RKZFavoriteSummaryData"]) {
+                    [params setObject:[self dictionaryFromRKZData:value] forKey:outPName];
                 } else{
                     [params setObject:value forKey:outPName];
                 }
@@ -144,7 +148,7 @@ static NSString *const kFAVORITE_SUM_COLUMN_PREFIX = @"sys_favorite_sum:";
     }
 }
 
-- (NSMutableArray *) arrayFromRKZData:(NSMutableArray *)datas
+- (NSMutableArray *) arrayFromRKZData:(NSArray *)datas
 {
     NSMutableArray *_datas = [NSMutableArray new];
     for (id data in datas) {

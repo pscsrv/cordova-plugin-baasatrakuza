@@ -49,13 +49,36 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
     RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:3]];
-    
-    [[RKZService sharedInstance] getNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+
+    [[RKZService sharedInstance] getNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSArray<RKZNewsData *> *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:newsDataArray];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:datas];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getPaginateNewsList:(CDVInvokedUrlCommand*)command
+{
+    NSNumber *limit = [command.arguments objectAtIndex:0];
+    NSNumber *offset = [command.arguments objectAtIndex:1];
+
+    NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:2]];
+    NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:3]];
+
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:4]];
+
+    [[RKZService sharedInstance] getPaginateNewsList:limit offset:offset searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(RKZPagingData<RKZNewsData *> *pagingData, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSDictionary *data = [self dictionaryFromRKZData:pagingData];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
@@ -77,12 +100,38 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
 
     RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:5]];
 
-    [[RKZService sharedInstance] getSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSArray<RKZNewsData *> *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:newsDataArray];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:datas];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getPaginateSegmentNewsList:(CDVInvokedUrlCommand*)command
+{
+    NSNumber *limit = [command.arguments objectAtIndex:0];
+    NSNumber *offset = [command.arguments objectAtIndex:1];
+
+    NSString *userAccessToken = [command.arguments objectAtIndex:2];
+    BOOL onlyMatchSegment = [(NSNumber *)[command.arguments objectAtIndex:3] boolValue];;
+
+    NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:4]];
+    NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:5]];
+
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:6]];
+
+    [[RKZService sharedInstance] getPaginateSegmentNewsList:limit offset:offset userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(RKZPagingData<RKZNewsData *> *pagingData, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSDictionary *data = [self dictionaryFromRKZData:pagingData];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
@@ -101,12 +150,35 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
 
     RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:3]];
 
-    [[RKZService sharedInstance] getReleasedNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getReleasedNewsList:limit searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSArray<RKZNewsData *> *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:newsDataArray];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:datas];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getPaginateReleasedNewsList:(CDVInvokedUrlCommand*)command
+{
+    NSNumber *limit = [command.arguments objectAtIndex:0];
+    NSNumber *offset = [command.arguments objectAtIndex:1];
+
+    NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:2]];
+    NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:3]];
+
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:4]];
+
+    [[RKZService sharedInstance] getPaginateReleasedNewsList:limit offset:offset searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(RKZPagingData<RKZNewsData *> *pagingData, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSDictionary *data = [self dictionaryFromRKZData:pagingData];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
@@ -128,12 +200,38 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
 
     RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:5]];
 
-    [[RKZService sharedInstance] getReleasedSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSMutableArray *newsDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getReleasedSegmentNewsList:limit userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(NSArray<RKZNewsData *> *newsDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:newsDataArray];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:datas];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
+- (void) getPaginateReleasedSegmentNewsList:(CDVInvokedUrlCommand*)command
+{
+    NSNumber *limit = [command.arguments objectAtIndex:0];
+    NSNumber *offset = [command.arguments objectAtIndex:1];
+
+    NSString *userAccessToken = [command.arguments objectAtIndex:2];
+    BOOL onlyMatchSegment = [(NSNumber *)[command.arguments objectAtIndex:3] boolValue];;
+
+    NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:4]];
+    NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:5]];
+
+    RKZNewsExtensionAttribute *extensionAtttribute = [RKZNewsExtensionAttribute initWithResultSet:[command.arguments objectAtIndex:6]];
+
+    [[RKZService sharedInstance] getPaginateReleasedSegmentNewsList:limit offset:offset userAccessToken:userAccessToken onlyMatchSegment:onlyMatchSegment searchConditionArray:searchConditions sortConditionArray:sortConditions extensionAttribute:extensionAtttribute withBlock:^(RKZPagingData<RKZNewsData *> *pagingData, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSDictionary *data = [self dictionaryFromRKZData:pagingData];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
         } else {
             NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
@@ -173,7 +271,7 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
 - (void) getNewsReadHistoryList:(CDVInvokedUrlCommand*)command
 {
     NSString *userAccessToken = [command.arguments objectAtIndex:0];
-    [[RKZService sharedInstance] getNewsReadHistoryList:userAccessToken withBlock:^(NSMutableArray *newsReadHistoryDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getNewsReadHistoryList:userAccessToken withBlock:^(NSArray<RKZNewsReadHistoryData *> *newsReadHistoryDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -220,7 +318,7 @@ typedef void (^registBlock)(RKZApiStatusCode statusCode, RKZResponseStatus *resp
 {
     NSDictionary *params = [command.arguments objectAtIndex:0];
     NSString *userAccessToken = [command.arguments objectAtIndex:1];
-    
+
     NSString *newsId = [params objectForKey:@"news_id"];
 
     registBlock block = ^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus){

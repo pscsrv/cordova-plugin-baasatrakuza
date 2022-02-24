@@ -1,6 +1,5 @@
 
 var TIMEOUT = 30000;
-var LICENSE_KEY = "{You.have.an.authentication_id}";
 
 exports.suite = function(helper) {
 
@@ -17,7 +16,7 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
             it('正しいアクセストークンの場合、正常に接続できること', function(done) {
-                RKZClient.setTenantKey(LICENSE_KEY,
+                RKZClient.setTenantKey(helper.LICENSE_KEY,
                     function() {
                         expect(true).toBeTruthy(); done();  // Success
                     }, function(error) {

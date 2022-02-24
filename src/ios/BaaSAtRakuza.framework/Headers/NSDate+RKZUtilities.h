@@ -5,6 +5,7 @@
 //  Created by 炭本大樹 on 2015/04/20.
 //  Copyright (c) 2015年 People Software Corp. All rights reserved.
 //
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  楽座の日時形式（YYYY-MM-dd HH:mm:ss）に対応した NSDate 拡張カテゴリ
@@ -22,7 +23,7 @@
  @return NSDateに変換した日時情報<br/>
  existsSecondがYESの場合はssを含めた日時情報を返し、NOの場合はssを含めない
  */
-+ (NSDate *)getDatetimeFromRakuzaStr:(NSString *)str
++ (nullable NSDate *)getDatetimeFromRakuzaStr:(nullable NSString *)str
                         existsSecond:(BOOL)existsSecond;
 
 /**
@@ -30,7 +31,7 @@
  @param str 日付文字列
  @return NSDateに変換した日付情報
  */
-+ (NSDate *)getDateFromRakuzaStr:(NSString *)str;
++ (nullable NSDate *)getDateFromRakuzaStr:(nullable NSString *)str;
 
 
 
@@ -52,3 +53,5 @@
 + (NSString *)getRakuzaStrFromDate:(NSDate *)date;
 
 @end
+
+NS_ASSUME_NONNULL_END

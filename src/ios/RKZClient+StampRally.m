@@ -17,7 +17,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
 
-    [[RKZService sharedInstance] getStampRallyList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *stampRallyDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getStampRallyList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZStampRallyData *> *stampRallyDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:stampRallyDataArray];
@@ -35,7 +35,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
     
-    [[RKZService sharedInstance] getAllStampRallyList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *stampRallyDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getAllStampRallyList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZStampRallyData *> *stampRallyDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:stampRallyDataArray];
@@ -53,7 +53,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
     
-    [[RKZService sharedInstance] getStampRallySpotList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *stampRallyDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getStampRallySpotList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZStampRallySpotData *> *stampRallyDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:stampRallyDataArray];
@@ -72,7 +72,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
     
-    [[RKZService sharedInstance] getStampRallySpotListByStampRallyId:stampRallyId searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *stampRallySpotDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getStampRallySpotListByStampRallyId:stampRallyId searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZStampRallySpotData *> *stampRallySpotDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:stampRallySpotDataArray];
@@ -91,7 +91,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
-    [[RKZService sharedInstance] getStampRallySpotListBySpotId:spotId searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *stampRallySpotDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getStampRallySpotListBySpotId:spotId searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZStampRallySpotData *> *stampRallySpotDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:stampRallySpotDataArray];
@@ -110,7 +110,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
     
-    [[RKZService sharedInstance] getStampRallySpotListByBeaconId:beaconId searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *stampRallySpotDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getStampRallySpotListByBeaconId:beaconId searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZStampRallySpotData *> *stampRallySpotDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:stampRallySpotDataArray];
@@ -166,7 +166,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
-    [[RKZService sharedInstance] getMyStampHistoryList:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *myStampRallyArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getMyStampHistoryList:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZMyStampHistoryData *> *myStampRallyArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:myStampRallyArray];

@@ -23,12 +23,14 @@ import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsListListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsReadHistoryListListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetNewsReadHistoryListener;
+import jp.co.pscsrv.android.baasatrakuza.listener.OnGetPagingDataListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetReleasedNewsListListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnReadNewsListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnRegistNewsReadHistoryListener;
 import jp.co.pscsrv.android.baasatrakuza.model.News;
 import jp.co.pscsrv.android.baasatrakuza.model.NewsExtensionAttribute;
 import jp.co.pscsrv.android.baasatrakuza.model.NewsReadHistory;
+import jp.co.pscsrv.android.baasatrakuza.model.PagingData;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZSearchCondition;
 import jp.co.pscsrv.android.baasatrakuza.model.RKZSortCondition;
 import jp.raku_za.baas.cordova.android.RKZAPIBridge;
@@ -119,6 +121,36 @@ public class NewsBridge extends BridgeBase {
     /**
      * 複数お知らせ情報（未公開も含む）を取得します。
      */
+    private class GetPaginateNewsListBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer limit = data.getInt(0);
+            final Integer offset = (data.getString(1).toLowerCase().equals("null")) ? 0 : data.getInt(1);
+            final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(2));
+            final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(3));
+
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(4), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getPaginateNewsList(limit, offset, searchConditions, sortConditions, extensionAttribute, new OnGetPagingDataListener<News>() {
+                @Override
+                public void onGetPagingData(PagingData<News> pagingData, RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(convertToJSONObject(pagingData));
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
+     * 複数お知らせ情報（未公開も含む）を取得します。
+     */
     private class GetSegmentNewsListBridge implements RKZAPIBridge {
 
         @Override
@@ -140,6 +172,38 @@ public class NewsBridge extends BridgeBase {
                         @Override
                         public void execute(CallbackContext callbackContext) throws JSONException {
                             callbackContext.success(convertToJSONArray(list));
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
+     * 複数お知らせ情報（未公開も含む）を取得します。
+     */
+    private class GetPaginateSegmentNewsListBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer limit = data.getInt(0);
+            final Integer offset = (data.getString(1).toLowerCase().equals("null")) ? 0 : data.getInt(1);
+            final String userAccessToke = (data.getString(2).toLowerCase().equals("null")) ? null : data.getString(2);
+            final Boolean onlyMatchSegment = (data.getString(3).toLowerCase().equals("null")) ? false : data.getBoolean(3);
+            final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(4));
+            final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(5));
+
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(6), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getPaginateSegmentNewsList(limit, offset, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, extensionAttribute, new OnGetPagingDataListener<News>() {
+                @Override
+                public void onGetPagingData(PagingData<News> pagingData, RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(convertToJSONObject(pagingData));
                         }
                     });
                 }
@@ -181,6 +245,36 @@ public class NewsBridge extends BridgeBase {
     /**
      * 複数お知らせ情報（公開中のもののみ）取得用ブリッジクラス
      */
+    private class GetPaginateReleasedNewsListBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer limit = data.getInt(0);
+            final Integer offset = (data.getString(1).toLowerCase().equals("null")) ? 0 : data.getInt(1);
+            final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(2));
+            final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(3));
+
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(4), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions, extensionAttribute, new OnGetPagingDataListener<News>() {
+                @Override
+                public void onGetPagingData(PagingData<News> pagingData, RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(convertToJSONObject(pagingData));
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
+     * 複数お知らせ情報（公開中のもののみ）取得用ブリッジクラス
+     */
     private class GetReleasedSegmentNewsListBridge implements RKZAPIBridge {
 
         @Override
@@ -202,6 +296,38 @@ public class NewsBridge extends BridgeBase {
                         @Override
                         public void execute(CallbackContext callbackContext) throws JSONException {
                             callbackContext.success(convertToJSONArray(list));
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
+     * 複数お知らせ情報（公開中のもののみ）取得用ブリッジクラス
+     */
+    private class GetPaginateReleasedSegmentNewsListBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final Integer limit = data.getInt(0);
+            final Integer offset = (data.getString(1).toLowerCase().equals("null")) ? 0 : data.getInt(1);
+            final String userAccessToke = (data.getString(2).toLowerCase().equals("null")) ? null : data.getString(2);
+            final Boolean onlyMatchSegment = (data.getString(3).toLowerCase().equals("null")) ? false : data.getBoolean(3);
+            final List<RKZSearchCondition> searchConditions = createSearchConditions(data.getJSONArray(4));
+            final List<RKZSortCondition> sortConditions = createSortConditions(data.getJSONArray(5));
+
+            final Gson gson = getGson();
+            final NewsExtensionAttribute extensionAttribute = gson.fromJson(data.getString(6), NewsExtensionAttribute.class);
+
+            RKZClient.getInstance().getPaginateReleasedSegmentNewsList(limit, offset, userAccessToke, onlyMatchSegment, searchConditions, sortConditions, extensionAttribute, new OnGetPagingDataListener<News>() {
+                @Override
+                public void onGetPagingData(PagingData<News> pagingData, RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(convertToJSONObject(pagingData));
                         }
                     });
                 }
@@ -384,9 +510,13 @@ public class NewsBridge extends BridgeBase {
         final Map<String, RKZAPIBridge> tasks = new ConcurrentHashMap<String, RKZAPIBridge>();
         tasks.put("getNews", new GetNewsBridge());
         tasks.put("getNewsList", new GetNewsListBridge());
+        tasks.put("getPaginateNewsList", new GetPaginateNewsListBridge());
         tasks.put("getSegmentNewsList", new GetSegmentNewsListBridge());
+        tasks.put("getPaginateSegmentNewsList", new GetPaginateSegmentNewsListBridge());
         tasks.put("getReleasedNewsList", new GetReleasedNewsListBridge());
+        tasks.put("getPaginateReleasedNewsList", new GetPaginateReleasedNewsListBridge());
         tasks.put("getReleasedSegmentNewsList", new GetReleasedSegmentNewsListBridge());
+        tasks.put("getPaginateReleasedSegmentNewsList", new GetPaginateReleasedSegmentNewsListBridge());
         tasks.put("getNewsReadHistory", new GetNewsReadHistoryBridge());
         tasks.put("getNewsReadHistoryList", new GetNewsReadHistoryListBridge());
         tasks.put("registNewsReadHistory", new RegistNewsReadHistoryBridge());

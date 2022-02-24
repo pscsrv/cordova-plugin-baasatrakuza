@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
-@interface RKZPagingData : RKZData
+NS_ASSUME_NONNULL_BEGIN
+
+@interface RKZPagingData<ObjectType> : RKZData
 
 ///取得件数
 @property(nonatomic) NSNumber *limit;
@@ -18,9 +20,11 @@
 ///取得対象件数
 @property(nonatomic) NSNumber *result_cnt;
 ///取得したデータ
-@property(nonatomic) NSArray *datas;
+@property(nonatomic) NSArray<ObjectType> *datas;
 
 
-+ (id)initWithLimit:(NSNumber *)limit offset:(NSNumber *)offset resultCount:(NSNumber *)resultCount datas:(NSArray *)datas;
++ (instancetype)initWithLimit:(NSNumber *)limit offset:(NSNumber *)offset resultCount:(NSNumber *)resultCount datas:(NSArray<ObjectType> *)datas;
 
 @end
+
+NS_ASSUME_NONNULL_END

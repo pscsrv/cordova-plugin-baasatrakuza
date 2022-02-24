@@ -22,6 +22,7 @@ import jp.raku_za.baas.cordova.android.impl.SpotBridge;
 import jp.raku_za.baas.cordova.android.impl.StampRallyBridge;
 import jp.raku_za.baas.cordova.android.impl.TenantBridge;
 import jp.raku_za.baas.cordova.android.impl.UserBridge;
+import jp.raku_za.baas.cordova.android.impl.UserDetailBridge;
 
 public class RKZClient extends CordovaPlugin
 {
@@ -44,6 +45,7 @@ public class RKZClient extends CordovaPlugin
         tasks.putAll(new StampRallyBridge(cordova).getTasks());
         tasks.putAll(new ContactBridge(cordova).getTasks());
         tasks.putAll(new FavoriteBridge(cordova).getTasks());
+        tasks.putAll(new UserDetailBridge(cordova).getTasks());
     }
 
     @Override

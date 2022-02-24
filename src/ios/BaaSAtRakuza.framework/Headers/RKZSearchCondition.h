@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FavoriteForSearchCondition : NSObject
 @property(nonatomic) NSString *type;
 @end
@@ -146,7 +148,7 @@ extern NSString *const AllForReadedNews;
  - RKZSearchConditionLessThanInclude
  - RKZSearchConditionGreaterThanInclude
  */
-@property(nonatomic) NSString *search_condition_type;
+@property(nonatomic, nullable) NSString *search_condition_type;
 
 /**
  検索項目
@@ -156,7 +158,7 @@ extern NSString *const AllForReadedNews;
  - **固定項目**の場合、項目名はモデルの変数名と対応しています。
  - **自由項目**の場合、楽座で指定した任意の項目名を使用してください。
  */
-@property(nonatomic) NSString *search_column;
+@property(nonatomic, nullable) NSString *search_column;
 
 /**
  検索値
@@ -166,12 +168,12 @@ extern NSString *const AllForReadedNews;
  @warning 検索値はNSStringで指定してください。</br>
           NSDateなどのオブジェクトを設定すると正常に検索が機能しない可能性があります。
  */
-@property(nonatomic) NSMutableArray *search_value;
+@property(nonatomic, nullable) NSArray<NSString *> *search_value;
 
 
-@property(nonatomic) FavoriteForSearchCondition *with_favorite;
+@property(nonatomic, nullable) FavoriteForSearchCondition *with_favorite;
 
-@property(nonatomic) ReadedNewsForSearchCondition *readed_news;
+@property(nonatomic, nullable) ReadedNewsForSearchCondition *readed_news;
 
 ///------------------------------
 /// @name Initialization
@@ -184,24 +186,54 @@ extern NSString *const AllForReadedNews;
  
  @param searchConditionType NSString 検索条件タイプ
  @param searchColumn        NSString 検索項目名
- @param searchValueArray    NSMutableArray 検索値配列
+ @param searchValueArray    NSArray 検索値配列
+ @return id 初期化を行ったモデル情報
+
+ @warning 検索値はNSStringで指定してください。</br>
+          NSDateなどのオブジェクトを設定すると正常に検索が機能しない可能性があります。
+ */
++ (instancetype)initWithSearchConditionType:(NSString *)searchConditionType
+                     searchColumn:(NSString *)searchColumn
+                 searchValueArray:(NSArray<NSString *> *)searchValueArray __attribute__ ((deprecated("このメソッドの替わりに`-initWithSearchConditionType:searchColumn:searchValueArray:`を使用してください")));
+
+/**
+ 指定イニシャライザ
+ 
+ 引数に渡された条件でインスタンス化を行います。
+ 
+ @param searchConditionType NSString 検索条件タイプ
+ @param searchColumn        NSString 検索項目名
+ @param searchValueArray    NSArray 検索値配列
  @return id 初期化を行ったモデル情報
  
  @warning 検索値はNSStringで指定してください。</br>
           NSDateなどのオブジェクトを設定すると正常に検索が機能しない可能性があります。
  */
-+ (id)initWithSearchConditionType:(NSString *)searchConditionType
-                     searchColumn:(NSString *)searchColumn
-                 searchValueArray:(NSMutableArray *)searchValueArray;
+- (instancetype)initWithSearchConditionType:(NSString *)searchConditionType
+                               searchColumn:(NSString *)searchColumn
+                           searchValueArray:(NSArray<NSString *> *)searchValueArray
+NS_SWIFT_NAME(init(_:searchColumn:searchValueArray:));
 
 /**
  お気に入り設定値の検索条件を有効にするイニシャライザ
  */
-+ (id)initWithFavoriteType:(NSString *)type;
++ (instancetype)initWithFavoriteType:(NSString *)type __attribute__ ((deprecated("このメソッドの替わりに`-initWithFavoriteType:`を使用してください")));
+
+/**
+ お気に入り設定値の検索条件を有効にするイニシャライザ
+ */
+- (instancetype)initWithFavoriteType:(NSString *)type;
 
 /**
  既読未読設定フラグの検索条件を作成するイニシャライザ
  */
-+ (id)initWithReadedNewsType:(NSString *)type;
++ (instancetype)initWithReadedNewsType:(NSString *)type __attribute__ ((deprecated("このメソッドの替わりに`-initWithReadedNewsType:`を使用してください")));
+
+/**
+ 既読未読設定フラグの検索条件を作成するイニシャライザ
+ */
+- (instancetype)initWithReadedNewsType:(NSString *)type;
 
 @end
+
+NS_ASSUME_NONNULL_END

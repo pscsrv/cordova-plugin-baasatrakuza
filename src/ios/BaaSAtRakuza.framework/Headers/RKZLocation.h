@@ -9,6 +9,8 @@
 #ifndef RKZLocation_h
 #define RKZLocation_h
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  位置情報を扱うためのクラス
  
@@ -17,17 +19,19 @@
 @interface RKZLocation : NSObject
 
 ///緯度
-@property(nonatomic) NSNumber *latitude;
+@property(nonatomic, nullable) NSNumber *latitude;
 ///経度
-@property(nonatomic) NSNumber *longitude;
+@property(nonatomic, nullable) NSNumber *longitude;
 ///範囲
-@property(nonatomic) NSNumber *range;
+@property(nonatomic, nullable) NSNumber *range;
 
 
-- (id)initWithResultSet:(NSDictionary *)rs;
+- (instancetype)initWithResultSet:(NSDictionary *)rs;
 
-- (id)initWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude range:(NSNumber *)range;
+- (instancetype)initWithLatitude:(NSNumber *)latitude longitude:(NSNumber *)longitude range:(NSNumber *)range;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* RKZLocation_h */

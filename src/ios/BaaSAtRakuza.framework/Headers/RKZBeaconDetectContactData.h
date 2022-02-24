@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  ビーコン検知コンタクト情報を管理するクラス
  
@@ -21,29 +23,29 @@
 ///------------------------------
 
 ///Beacon端末ID
-@property(nonatomic)NSString *beacon_id;
+@property(nonatomic, nullable)NSString *beacon_id;
 ///Beaconスポットコード
-@property(nonatomic)NSString *beacon_spot_cd;
+@property(nonatomic, nullable)NSString *beacon_spot_cd;
 ///コンタクト種別コード
-@property(nonatomic)NSString *contact_class_cd;
+@property(nonatomic, nullable)NSString *contact_class_cd;
 ///コンタクト種別名称
-@property(nonatomic)NSString *contact_class_cd_name;
+@property(nonatomic, nullable)NSString *contact_class_cd_name;
 ///コンタクト方法種別コード
-@property(nonatomic)NSString *contact_method_class_cd;
+@property(nonatomic, nullable)NSString *contact_method_class_cd;
 ///コンタクト方法種別名称
-@property(nonatomic)NSString *contact_method_class_cd_name;
+@property(nonatomic, nullable)NSString *contact_method_class_cd_name;
 ///コンタクト番号
-@property(nonatomic)NSString *contact_no;
+@property(nonatomic, nullable)NSString *contact_no;
 ///コンタクト日
-@property(nonatomic)NSDate *contact_date;
+@property(nonatomic, nullable)NSDate *contact_date;
 ///備考
-@property(nonatomic)NSString *remarks;
+@property(nonatomic, nullable)NSString *remarks;
 ///検知電波強度
-@property(nonatomic)NSNumber *rssi;
+@property(nonatomic, nullable)NSNumber *rssi;
 ///対象テナントID
-@property(nonatomic)NSString *target_tenant_id;
+@property(nonatomic, nullable)NSString *target_tenant_id;
 ///ユーザーID
-@property(nonatomic)NSString *user_id;
+@property(nonatomic, nullable)NSString *user_id;
 
 
 ///------------------------------
@@ -55,6 +57,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

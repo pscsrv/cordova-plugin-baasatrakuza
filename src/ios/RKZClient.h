@@ -29,7 +29,7 @@
 
 - (NSDictionary *) dictionaryFromRKZData:(RKZData *)data;
 
-- (NSMutableArray *) arrayFromRKZData:(NSMutableArray *)datas;
+- (NSMutableArray *) arrayFromRKZData:(NSArray *)datas;
 
 - (NSDictionary *) dictionaryFromResponseStatus:(RKZResponseStatus *)responseStatus;
 
@@ -125,7 +125,19 @@
 
 - (void) getNewsList:(CDVInvokedUrlCommand*)command;
 
+- (void) getPaginateNewsList:(CDVInvokedUrlCommand*)command;
+
+- (void) getSegmentNewsList:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateSegmentNewsList:(CDVInvokedUrlCommand*)command;
+
 - (void) getReleasedNewsList:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateReleasedNewsList:(CDVInvokedUrlCommand*)command;
+
+- (void) getReleasedSegmentNewsList:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateReleasedSegmentNewsList:(CDVInvokedUrlCommand*)command;
 
 - (void) getNewsReadHistory:(CDVInvokedUrlCommand*)command;
 
@@ -205,13 +217,39 @@
 
 @interface RKZClient (Favorite)
 
-- (void) addFavoriteToObjectData:(CDVInvokedUrlCommand*)command;
+- (void) addObjectDataToFavorite:(CDVInvokedUrlCommand*)command;
 
-- (void) deleteFavoriteToObjectData:(CDVInvokedUrlCommand*)command;
+- (void) deleteObjectDataFromFavorite:(CDVInvokedUrlCommand*)command;
 
-- (void) addFavoriteToNews:(CDVInvokedUrlCommand*)command;
+- (void) addNewsToFavorite:(CDVInvokedUrlCommand*)command;
 
-- (void) deleteFavoriteToNews:(CDVInvokedUrlCommand*)command;
+- (void) deleteNewsFromFavorite:(CDVInvokedUrlCommand*)command;
+
+- (void) addUserDetailToFavorite:(CDVInvokedUrlCommand*)command;
+
+- (void) deleteUserDetailFromFavorite:(CDVInvokedUrlCommand*)command;
+
+@end
+
+@interface RKZClient (UserDetail)
+
+- (void) getUserDetail:(CDVInvokedUrlCommand*)command;
+
+- (void) getUserDetailList:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateUserDetailList:(CDVInvokedUrlCommand*)command;
+
+- (void) getSharedUserDetail:(CDVInvokedUrlCommand*)command;
+
+- (void) getSharedUserDetailList:(CDVInvokedUrlCommand*)command;
+
+- (void) getPaginateSharedUserDetailList:(CDVInvokedUrlCommand*)command;
+
+- (void) addUserDetail:(CDVInvokedUrlCommand*)command;
+
+- (void) editUserDetail:(CDVInvokedUrlCommand*)command;
+
+- (void) deleteUserDetail:(CDVInvokedUrlCommand*)command;
 
 @end
 

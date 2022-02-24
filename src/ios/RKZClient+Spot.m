@@ -17,7 +17,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
 
-    [[RKZService sharedInstance] getSpotList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *spotDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getSpotList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZSpotData *> *spotDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *datas = [self arrayFromRKZData:spotDataArray];

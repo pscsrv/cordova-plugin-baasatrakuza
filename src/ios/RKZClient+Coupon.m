@@ -32,7 +32,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
 
-    [[RKZService sharedInstance] getCouponList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *couponDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getCouponList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZCouponData *> *couponDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
@@ -114,7 +114,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
-    [[RKZService sharedInstance] getMyCouponList:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *myCouponDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getMyCouponList:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZMyCouponData *> *myCouponDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class RKZUserData;
 
 /**
@@ -33,7 +35,7 @@
  @return 初期化したWebView<br/>
  ユーザー情報が設定されていない場合、nilを返します
  */
-- (id)initWithUserData:(RKZUserData *)userData;
+- (nullable id)initWithUserData:(RKZUserData *)userData;
 
 
 ///------------------------------
@@ -46,3 +48,5 @@
 - (void)startWebView;
 
 @end
+
+NS_ASSUME_NONNULL_END

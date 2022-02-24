@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  BaaS@rakuzaのデータを扱うモデルの基底クラス
  
@@ -25,7 +27,7 @@
  @param attributesOnly attribute項目のみ自由項目APIパラメータとして作成する場合YES<br/>
  個別propertyも自由項目APIパラメータとして作成する場合NO
  */
-- (NSDictionary *)getAPIParameter :(NSMutableDictionary *)params
+- (NSDictionary *)getAPIParameter :(nullable NSMutableDictionary *)params
                    attributesOnly :(BOOL) attributesOnly;
 
 /**
@@ -34,6 +36,8 @@
  @param rs 楽座から取得した連想配列情報
  @return 固定項目、無視リストを削除した楽座から取得した連想配列情報
  */
-- (NSMutableDictionary *)getAttributes:(NSDictionary *)rs;
+- (NSDictionary *)getAttributes:(nullable NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

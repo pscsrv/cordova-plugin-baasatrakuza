@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class RKZApiData;
 
 ///------------------------------
@@ -135,11 +137,11 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
 /// ステータスコード RKZApiStatusCode Enumが格納されます
 @property(nonatomic) RKZApiStatusCode statusCode;
 /// メッセージ
-@property(nonatomic) NSString *message;
+@property(nonatomic, nullable) NSString *message;
 /// 詳細メッセージ
-@property(nonatomic) NSString *detailMessage;
+@property(nonatomic, nullable) NSString *detailMessage;
 /// httpエラー
-@property(nonatomic) NSError *httpError;
+@property(nonatomic, nullable) NSError *httpError;
 
 /**
  成功しているか
@@ -158,7 +160,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
 /**
  正常終了
  */
-- (id)initSuccess;
+- (instancetype)initSuccess;
 
 
 /**
@@ -168,7 +170,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  @param error 楽座以外から取得するエラー　httpエラー等
  楽座から取得されるエラーを返却するために用いられる。
  */
-- (id)initWithError:(RKZApiData *)rakuzaData
+- (instancetype)initWithError:(RKZApiData *)rakuzaData
               error:(NSError *)error;
 
 
@@ -178,7 +180,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  @param error 楽座以外から取得するエラー
  楽座から取得されるエラーを返却するために用いられる。
  */
-- (id)initWithConnectionError:(NSError *)error;
+- (instancetype)initWithConnectionError:(NSError *)error;
 
 /**
  コネクションタイムアウト
@@ -186,7 +188,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  @param error 楽座以外から取得するエラー
  楽座から取得されるエラーを返却するために用いられる。
  */
-- (id)initWithConnectionTimeout:(NSError *)error;
+- (instancetype)initWithConnectionTimeout:(NSError *)error;
 
 /**
  楽座エラー (httpエラーなし)
@@ -194,7 +196,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  @param rakuzaData 楽座から取得するエラーコード及びエラーメッセージ
  楽座から取得されるエラーを返却するために用いられる。
  */
-- (id)initWithError:(RKZApiData *)rakuzaData;
+- (instancetype)initWithError:(RKZApiData *)rakuzaData;
 
 /**
  必須チェックエラー
@@ -202,7 +204,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  必須項目が未入力の時に返却するために用いられる。
  @param detailErrorMessage 詳細エラーメッセージ
  */
-- (id)initWithRequiredError:(NSString *)detailErrorMessage;
+- (instancetype)initWithRequiredError:(NSString *)detailErrorMessage;
 
 /**
  入力チェックエラー
@@ -213,7 +215,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  @param columnName 項目名
  @param message メッセージ
  */
-- (id)initWithInputError:(NSString *)columnName
+- (instancetype)initWithInputError:(NSString *)columnName
                  message:(NSString *)message;
 
 /**
@@ -221,7 +223,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  
  サービスクラスを初期化していない状態で各種APIアクセスメソッドを呼び出したときに返却するために用いられる。
  */
-- (id)initWithInitializeError;
+- (instancetype)initWithInitializeError;
 
 /**
  サービス初期化エラー
@@ -229,7 +231,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  サービスクラスを初期化していない状態で各種APIアクセスメソッドを呼び出したときに返却するために用いられる。
  @param detailErrorMessage 詳細エラーメッセージ
  */
-- (id)initWithInitializeError:(NSString *)detailErrorMessage;
+- (instancetype)initWithInitializeError:(nullable NSString *)detailErrorMessage;
 
 /**
  楽座システム障害エラー
@@ -245,7 +247,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  例）認証局に存在しないテナント認証コードを渡して認証局APIを呼び出した場合。
  @param detailErrorMessage 詳細エラーメッセージ
  */
-- (id)initWithAPIConsistencyError:(NSString *)detailErrorMessage;
+- (instancetype)initWithAPIConsistencyError:(NSString *)detailErrorMessage;
 
 /**
  APIクラスエラー
@@ -254,7 +256,7 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
  例）検索条件クラス:RKZSearchCondition を用いず、他のクラスを設定してAPIを呼び出した場合。
  @param detailErrorMessage 詳細エラーメッセージ
  */
-- (id)initWithAPIClassError:(NSString *)detailErrorMessage;
+- (instancetype)initWithAPIClassError:(NSString *)detailErrorMessage;
 
 
 ///------------------------------
@@ -269,3 +271,5 @@ typedef NS_ENUM(NSInteger, RKZApiStatusCode) {
 + (NSString *) RKZApiStatusCodeToString:(RKZApiStatusCode)statusCode;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class RKZCouponData;
 
 /**
@@ -23,23 +25,23 @@
 ///------------------------------
 
 ///マイクーポンコード
-@property(nonatomic)NSString *code;
+@property(nonatomic, nullable)NSString *code;
 ///クーポンコード
-@property(nonatomic)NSString *coupon_cd;
+@property(nonatomic, nullable)NSString *coupon_cd;
 ///クーポン名
-@property(nonatomic)NSString *coupon_name;
+@property(nonatomic, nullable)NSString *coupon_name;
 ///取得日時
-@property(nonatomic)NSDate *get_date;
+@property(nonatomic, nullable)NSDate *get_date;
 ///利用日時
-@property(nonatomic)NSDate *use_date;
+@property(nonatomic, nullable)NSDate *use_date;
 ///使用済みフラグ
 @property(nonatomic)BOOL used_flg;
 ///ユーザーID
-@property(nonatomic)NSString *user_id;
+@property(nonatomic, nullable)NSString *user_id;
 ///クーポン枚数
-@property(nonatomic)NSNumber *quantity;
+@property(nonatomic, nullable)NSNumber *quantity;
 ///クーポンモデル
-@property(nonatomic)RKZCouponData *coupon;
+@property(nonatomic, nullable)RKZCouponData *coupon;
 
 
 ///------------------------------
@@ -51,6 +53,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

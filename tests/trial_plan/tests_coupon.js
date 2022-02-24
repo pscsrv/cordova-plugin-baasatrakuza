@@ -44,7 +44,7 @@ exports.suite = function(helper) {
                         expect(coupon).toEqual(jasmine.objectContaining({possible_from_dte: '2015-01-01 00:00:00+0900'}));
                         expect(coupon).toEqual(jasmine.objectContaining({possible_to_dte: '2116-12-31 23:59:00+0900'}));
                         expect(coupon).toEqual(jasmine.objectContaining({image: '688_40_2_1578615871388.png'}));
-                        expect(coupon).toEqual(jasmine.objectContaining({image_url: 'https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/688_40_2_1578615871388.png'}));
+                        expect(coupon).toEqual(jasmine.objectContaining({image_url: helper.TENANT_BASE_URL + 'Image/users/688_40_2_1578615871388.png'}));
                         expect(coupon).toEqual(jasmine.objectContaining({point: 10}));
                         expect(coupon).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(Object.keys(coupon.attributes).length).toEqual(4);
@@ -148,7 +148,7 @@ exports.suite = function(helper) {
                         expect(coupons[0]).toEqual(jasmine.objectContaining({possible_from_dte: '2015-01-01 00:00:00+0900'}));
                         expect(coupons[0]).toEqual(jasmine.objectContaining({possible_to_dte: '2116-12-31 23:59:00+0900'}));
                         expect(coupons[0]).toEqual(jasmine.objectContaining({image: '688_40_2_1578615871388.png'}));
-                        expect(coupons[0]).toEqual(jasmine.objectContaining({image_url: 'https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/688_40_2_1578615871388.png'}));
+                        expect(coupons[0]).toEqual(jasmine.objectContaining({image_url: helper.TENANT_BASE_URL + 'Image/users/688_40_2_1578615871388.png'}));
                         expect(coupons[0]).toEqual(jasmine.objectContaining({point: 10}));
                         expect(coupons[0]).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(Object.keys(coupons[0].attributes).length).toEqual(4);
@@ -332,7 +332,7 @@ exports.suite = function(helper) {
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({possible_from_dte: '2015-01-01 00:00:00+0900'}));
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({possible_to_dte: '2116-12-31 23:59:00+0900'}));
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({image: '688_40_2_1578615871388.png'}));
-                            expect(datas[0].coupon).toEqual(jasmine.objectContaining({image_url: 'https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/688_40_2_1578615871388.png'}));
+                            expect(datas[0].coupon).toEqual(jasmine.objectContaining({image_url: helper.TENANT_BASE_URL + 'Image/users/688_40_2_1578615871388.png'}));
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({point: 10}));
                             expect(datas[0].coupon).toEqual(jasmine.objectContaining({not_use_flg: false}));
                             expect(Object.keys(datas[0].coupon.attributes).length).toEqual(4);
@@ -397,6 +397,18 @@ exports.suite = function(helper) {
                         expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
                         done();
                     });
+            }, TIMEOUT);
+            it('使用不可のクーポンマスタと紐づく、マイクーポンを取得できること', function(done) {
+                RKZClient.getMyCouponList(helper.USER_ACCESS_TOKEN, null, null, function(myCoupons) {
+                    expect(myCoupons).toEqual(jasmine.any(Array));
+                    expect(myCoupons.length).toBe(1);
+                    expect(myCoupons[0].coupon_cd).toBe('0002');
+                    expect(myCoupons[0].coupon).toBeNull();
+                    done();
+                }, function(error) {
+                    expect(false).toBeTruthy();
+                    done();
+                });
             }, TIMEOUT);
         });  // end of describe('RKZClient.getMyCouponList', function()
         describe('RKZClient.getMyCoupon', function() {
@@ -478,7 +490,7 @@ exports.suite = function(helper) {
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({possible_from_dte: '2015-01-01 00:00:00+0900'}));
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({possible_to_dte: '2116-12-31 23:59:00+0900'}));
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({image: '688_40_2_1578615871388.png'}));
-                        expect(myCoupon.coupon).toEqual(jasmine.objectContaining({image_url: 'https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/688_40_2_1578615871388.png'}));
+                        expect(myCoupon.coupon).toEqual(jasmine.objectContaining({image_url: helper.TENANT_BASE_URL + 'Image/users/688_40_2_1578615871388.png'}));
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({point: 10}));
                         expect(myCoupon.coupon).toEqual(jasmine.objectContaining({not_use_flg: false}));
                         expect(Object.keys(myCoupon.coupon.attributes).length).toEqual(4);

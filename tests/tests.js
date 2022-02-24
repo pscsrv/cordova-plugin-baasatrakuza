@@ -26,19 +26,19 @@ var cordova = require('cordova');
 var helper = require('./tests_helper');
 
 var TIMEOUT = 30000;
-var LICENSE_KEY = "{You.have.an.authentication_id}";
+helper.LICENSE_KEY = "{You.have.an.authentication_id}";
+helper.TENANT_BASE_URL = '';
+helper.USER_ACCESS_TOKEN = '';
 
 exports.defineAutoTests = function () {
 
     // Test for trial plan
     require('./trial_plan/test_runner').suite(helper);
-    // Test for light plan
-    require('./light_plan/test_runner').suite(helper);
-    // Test for standard plan
-    require('./standard_plan/test_runner').suite(helper);
 
     // Test for v1.2.0
     require('./v1_2_0/test_runner').suite(helper);
+    // Test for v2.0.0
+    require('./v2_0_0/test_runner').suite(helper);
 };
 
 exports.defineManualTests = function (contentEl, createActionButton) {
@@ -64,7 +64,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
 
     contentEl.innerHTML = '<div id="info"></div>' + device_tests;
 
-    RKZClient.setTenantKey(LICENSE_KEY,
+    RKZClient.setTenantKey(helper.LICENSE_KEY,
         function() {
             logMessage("SDK Authorization OK.");
         },
@@ -87,7 +87,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
 
     createActionButton('マスタお気に入り削除', function() {
         clearLog();
-        RKZClient.deleteFavoriteToObjectData({
+        RKZClient.deleteObjectDataFromFavorite({
                 object_id: 'spot',
                 code: '0001'
             },
@@ -104,7 +104,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
 
     createActionButton('マスタお気に入り登録', function() {
         clearLog();
-        RKZClient.addFavoriteToObjectData({
+        RKZClient.addObjectDataToFavorite({
                 object_id: 'spot',
                 code: '0001'
             },
@@ -119,12 +119,12 @@ exports.defineManualTests = function (contentEl, createActionButton) {
         );
     }, "dump_device1");
 
-    var addFavoriteToNews = function() {
-        
+    var addNewsToFavorite = function() {
+
     };
 
-    var deleteFavoriteToNews = function() {
-        
+    var deleteNewsFromFavorite = function() {
+
     };
 
     var getDataList = function() {

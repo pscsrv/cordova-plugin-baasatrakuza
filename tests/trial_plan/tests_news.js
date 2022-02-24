@@ -1,5 +1,4 @@
 var TIMEOUT = 30000;
-var USER_ACCESS_TOKEN = ''
 
 exports.suite = function(helper) {
 
@@ -59,7 +58,7 @@ exports.suite = function(helper) {
                     RKZClient.getNews(params,
                         function(news) {
                             expect(news).toBeDefined();
-                            expect(Object.keys(news).length).toEqual(24);
+                            expect(Object.keys(news).length).toEqual(29);
                             expect(news.tenant_id).toBeDefined();
                             expect(news).toEqual(jasmine.objectContaining({"news_id":"1"}));
                             expect(news).toEqual(jasmine.objectContaining({"title":"テストニュース!"}));
@@ -76,13 +75,13 @@ exports.suite = function(helper) {
                             expect(news).toEqual(jasmine.objectContaining({"date":"2016-09-30 00:00:00+0900"}));
                             expect(news).toEqual(jasmine.objectContaining({"release_target_kbn":"0001,0002"}));
                             expect(news).toEqual(jasmine.objectContaining({"genre":"0001"}));
-                            expect(news).toEqual(jasmine.objectContaining({"photo":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/26_45_37_1578615975500.png"}));
+                            expect(news).toEqual(jasmine.objectContaining({"photo":helper.TENANT_BASE_URL + "Image/users/26_45_37_1578615975500.png"}));
                             expect(news).toEqual(jasmine.objectContaining({"author":"発信者"}));
                             expect(news).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                             expect(news).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                             expect(news).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(Object.keys(news.attributes).length).toEqual(9);
-                            expect(news.attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/","data_id":"26","readed_flg":"0","readed_dte":null,"tenant_name": "BaaS SDK テスト"}));
+                            expect(Object.keys(news.attributes).length).toEqual(7);
+                            expect(news.attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":helper.TENANT_BASE_URL,"data_id":"26","tenant_name": "BaaS SDK テスト"}));
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -106,7 +105,7 @@ exports.suite = function(helper) {
                 RKZClient.getNews(params,
                     function(news) {
                         expect(news).toBeDefined();
-                        expect(Object.keys(news).length).toEqual(24);
+                        expect(Object.keys(news).length).toEqual(29);
                         expect(news.tenant_id).toBeDefined();
                         expect(news).toEqual(jasmine.objectContaining({"news_id":"1"}));
                         expect(news).toEqual(jasmine.objectContaining({"title":"テストニュース!"}));
@@ -123,13 +122,13 @@ exports.suite = function(helper) {
                         expect(news).toEqual(jasmine.objectContaining({"date":"2016-09-30 00:00:00+0900"}));
                         expect(news).toEqual(jasmine.objectContaining({"release_target_kbn":"0001,0002"}));
                         expect(news).toEqual(jasmine.objectContaining({"genre":"0001"}));
-                        expect(news).toEqual(jasmine.objectContaining({"photo":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/26_45_37_1578615975500.png"}));
+                        expect(news).toEqual(jasmine.objectContaining({"photo":helper.TENANT_BASE_URL + "Image/users/26_45_37_1578615975500.png"}));
                         expect(news).toEqual(jasmine.objectContaining({"author":"発信者"}));
                         expect(news).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                         expect(news).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                         expect(news).toEqual(jasmine.objectContaining({"release_flg":true}));
-                        expect(Object.keys(news.attributes).length).toEqual(9);
-                        expect(news.attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/","data_id":"26","readed_flg":"0","readed_dte":null,"tenant_name": "BaaS SDK テスト"}));
+                        expect(Object.keys(news.attributes).length).toEqual(7);
+                        expect(news.attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":helper.TENANT_BASE_URL,"data_id":"26","tenant_name": "BaaS SDK テスト"}));
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed
@@ -191,7 +190,7 @@ exports.suite = function(helper) {
                         function(datas) {
                             expect(datas).toBeDefined();
                             expect(datas.length).toEqual(2);
-                            expect(Object.keys(datas[0]).length).toEqual(24);
+                            expect(Object.keys(datas[0]).length).toEqual(29);
                             expect(datas[0]).toEqual(jasmine.objectContaining({news_id: "1"}));
                             expect(datas[0].tenant_id).toBeDefined();
                             expect(datas[0]).toEqual(jasmine.objectContaining({"news_id":"1"}));
@@ -209,13 +208,13 @@ exports.suite = function(helper) {
                             expect(datas[0]).toEqual(jasmine.objectContaining({"date":"2016-09-30 00:00:00+0900"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"release_target_kbn":"0001,0002"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"genre":"0001"}));
-                            expect(datas[0]).toEqual(jasmine.objectContaining({"photo":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/Image/users/26_45_37_1578615975500.png"}));
+                            expect(datas[0]).toEqual(jasmine.objectContaining({"photo":helper.TENANT_BASE_URL + "Image/users/26_45_37_1578615975500.png"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"author":"発信者"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"push_done_flg":false}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"push_time":"2016-12-27 20:53:00+0900"}));
                             expect(datas[0]).toEqual(jasmine.objectContaining({"release_flg":true}));
-                            expect(Object.keys(datas[0].attributes).length).toEqual(9);
-                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":"https://cloud.raku-za.jp/stage/unittest/sdk.0210/","data_id":"26","readed_flg":"0","readed_dte":null,"tenant_name": "BaaS SDK テスト"}));
+                            expect(Object.keys(datas[0].attributes).length).toEqual(7);
+                            expect(datas[0].attributes).toEqual(jasmine.objectContaining({"news_segment_flg":"0","news_segment_only_flg":"0","site_dir":helper.TENANT_BASE_URL,"data_id":"26","tenant_name": "BaaS SDK テスト"}));
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed
@@ -284,6 +283,193 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
         });  // end of describe('RKZClient.getNewsList', function()
+
+        describe('RKZClient.getPaginateNewsList', function() {
+            describe('パラメータ: limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var limit = null;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = "1";
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit = 10;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var limit = 10;
+                    var offset = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = "1";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: searchConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.asc("news_id"),
+                    ];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(4);
+                            expect(data.datas.length).toEqual(2);
+                            expect(data.datas[0].news_id).toEqual('1');
+                            expect(data.datas[1].news_id).toEqual('2');
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions = "NG";
+                    var sortConditions = [];
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: sortConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions = [
+                        RKZSearchCondition.equal("news_id", "3"),
+                    ];
+                    var sortConditions;
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(1);
+                            expect(data.datas.length).toEqual(1);
+                            expect(data.datas[0].news_id).toEqual("3");
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions = [];
+                    var sortConditions = "NG";
+                    RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var limit = 2;
+                var offset = 1;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("news_id"),
+                ];
+                RKZClient.getPaginateNewsList(limit, offset, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.result_cnt).toEqual(4);
+                        expect(data.datas.length).toEqual(2);
+                        expect(data.datas[0].news_id).toEqual("2");
+                        expect(data.datas[1].news_id).toEqual("3");
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });
 
         describe('RKZClient.getReleasedNewsList', function() {
             describe('パラメータ: limit', function() {
@@ -409,6 +595,191 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
         });  // end of describe('RKZClient.getReleasedNewsList', function()
+
+        describe('RKZClient.getPaginateReleasedNewsList', function() {
+            describe('パラメータ: limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var limit = null;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = "1";
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit = 10;
+                    var offset;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーとなること', function(done) {
+                    var limit = 10;
+                    var offset = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = "1";
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: searchConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 1;
+                    var offset = 1;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.asc("news_id"),
+                    ];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(2);
+                            expect(data.datas.length).toEqual(1);
+                            expect(data.datas[0].news_id).toEqual('4');
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions = "NG";
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: sortConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions = [
+                        RKZSearchCondition.equal("news_id", "4"),
+                    ];
+                    var sortConditions;
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(1);
+                            expect(data.datas.length).toEqual(1);
+                            expect(data.datas[0].news_id).toEqual("4");
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var searchConditions = [];
+                    var sortConditions = "NG";
+                    RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('パラメータが正しい場合、正常に検索できること', function(done) {
+                var limit = 2;
+                var offset = 1;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("news_id"),
+                ];
+                RKZClient.getPaginateReleasedNewsList(limit, offset, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.result_cnt).toEqual(2);
+                        expect(data.datas.length).toEqual(1);
+                        expect(data.datas[0].news_id).toEqual("4");
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });
 
         describe('RKZClient.registNewsReadHistory', function() {
             describe('パラメータ:params', function() {
@@ -766,7 +1137,7 @@ exports.suite = function(helper) {
             describe('パラメータ: limit', function() {
                 it('= undefined の場合、全件数取得となること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -781,7 +1152,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('= null の場合、全件数取得となること', function(done) {
                     var limit = null;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -796,7 +1167,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Numberの場合、エラーになること', function(done) {
                     var limit = "1";
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -864,7 +1235,7 @@ exports.suite = function(helper) {
             describe('パラメータ: onlyMatchSegment', function() {
                 it('= undefined の場合、エラーになること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -880,7 +1251,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('= null の場合、エラーになること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = null;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -896,7 +1267,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Booleanの場合、エラーになること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = '0';
                     var searchConditions = [];
                     var sortConditions = [];
@@ -914,7 +1285,7 @@ exports.suite = function(helper) {
             describe('パラメータ: searchConditions', function() {
                 it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions;
                     var sortConditions = [
@@ -933,7 +1304,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Objectの場合、エラーになること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = "NG";
                     var sortConditions = [];
@@ -951,7 +1322,7 @@ exports.suite = function(helper) {
             describe('パラメータ: sortConditions', function() {
                 it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [
                         RKZSearchCondition.equal("news_id", "3"),
@@ -969,7 +1340,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Objectの場合、エラーになること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = "NG";
@@ -986,7 +1357,7 @@ exports.suite = function(helper) {
             });
             it('セグメント配信のみ、取得できること', function(done) {
                 var limit;
-                var userAccessToken = USER_ACCESS_TOKEN;
+                var userAccessToken = helper.USER_ACCESS_TOKEN;
                 var onlyMatchSegment = true;
                 var searchConditions = [];
                 var sortConditions = [
@@ -1005,11 +1376,326 @@ exports.suite = function(helper) {
             }, TIMEOUT);
         });
 
+        describe('RKZClient.getPaginateSegmentNewsList', function() {
+            describe('パラメータ: limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit;
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、全件数取得となること', function(done) {
+                    var limit = null;
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = "1";
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit = 10;
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、全件数取得となること', function(done) {
+                    var limit = 10;
+                    var offset = null;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = "1";
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: userAccessToken', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = null;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Stringの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = 1;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: onlyMatchSegment', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of onlyMatchSegment is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of onlyMatchSegment is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Booleanの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = '0';
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of onlyMatchSegment is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: searchConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 1;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.asc("news_id"),
+                    ];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(6);
+                            expect(data.datas.length).toEqual(2);
+                            expect(data.datas[0].news_id).toEqual('2');
+                            expect(data.datas[1].news_id).toEqual('3');
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 1;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = "NG";
+                    var sortConditions = [];
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: sortConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [
+                        RKZSearchCondition.equal("news_id", "3"),
+                    ];
+                    var sortConditions;
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(1);
+                            expect(data.datas.length).toEqual(1);
+                            expect(data.datas[0].news_id).toEqual("3");
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = "NG";
+                    RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('セグメント配信のみ、取得できること', function(done) {
+                var limit = 2;
+                var offset = 0;
+                var userAccessToken = helper.USER_ACCESS_TOKEN;
+                var onlyMatchSegment = true;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("news_id"),
+                ];
+                RKZClient.getPaginateSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.result_cnt).toEqual(2);
+                        expect(data.datas.length).toEqual(2);
+                        expect(data.datas[0].news_id).toEqual("5");
+                        expect(data.datas[1].news_id).toEqual("6");
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });
+
         describe('RKZClient.getReleasedSegmentNewsList', function() {
             describe('パラメータ: limit', function() {
                 it('= undefined の場合、全件数取得となること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -1024,7 +1710,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('= null の場合、全件数取得となること', function(done) {
                     var limit = null;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -1039,7 +1725,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Numberの場合、エラーになること', function(done) {
                     var limit = "1";
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -1107,7 +1793,7 @@ exports.suite = function(helper) {
             describe('パラメータ: onlyMatchSegment', function() {
                 it('= undefined の場合、エラーになること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -1123,7 +1809,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('= null の場合、エラーになること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = null;
                     var searchConditions = [];
                     var sortConditions = [];
@@ -1139,7 +1825,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Booleanの場合、エラーになること', function(done) {
                     var limit;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = '0';
                     var searchConditions = [];
                     var sortConditions = [];
@@ -1157,7 +1843,7 @@ exports.suite = function(helper) {
             describe('パラメータ: searchConditions', function() {
                 it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
                     var limit = 3;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions;
                     var sortConditions = [
@@ -1177,7 +1863,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Objectの場合、エラーになること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = "NG";
                     var sortConditions = [];
@@ -1195,7 +1881,7 @@ exports.suite = function(helper) {
             describe('パラメータ: sortConditions', function() {
                 it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [
                         RKZSearchCondition.equal("news_id", "4"),
@@ -1213,7 +1899,7 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
                 it('!==Objectの場合、エラーになること', function(done) {
                     var limit = 2;
-                    var userAccessToken = USER_ACCESS_TOKEN;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
                     var onlyMatchSegment = false;
                     var searchConditions = [];
                     var sortConditions = "NG";
@@ -1230,7 +1916,7 @@ exports.suite = function(helper) {
             });
             it('セグメント配信のみ、取得できること', function(done) {
                 var limit;
-                var userAccessToken = USER_ACCESS_TOKEN;
+                var userAccessToken = helper.USER_ACCESS_TOKEN;
                 var onlyMatchSegment = true;
                 var searchConditions = [];
                 var sortConditions = [];
@@ -1239,6 +1925,320 @@ exports.suite = function(helper) {
                         expect(datas).toBeDefined();
                         expect(datas.length).toEqual(1);
                         expect(datas[0].news_id).toEqual("6");
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    });
+            }, TIMEOUT);
+        });
+
+        describe('RKZClient.getPaginateReleasedSegmentNewsList', function() {
+            describe('パラメータ: limit', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit;
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、全件数取得となること', function(done) {
+                    var limit = null;
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = "1";
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of limit is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: offset', function() {
+                it('= undefined の場合、エラーとなること', function(done) {
+                    var limit = 10;
+                    var offset;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、全件数取得となること', function(done) {
+                    var limit = 10;
+                    var offset = null;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Numberの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = "1";
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of offset is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: userAccessToken', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = null;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Stringの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = 1;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: onlyMatchSegment', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of onlyMatchSegment is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= null の場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = null;
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of onlyMatchSegment is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!==Booleanの場合、エラーになること', function(done) {
+                    var limit = 10;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = '0';
+                    var searchConditions = [];
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(response) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of onlyMatchSegment is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: searchConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 1;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions;
+                    var sortConditions = [
+                        RKZSortCondition.asc("news_id"),
+                    ];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(3);
+                            expect(data.datas.length).toEqual(2);
+                            expect(data.datas[0].news_id).toEqual('4');
+                            expect(data.datas[1].news_id).toEqual('6');
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 1;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = "NG";
+                    var sortConditions = [];
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of searchConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            describe('パラメータ: sortConditions', function() {
+                it('= undefinedの場合、条件未指定と同じように検索できること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [
+                        RKZSearchCondition.equal("news_id", "4"),
+                    ];
+                    var sortConditions;
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(data) {
+                            expect(data).toBeDefined();
+                            expect(data.result_cnt).toEqual(1);
+                            expect(data.datas.length).toEqual(1);
+                            expect(data.datas[0].news_id).toEqual("4");
+                            done();
+                        }, function(error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('!==Objectの場合、エラーになること', function(done) {
+                    var limit = 2;
+                    var offset = 0;
+                    var userAccessToken = helper.USER_ACCESS_TOKEN;
+                    var onlyMatchSegment = false;
+                    var searchConditions = [];
+                    var sortConditions = "NG";
+                    RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                        function(datas) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of sortConditions is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+            });
+            it('セグメント配信のみ、取得できること', function(done) {
+                var limit = 2;
+                var offset = 0;
+                var userAccessToken = helper.USER_ACCESS_TOKEN;
+                var onlyMatchSegment = true;
+                var searchConditions = [];
+                var sortConditions = [
+                    RKZSortCondition.asc("news_id"),
+                ];
+                RKZClient.getPaginateReleasedSegmentNewsList(limit, offset, userAccessToken, onlyMatchSegment, searchConditions, sortConditions,
+                    function(data) {
+                        expect(data).toBeDefined();
+                        expect(data.result_cnt).toEqual(1);
+                        expect(data.datas.length).toEqual(1);
+                        expect(data.datas[0].news_id).toEqual("6");
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed

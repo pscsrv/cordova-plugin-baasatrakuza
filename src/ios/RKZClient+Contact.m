@@ -16,7 +16,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:1]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:2]];
 
-    [[RKZService sharedInstance] getContactList:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *contactDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getContactList:userAccessToken searchConditionArray:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZContactData *> *contactDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {

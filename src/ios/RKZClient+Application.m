@@ -33,7 +33,7 @@
     NSMutableArray *searchConditions = [self createSearchConditions:[command.arguments objectAtIndex:0]];
     NSMutableArray *sortConditions = [self createSortConditions:[command.arguments objectAtIndex:1]];
 
-    [[RKZService sharedInstance] getLocaleList:searchConditions sortConditionArray:sortConditions withBlock:^(NSMutableArray *localeDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getLocaleList:searchConditions sortConditionArray:sortConditions withBlock:^(NSArray<RKZLocaleData *> *localeDataArray, RKZResponseStatus *responseStatus) {
 
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {

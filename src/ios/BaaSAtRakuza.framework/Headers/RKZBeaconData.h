@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Beacon端末情報を管理するクラス
  
@@ -21,25 +23,25 @@
 ///------------------------------
 
 ///Beaconコード
-@property(nonatomic) NSString *code;
+@property(nonatomic, nullable) NSString *code;
 ///Beacon名
-@property(nonatomic) NSString *name;
+@property(nonatomic, nullable) NSString *name;
 ///略名称
-@property(nonatomic) NSString *short_name;
+@property(nonatomic, nullable) NSString *short_name;
 ///ビーコンID
-@property(nonatomic) NSString *beacon_id;
+@property(nonatomic, nullable) NSString *beacon_id;
 ///ビーコンタイプ
-@property(nonatomic) NSString *beacon_type_cd;
+@property(nonatomic, nullable) NSString *beacon_type_cd;
 ///major
-@property(nonatomic) NSNumber *major;
+@property(nonatomic, nullable) NSNumber *major;
 ///minor
-@property(nonatomic) NSNumber *minor;
+@property(nonatomic, nullable) NSNumber *minor;
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 ///------------------------------
 /// @name Initialization
@@ -50,7 +52,9 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 
 @end
+
+NS_ASSUME_NONNULL_END

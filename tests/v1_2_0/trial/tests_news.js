@@ -21,10 +21,10 @@ exports.suite = function(helper) {
                     function(news) {
                         expect(news).toBeDefined();
                         expect(news.length).toEqual(2);
-                        expect(Object.keys(news[0]).length).toEqual(24);
+                        expect(Object.keys(news[0]).length).toEqual(29);
                         expect(news[0]).toEqual(jasmine.objectContaining({news_id: "1"}));
-                        expect(news[0].attributes.readed_flg).toEqual("0");
-                        expect(news[0].attributes.readed_dte).toEqual(null);
+                        expect(news[0].readed_flg).toBeFalsy();
+                        expect(news[0].readed_dte).toBeNull();
                         done();
                     },
                     function(error) {
@@ -146,10 +146,10 @@ exports.suite = function(helper) {
                     function(news) {
                         expect(news).toBeDefined();
                         expect(news.length).toEqual(2);
-                        expect(Object.keys(news[0]).length).toEqual(24);
+                        expect(Object.keys(news[0]).length).toEqual(29);
                         expect(news[0]).toEqual(jasmine.objectContaining({news_id: "1"}));
-                        expect(news[0].attributes.readed_flg).toEqual("1");
-                        expect(news[0].attributes.readed_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                        expect(news[0].readed_flg).toBeTruthy();
+                        expect(news[0].readed_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                         done();
                     },
                     function(error) {
@@ -177,8 +177,8 @@ exports.suite = function(helper) {
                       expect(news).toBeDefined();
                       expect(news.length).toEqual(1);
                       expect(news[0]).toEqual(jasmine.objectContaining({news_id: "1"}));
-                      expect(news[0].attributes.readed_flg).toEqual("1");
-                      expect(news[0].attributes.readed_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}$/);
+                      expect(news[0].readed_flg).toBeTruthy();
+                      expect(news[0].readed_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
                       done();
                   },
                   function(error) {
@@ -207,16 +207,16 @@ exports.suite = function(helper) {
                       expect(news.length).toEqual(3);
 
                       expect(news[0]).toEqual(jasmine.objectContaining({news_id: "2"}));
-                      expect(news[0].attributes.readed_flg).toEqual("0");
-                      expect(news[0].attributes.readed_dte).toBeNull();
+                      expect(news[0].readed_flg).toBeFalsy();
+                      expect(news[0].readed_dte).toBeNull();
 
                       expect(news[1]).toEqual(jasmine.objectContaining({news_id: "3"}));
-                      expect(news[1].attributes.readed_flg).toEqual("0");
-                      expect(news[1].attributes.readed_dte).toBeNull();
+                      expect(news[1].readed_flg).toBeFalsy();
+                      expect(news[1].readed_dte).toBeNull();
 
                       expect(news[2]).toEqual(jasmine.objectContaining({news_id: "4"}));
-                      expect(news[2].attributes.readed_flg).toEqual("0");
-                      expect(news[2].attributes.readed_dte).toBeNull();
+                      expect(news[2].readed_flg).toBeFalsy();
+                      expect(news[2].readed_dte).toBeNull();
 
                       done();
                   },

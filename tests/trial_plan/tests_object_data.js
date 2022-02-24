@@ -69,7 +69,7 @@ exports.suite = function(helper) {
                 RKZClient.getData(objectId, code,
                     function(data) {
                         expect(data).toBeDefined();
-                        expect(Object.keys(data).length).toEqual(9);
+                        expect(Object.keys(data).length).toEqual(11);
                         expect(data).toEqual(jasmine.objectContaining({object_id: 'beacon'}));
                         expect(data).toEqual(jasmine.objectContaining({code: '0001'}));
                         expect(data).toEqual(jasmine.objectContaining({name: '301'}));
@@ -999,7 +999,7 @@ exports.suite = function(helper) {
                 RKZClient.getDataWithRelationObjects(objectId, code,
                     function(data) {
                         expect(data).toBeDefined();
-                        expect(Object.keys(data).length).toEqual(9);
+                        expect(Object.keys(data).length).toEqual(11);
                         expect(data).toEqual(jasmine.objectContaining({object_id: 'spot'}));
                         expect(data).toEqual(jasmine.objectContaining({code: '0004'}));
                         expect(data).toEqual(jasmine.objectContaining({name: 'A-1'}));
@@ -1187,7 +1187,7 @@ exports.suite = function(helper) {
                     function(datas) {
                         expect(datas).toBeDefined();
                         expect(datas.length).toEqual(1);
-                        expect(Object.keys(datas[0]).length).toEqual(9);
+                        expect(Object.keys(datas[0]).length).toEqual(11);
                         expect(datas[0]).toEqual(jasmine.objectContaining({object_id: 'spot'}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({code: '0004'}));
                         expect(datas[0]).toEqual(jasmine.objectContaining({name: 'A-1'}));

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  お知らせ情報の既読未読を管理するクラス
  
@@ -21,19 +23,19 @@
 ///------------------------------
 
 ///ニュース配信元テナントID
-@property(nonatomic) NSString *news_tenant_id;
+@property(nonatomic, nullable) NSString *news_tenant_id;
 ///ニュースID
-@property(nonatomic) NSString *news_id;
+@property(nonatomic, nullable) NSString *news_id;
 ///既読フラグ
 @property(nonatomic) BOOL read_flg;
 ///既読日時
-@property(nonatomic) NSDate *read_date;
+@property(nonatomic, nullable) NSDate *read_date;
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///使用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 
 ///------------------------------
@@ -45,6 +47,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

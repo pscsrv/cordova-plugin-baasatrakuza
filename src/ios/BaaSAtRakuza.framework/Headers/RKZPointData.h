@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  ポイント情報を管理するクラス
  
@@ -21,9 +23,9 @@
 ///------------------------------
 
 ///ユーザーID
-@property(nonatomic) NSString *user_id;
+@property(nonatomic, nullable) NSString *user_id;
 ///ポイント数
-@property(nonatomic) NSNumber *point;
+@property(nonatomic, nullable) NSNumber *point;
 
 
 ///------------------------------
@@ -35,6 +37,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

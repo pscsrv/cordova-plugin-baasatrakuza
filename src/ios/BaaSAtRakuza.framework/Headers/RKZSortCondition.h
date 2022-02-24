@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  楽座のデータ取得処理のソート条件を管理するクラス
  
@@ -50,21 +52,47 @@ extern NSString *const RKZSortTypeDesc;
  @param sortColumn NSString ソート項目名
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithSortType:(NSString *)sortType
-            sortColumn:(NSString *)sortColumn;
++ (instancetype)initWithSortType:(NSString *)sortType
+            sortColumn:(NSString *)sortColumn __attribute__ ((deprecated("このメソッドの替わりに`-initWithSortType:sortColumn:`を使用してください")));
+
+/**
+ 指定イニシャライザ
+ @param sortType   NSString ソート条件タイプ
+ @param sortColumn NSString ソート項目名
+ @return id 初期化を行ったモデル情報
+ */
+- (instancetype)initWithSortType:(NSString *)sortType
+                      sortColumn:(NSString *)sortColumn
+NS_SWIFT_NAME(init(_:sortColumn:));
 
 /**
  お気にり設定日をソート条件に設定するためのイニシャライザ
  @param sortType   NSString ソート条件タイプ
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithFavoriteUpdateDateSortType:(NSString *)sortType;
++ (instancetype)initWithFavoriteUpdateDateSortType:(NSString *)sortType __attribute__ ((deprecated("このメソッドの替わりに`-initWithFavoriteUpdateDateSortType:`を使用してください")));
+
+/**
+ お気にり設定日をソート条件に設定するためのイニシャライザ
+ @param sortType   NSString ソート条件タイプ
+ @return id 初期化を行ったモデル情報
+ */
+- (instancetype)initWithFavoriteUpdateDateSortType:(NSString *)sortType;
 
 /**
  お気にり登録件数をソート条件に設定するためのイニシャライザ
  @param sortType   NSString ソート条件タイプ
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithFavoriteCountSortType:(NSString *)sortType;
++ (instancetype)initWithFavoriteCountSortType:(NSString *)sortType __attribute__ ((deprecated("このメソッドの替わりに`-initWithFavoriteCountSortType:`を使用してください")));
+
+/**
+ お気にり登録件数をソート条件に設定するためのイニシャライザ
+ @param sortType   NSString ソート条件タイプ
+ @return id 初期化を行ったモデル情報
+ */
+- (instancetype)initWithFavoriteCountSortType:(NSString *)sortType;
 
 @end
+
+NS_ASSUME_NONNULL_END

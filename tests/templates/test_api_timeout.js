@@ -27,7 +27,7 @@ exports.suite = function(helper) {
         var _two_phase_commit_user_access_token;
 
         it('RKZClientの初期化', function(done) {
-            RKZClient.setTenantKey(LICENSE_KEY,
+            RKZClient.setTenantKey(helper.LICENSE_KEY,
                 function() {
                     expect(true).toBeTruthy(); done();  // Success
                 }, function(error) {

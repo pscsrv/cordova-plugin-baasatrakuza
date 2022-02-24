@@ -239,7 +239,7 @@
 {
     BOOL visibleFieldOnly = [(NSNumber *)[command.arguments objectAtIndex:0] boolValue];;
 
-    [[RKZService sharedInstance] getUserFieldDataList:visibleFieldOnly withBlock:^(NSMutableArray *rkzFieldDataArray, RKZResponseStatus *responseStatus) {
+    [[RKZService sharedInstance] getUserFieldDataList:visibleFieldOnly withBlock:^(NSArray<RKZFieldData *> *rkzFieldDataArray, RKZResponseStatus *responseStatus) {
         CDVPluginResult *result;
         if (responseStatus.isSuccess) {
             NSMutableArray *resutlarray = [self arrayFromRKZData:rkzFieldDataArray];

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  アプリケーション情報を管理するクラス
  
@@ -21,31 +23,31 @@
 ///------------------------------
 
 ///コード
-@property(nonatomic) NSString *code;
+@property(nonatomic, nullable) NSString *code;
 ///アプリケーション名
-@property(nonatomic) NSString *name;
+@property(nonatomic, nullable) NSString *name;
 ///略名称
-@property(nonatomic) NSString *short_name;
+@property(nonatomic, nullable) NSString *short_name;
 ///最新バージョン(Android)
-@property(nonatomic) NSString *version_android;
+@property(nonatomic, nullable) NSString *version_android;
 ///最新バージョン(iPhone)
-@property(nonatomic) NSString *version_ios;
+@property(nonatomic, nullable) NSString *version_ios;
 ///アプリ公開終了日
-@property(nonatomic) NSDate *app_end_dte;
+@property(nonatomic, nullable) NSDate *app_end_dte;
 ///アプリ公開終了フラグ
 @property(nonatomic) BOOL app_end_flg;
 ///AppストアURL
-@property(nonatomic) NSString *app_store_url;
+@property(nonatomic, nullable) NSString *app_store_url;
 ///GooglePlayストアURL
-@property(nonatomic) NSString *google_play_store_url;
+@property(nonatomic, nullable) NSString *google_play_store_url;
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///利用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 /// アプリ公開終了メッセージ
-@property(nonatomic) NSString *app_end_message;
+@property(nonatomic, nullable) NSString *app_end_message;
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 ///------------------------------
 /// @name Initialization
@@ -56,6 +58,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END

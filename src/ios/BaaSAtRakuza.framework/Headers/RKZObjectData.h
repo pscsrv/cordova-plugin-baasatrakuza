@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "RKZData.h"
+#import "RKZFavoriteData.h"
+#import "RKZFavoriteSummaryData.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  データオブジェクトを管理するクラス
@@ -21,24 +25,28 @@
 ///------------------------------
 
 ///オブジェクトID
-@property(nonatomic) NSString *object_id;
+@property(nonatomic, nullable) NSString *object_id;
 ///コード
-@property(nonatomic) NSString *code;
+@property(nonatomic, nullable) NSString *code;
 ///名称
-@property(nonatomic) NSString *name;
+@property(nonatomic, nullable) NSString *name;
 ///略名称
-@property(nonatomic) NSString *short_name;
+@property(nonatomic, nullable) NSString *short_name;
 ///並び順
-@property(nonatomic) NSNumber *sort_no;
+@property(nonatomic, nullable) NSNumber *sort_no;
 ///使用不可フラグ
 @property(nonatomic) BOOL not_use_flg;
 ///登録日時
-@property(nonatomic) NSDate *sys_insert_date;
+@property(nonatomic, nullable) NSDate *sys_insert_date;
 ///更新日時
-@property(nonatomic) NSDate *sys_update_date;
+@property(nonatomic, nullable) NSDate *sys_update_date;
+///お気に入り情報
+@property(nonatomic, nullable) RKZFavoriteData *sys_favorite;
+///お気に入り集計情報
+@property(nonatomic, nullable) RKZFavoriteSummaryData *sys_favorite_sum;
 
 ///自由項目
-@property(nonatomic) NSMutableDictionary *attributes;
+@property(nonatomic, nullable) NSDictionary<NSString*, id> *attributes;
 
 
 ///------------------------------
@@ -50,6 +58,8 @@
  @param rs 変数名に対応したKeyを持つ連想配列
  @return id 初期化を行ったモデル情報
  */
-+ (id)initWithResultSet:(NSDictionary *)rs;
++ (instancetype)initWithResultSet:(NSDictionary *)rs;
 
 @end
+
+NS_ASSUME_NONNULL_END
