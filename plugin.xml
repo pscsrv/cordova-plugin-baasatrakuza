@@ -3,7 +3,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="cordova-plugin-baasatrakuza"
-  version="2.0.0">
+  version="2.1.0">
 
   <!-- プラグイン名 -->
   <name>BaaSAtRakuza</name>
@@ -70,6 +70,7 @@
     <source-file src="src/android/impl/UserBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
     <source-file src="src/android/impl/FavoriteBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
     <source-file src="src/android/impl/UserDetailBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
+    <source-file src="src/android/impl/PushBridge.java" target-dir="src/jp/raku_za/baas/cordova/android/impl"/>
     <lib-file src="src/android/libs/BaaSAtRakuzaSDK_for_Android.jar" />
   </platform>
 
@@ -94,7 +95,8 @@
     <source-file src="src/ios/RKZClient+User.m" />
     <source-file src="src/ios/RKZClient+Favorite.m" />
     <source-file src="src/ios/RKZClient+UserDetail.m" />
+    <source-file src="src/ios/RKZClient+Push.m" />
 
-    <framework src="src/ios/BaaSAtRakuza.framework" custom="true" />
+    <framework src="src/ios/BaaSAtRakuza.xcframework" custom="true" />
   </platform>
 </plugin>

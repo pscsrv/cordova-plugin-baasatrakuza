@@ -21,3 +21,4 @@ exports.userAccessToken = null;
 exports.LICENSE_KEY = null;
 exports.TENANT_BASE_URL = null;
 exports.USER_ACCESS_TOKEN = null;
+exports.PUSH_NO = null;

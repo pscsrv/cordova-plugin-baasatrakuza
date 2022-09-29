@@ -48,6 +48,7 @@ exports.suite = function(helper) {
             require('./trial_plan/tests_stamp_rally').suite(helper);
             require('./trial_plan/tests_contact').suite(helper);
             require('./trial_plan/tests_beacon').suite(helper);
+            require('./trial_plan/tests_push').suite(helper);
         });
 
     });

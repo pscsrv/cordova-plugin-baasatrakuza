@@ -274,6 +274,29 @@ public class UserDetailBridge extends BridgeBase {
         }
     }
 
+    private class DeleteAllUserDetailBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final String objectId = data.getString(0);
+            final String userAccessToken = data.getString(1);
+
+            RKZClient.getInstance().deleteAllUserDetail(objectId, userAccessToken, new OnDeleteUserDetailListener() {
+                @Override
+                public void onDeleteUserDetail(Integer deleteCount, RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(deleteCount);
+                        }
+                    });
+                }
+            });
+
+            return true;
+        }
+    }
+
     private List<UserDetail.VisibilityType> createVisibility(JSONArray jsonArray) throws JSONException {
         final List<UserDetail.VisibilityType> visibility = new ArrayList<>();
         for (String visibilityType : createStringList(jsonArray)) {
@@ -294,6 +317,7 @@ public class UserDetailBridge extends BridgeBase {
         tasks.put("addUserDetail", new AddUserDetailBridge());
         tasks.put("editUserDetail", new EditUserDetailBridge());
         tasks.put("deleteUserDetail", new DeleteUserDetailBridge());
+        tasks.put("deleteAllUserDetail", new DeleteAllUserDetailBridge());
         return tasks;
     }
 }

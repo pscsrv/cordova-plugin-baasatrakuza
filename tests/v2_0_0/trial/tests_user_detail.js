@@ -2095,6 +2095,18 @@ exports.suite = function(helper) {
                 }, TIMEOUT);
             });
 
+            it('条件を指定しない場合、エラーになること', function(done) {
+                RKZClient.deleteUserDetail('test', testUser1.user_access_token, null, function () {
+                    expect(false).toBeTruthy();
+                    done();
+                }, function (error) {
+                    expect(error).toBeDefined();
+                    expect(error).toEqual(jasmine.objectContaining({status_code: "9002"}));
+                    expect(error).toEqual(jasmine.objectContaining({message: "システムエラー : POSTデータ contents[search_condition] の値に誤りがあります。"}));
+                    done();
+                });
+            }, TIMEOUT);
+
             describe('検索条件', function() {
                 it('!==Arrayの場合、エラーとなること', function(done) {
                     RKZClient.deleteUserDetail('test', testUser1.user_access_token, {}, function () {
@@ -2124,8 +2136,97 @@ exports.suite = function(helper) {
                         done();
                     });
                 }, TIMEOUT);
-                it('条件を指定しない場合、全件削除されること', function(done) {
-                    RKZClient.deleteUserDetail('test', testUser1.user_access_token, null, function (deleteCount) {
+            });
+        });
+
+        describe('RKZClient.deleteAllUserDetail', function() {
+            describe('オブジェクトID', function() {
+                it('===undefinedの場合、エラーとなること', function(done) {
+                    RKZClient.deleteAllUserDetail(undefined, testUser1.user_access_token, function () {
+                        expect(false).toBeTruthy();
+                        done();
+                    }, function (error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({
+                            status_code: 'CDVE0001',
+                            message: 'Type of objectId is not correct.'
+                        }));
+                        done();
+                    });
+                }, TIMEOUT);
+                it('!==Stringの場合、エラーとなること', function(done) {
+                    RKZClient.deleteAllUserDetail({}, testUser1.user_access_token, function () {
+                        expect(false).toBeTruthy();
+                        done();
+                    }, function (error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({
+                            status_code: 'CDVE0001',
+                            message: 'Type of objectId is not correct.'
+                        }));
+                        done();
+                    });
+                }, TIMEOUT);
+                it('===""の場合、エラーとなること', function(done) {
+                    RKZClient.deleteAllUserDetail('', testUser1.user_access_token, function () {
+                        expect(false).toBeTruthy();
+                        done();
+                    }, function (error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({
+                            status_code: '9020',
+                            message: isIOS() ? '必須入力チェックエラー : オブジェクトIDの取得に失敗しました' : 'オブジェクトIDがありません。'
+                        }));
+                        done();
+                    });
+                }, TIMEOUT);
+            });
+
+            describe('ユーザーアクセストークン', function() {
+                it('===undefinedの場合、エラーとなること', function(done) {
+                    RKZClient.deleteAllUserDetail('test', undefined, function () {
+                        expect(false).toBeTruthy();
+                        done();
+                    }, function (error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({
+                            status_code: 'CDVE0001',
+                            message: 'Type of userAccessToken is not correct.'
+                        }));
+                        done();
+                    });
+                }, TIMEOUT);
+                it('!==Stringの場合、エラーとなること', function(done) {
+                    RKZClient.deleteAllUserDetail('test', {}, function () {
+                        expect(false).toBeTruthy();
+                        done();
+                    }, function (error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({
+                            status_code: 'CDVE0001',
+                            message: 'Type of userAccessToken is not correct.'
+                        }));
+                        done();
+                    });
+                }, TIMEOUT);
+                it('===""の場合、エラーとなること', function(done) {
+                    RKZClient.deleteAllUserDetail('test', '', function () {
+                        expect(false).toBeTruthy();
+                        done();
+                    }, function (error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({
+                            status_code: '9020',
+                            message: isIOS() ? '必須入力チェックエラー : ユーザーアクセストークンの取得に失敗しました' : 'ユーザアクセストークンがありません。'
+                        }));
+                        done();
+                    });
+                }, TIMEOUT);
+            });
+
+            describe('正常な値の場合', function() {
+                it('全件削除されること', function(done) {
+                    RKZClient.deleteAllUserDetail('test', testUser1.user_access_token, function (deleteCount) {
                         expect(deleteCount).toBe(3);
 
                         RKZClient.getUserDetailList('test', testUser1.user_access_token, null, null, function (userDetails) {

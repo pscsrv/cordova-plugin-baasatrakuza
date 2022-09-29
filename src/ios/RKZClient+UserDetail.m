@@ -197,4 +197,21 @@
     }];
 }
 
+- (void)deleteAllUserDetail:(CDVInvokedUrlCommand *)command
+{
+    NSString *objectId = command.arguments[0];
+    NSString *userAccessToken = command.arguments[1];
+
+    [[RKZService sharedInstance] deleteAllUserDetail:objectId userAccessToken:userAccessToken withBlock:^(NSNumber * _Nonnull deleteCount, RKZResponseStatus * _Nonnull responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:[deleteCount doubleValue]];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
 @end

@@ -101,6 +101,8 @@
 
 - (void) deleteData:(CDVInvokedUrlCommand*)command;
 
+- (void) deleteAllData:(CDVInvokedUrlCommand*)command;
+
 - (void) getDataWithRelationObjects:(CDVInvokedUrlCommand*)command;
 
 - (void) getDataListWithRelationObjects:(CDVInvokedUrlCommand*)command;
@@ -250,6 +252,14 @@
 - (void) editUserDetail:(CDVInvokedUrlCommand*)command;
 
 - (void) deleteUserDetail:(CDVInvokedUrlCommand*)command;
+
+- (void) deleteAllUserDetail:(CDVInvokedUrlCommand *)command;
+
+@end
+
+@interface RKZClient (Push)
+
+- (void)openPush:(CDVInvokedUrlCommand *)command;
 
 @end
 

@@ -804,6 +804,18 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
 
+            it('条件を指定しない場合、エラーになること', function(done) {
+                RKZClient.deleteData("delete_master", null,
+                    function(deleteCount) {
+                        expect(false).toBeTruthy(); done();    // Failed
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "2001"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "バリデーションエラー : 検索条件に空の値は使用できません。"}));
+                        done();
+                    });
+            }, TIMEOUT);
+
             describe('条件指定削除', function() {
                 describe('正しいコードを指定した場合', function() {
                     var _code = null;
@@ -837,6 +849,47 @@ exports.suite = function(helper) {
                     }, TIMEOUT);
                 });  // end of describe('正しいコードを指定した場合', function()
             });  // end of describe('条件指定削除', function()
+        });  // end of describe('RKZClient.deleteData', function()
+
+        describe('RKZClient.deleteAllData', function() {
+            describe('パラメータ:objectId', function() {
+                it('= undefined の場合、エラーになること', function(done) {
+                    var objectId;
+                    RKZClient.deleteAllData(objectId,
+                        function(deleteCount) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('!== String の場合、エラーになること', function(done) {
+                    var objectId = { object_id: "NG" };
+                    RKZClient.deleteAllData(objectId,
+                        function(deleteCount) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                            expect(error).toEqual(jasmine.objectContaining({message: "Type of objectId is not correct."}));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('= "" の場合、エラーが返ってくること', function(done) {
+                    RKZClient.deleteAllData("",
+                        function(deleteCount) {
+                            expect(false).toBeTruthy(); done();    // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                            if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : オブジェクトIDの取得に失敗しました"})); }
+                            else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "オブジェクトIDがありません。"})); }
+                            done();
+                        });
+                }, TIMEOUT);
+            });  // end of describe('パラメータ:objectId', function()
 
             describe('全件削除', function() {
                 describe('削除処理', function() {
@@ -868,8 +921,7 @@ exports.suite = function(helper) {
                         }, 20000);
                     }, TIMEOUT);
                     it('正しく削除されること', function(done) {
-                        var searchConditions = [];
-                        RKZClient.deleteData("delete_master", searchConditions,
+                        RKZClient.deleteAllData("delete_master",
                             function(deleteCount) {
                                 expect(deleteCount).toBeDefined();
                                 expect(deleteCount).toEqual(10);
@@ -893,7 +945,7 @@ exports.suite = function(helper) {
                         });
                 }, TIMEOUT);
             }); // end of describe('全件削除', function()
-        });  // end of describe('RKZClient.deleteData', function()
+        });  // end of describe('RKZClient.deleteAllData', function()
 
         describe('RKZClient.getDataWithRelationObjects', function() {
             describe('パラメータ:objectId', function() {

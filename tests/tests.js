@@ -29,6 +29,7 @@ var TIMEOUT = 30000;
 helper.LICENSE_KEY = "{You.have.an.authentication_id}";
 helper.TENANT_BASE_URL = '';
 helper.USER_ACCESS_TOKEN = '';
+helper.PUSH_NO = null;
 
 exports.defineAutoTests = function () {
 

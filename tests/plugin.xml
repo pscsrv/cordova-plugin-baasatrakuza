@@ -37,6 +37,7 @@
     <js-module src="trial_plan/tests_spot.js" name="trial_plan/tests_spot"></js-module>
     <js-module src="trial_plan/tests_stamp_rally.js" name="trial_plan/tests_stamp_rally"></js-module>
     <js-module src="trial_plan/tests_user.js" name="trial_plan/tests_user"></js-module>
+    <js-module src="trial_plan/tests_push.js" name="trial_plan/tests_push"></js-module>
 
     <!-- v1.2.0 tests -->
     <js-module src="v1_2_0/test_runner.js" name="v1_2_0/test_runner"></js-module>
