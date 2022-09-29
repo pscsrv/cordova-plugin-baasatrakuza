@@ -201,6 +201,30 @@ public class ObjectDataBridge extends BridgeBase {
     }
 
     /**
+     * オブジェクトのデータ全件削除用ブリッジクラス
+     */
+    private class DeleteAllDataBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final String objectId = data.getString(0);
+
+            RKZClient.getInstance().deleteAllData(objectId, new OnDeleteDataListener() {
+                @Override
+                public void onDeleteData(final Integer deleteCount, final RKZResponseStatus rkzResponseStatus) {
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(deleteCount);
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+    }
+
+    /**
      * オブジェクトの単一データ取得用ブリッジクラス
      */
     private class GetDataWithRelationObjectsBridge implements RKZAPIBridge {
@@ -443,6 +467,7 @@ public class ObjectDataBridge extends BridgeBase {
         tasks.put("addData", new AddDataBridge());
         tasks.put("editData", new EditDataBridge());
         tasks.put("deleteData", new DeleteDataBridge());
+        tasks.put("deleteAllData", new DeleteAllDataBridge());
         tasks.put("getDataWithRelationObjects", new GetDataWithRelationObjectsBridge());
         tasks.put("getDataListWithRelationObjects", new GetDataListWithRelationObjectsBridge());
         tasks.put("getPaginateDataListWithRelationObjects", new GetPaginateDataListWithRelationObjectsBridge());

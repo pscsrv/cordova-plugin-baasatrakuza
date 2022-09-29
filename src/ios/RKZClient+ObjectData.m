@@ -125,6 +125,22 @@
 
 }
 
+- (void) deleteAllData:(CDVInvokedUrlCommand*)command
+{
+    NSString *objectId = command.arguments[0];
+
+    [[RKZService sharedInstance] deleteAllData:objectId withBlock:^(NSNumber *deleteCount, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:deleteCount.doubleValue];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
 - (void) getDataWithRelationObjects:(CDVInvokedUrlCommand*)command
 {
     NSString *tableName = [command.arguments objectAtIndex:0];

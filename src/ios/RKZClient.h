@@ -101,6 +101,8 @@
 
 - (void) deleteData:(CDVInvokedUrlCommand*)command;
 
+- (void) deleteAllData:(CDVInvokedUrlCommand*)command;
+
 - (void) getDataWithRelationObjects:(CDVInvokedUrlCommand*)command;
 
 - (void) getDataListWithRelationObjects:(CDVInvokedUrlCommand*)command;
@@ -212,6 +214,12 @@
 - (void) addFavoriteToNews:(CDVInvokedUrlCommand*)command;
 
 - (void) deleteFavoriteToNews:(CDVInvokedUrlCommand*)command;
+
+@end
+
+@interface RKZClient (Push)
+
+- (void)openPush:(CDVInvokedUrlCommand *)command;
 
 @end
 

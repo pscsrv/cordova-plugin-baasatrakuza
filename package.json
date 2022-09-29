@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-baasatrakuza",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "BaaS@rakuza SDK for Cordova plugin.",
   "cordova": {
     "id": "cordova-plugin-baasatrakuza",

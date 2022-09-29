@@ -882,6 +882,14 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
          withBlock:(void (^)(NSNumber *deleteCount, RKZResponseStatus *responseStatus))block;
 
 /**
+ オブジェクトデータ全件削除
+ @param objectId オブジェクトID(必須)
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
+ */
+- (void)deleteAllData:(NSString *)objectId withBlock:(void (^)(NSNumber *deleteCount, RKZResponseStatus *responseStatus))block;
+
+/**
  データオブジェクト取得外部結合（キー指定）
  @param objectId オブジェクトID:object_id (必須)
  @param code キーコード:code (必須)
@@ -1177,6 +1185,17 @@ searchConditionArray:(NSMutableArray *)searchConditionArray
  @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/> (RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus)
  */
 - (void) clearPushDeviceToken:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/*
+ プッシュ通知を開封済みにします。
+ 
+ @param userAccessToken ユーザーアクセストークン(必須)
+ @param pushNo プッシュ番号(必須)
+ @param block 通信後にblockが実行される
+ */
+- (void) openPush:(NSString *)userAccessToken
+           pushNo:(NSNumber *)pushNo
+        withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
 
 @end
 

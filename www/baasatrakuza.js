@@ -197,6 +197,19 @@ var BaaSAtRakuza = (function() {
             cordova.exec(success, error, featureName, "clearPushDeviceToken", [ _userAccessToken ]);
         },
         /**
+         * プッシュ通知を開封済みにします。
+         *
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Number} pushNo プッシュ番号 (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        openPush: function(userAccessToken, pushNo, success, error) {
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            if (!is("Number", pushNo)) { error(RKZMessages.error("CDVE0001", "pushNo"));return; }
+            cordova.exec(success, error, featureName, "openPush", [ userAccessToken, pushNo ]);
+        },
+        /**
          * パスワード情報を変更します。
          *
          * @param {String} "userAccessToken" ユーザーアクセストークン (必須)
@@ -1053,6 +1066,18 @@ var BaaSAtRakuza = (function() {
             }
 
             cordova.exec(success, error, featureName, "deleteData", [ _objectId, _searchConditions ]);
+        },
+        /**
+         * データオブジェクトのレコードをすべて削除します。
+         *
+         * @param {String} objectId オブジェクトID (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        deleteAllData: function(objectId, success, error) {
+            if (!is("String", objectId)) { error(RKZMessages.error("CDVE0001", "objectId"));return; }
+
+            cordova.exec(success, error, featureName, "deleteAllData", [ objectId ]);
         },
         /**
          * データオブジェクトの単一レコードを取得します。<br />
