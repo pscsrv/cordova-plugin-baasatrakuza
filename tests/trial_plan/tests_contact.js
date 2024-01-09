@@ -216,7 +216,7 @@ exports.suite = function(helper) {
                         expect(datas[1].contact_date).not.toBeNull();
                         expect(datas[1]).toEqual(jasmine.objectContaining({"point":1}));
                         expect(datas[1]).toEqual(jasmine.objectContaining({"status_cd":null}));
-                        expect(datas[1]).toEqual(jasmine.objectContaining({"attributes": {"beacon_spot_cd_name":null,"status_cd_name":null,"place_cd_name":null,"contact_class_cd_name":"スタンプコンプリート","stamp_rally_cd_name":null,"coupon_cd_name":null,"stamp_rally_spot_cd_name":null,"contact_method_class_cd_name":"管理者代行","ticket_cd":null,"ticket_no":null,"ticket_name":null} }));
+                        expect(datas[1]).toEqual(jasmine.objectContaining({"attributes": {"beacon_spot_cd_name":null,"status_cd_name":null,"place_cd_name":null,"contact_class_cd_name":"スタンプコンプリート","stamp_rally_cd_name":null,"coupon_cd_name":null,"stamp_rally_spot_cd_name":null,"contact_method_class_cd_name":"管理者代行","ticket_cd":null,"ticket_no":null,"ticket_name":null,"user_coupon_cd": null,"stamp_spot_cd": null,"stamp_spot_cd_name": null} }));
                         done();
                     }, function(error) {
                         expect(false).toBeTruthy(); done();  // Failed

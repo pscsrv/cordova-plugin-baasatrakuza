@@ -118,7 +118,7 @@
 		</data>
 		<key>Headers/RKZService.h</key>
 		<data>
-		WuYOHbAiR/TOoV5Pzgoow6iqwFo=
+		ftYJ6wlN3qqMMOTrA2V6SSKvQj0=
 		</data>
 		<key>Headers/RKZSortCondition.h</key>
 		<data>
@@ -158,11 +158,15 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		pyyG5lT4uFcU/JZ5dKbIoFZiYBI=
+		DeaHhsgSAatsxM4uah9m9qrHZsc=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		4+JlbD1NdzoG+p/Rnh3gc4ZwBIE=
+		V5y50sIx5pwsDtWh85uiW1U/BjI=
+		</data>
+		<key>PrivacyInfo.xcprivacy</key>
+		<data>
+		pmw2S2pB7nZWAmi0gfUAFV+d8iE=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -479,11 +483,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			WuYOHbAiR/TOoV5Pzgoow6iqwFo=
+			ftYJ6wlN3qqMMOTrA2V6SSKvQj0=
 			</data>
 			<key>hash2</key>
 			<data>
-			M94aky0Rj8lta+oGUsc1nnMSLvjuJPq/oKQRdihWlpI=
+			Y1CA16mxHSI0tl7o8SqFdO95XH9EjZfvyCW/xTNWHcs=
 			</data>
 		</dict>
 		<key>Headers/RKZSortCondition.h</key>
@@ -589,11 +593,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4+JlbD1NdzoG+p/Rnh3gc4ZwBIE=
+			V5y50sIx5pwsDtWh85uiW1U/BjI=
 			</data>
 			<key>hash2</key>
 			<data>
-			vLzdV02ad6c/dTeM3lvAlc5ak6fNjqgSF4ygZ1myMeY=
+			aQO+dfMAKIc8osXnJfsd9fMVaJJ2txPo0yCSaOc8YUE=
+			</data>
+		</dict>
+		<key>PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			pmw2S2pB7nZWAmi0gfUAFV+d8iE=
+			</data>
+			<key>hash2</key>
+			<data>
+			Z6MTRtZIAeuLnTSnKcILM09IM4NYDuxmLPasQZJCPkw=
 			</data>
 		</dict>
 	</dict>

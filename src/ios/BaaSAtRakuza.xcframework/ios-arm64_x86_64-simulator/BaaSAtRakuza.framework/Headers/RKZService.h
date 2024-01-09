@@ -1361,6 +1361,8 @@ searchConditionArray:(nullable NSArray<RKZSearchCondition *> *)searchConditionAr
  @param userAccessToken ユーザーアクセストークン(必須)
  @param pushNo プッシュ番号(必須)
  @param block 通信後にblockが実行される
+
+ :nodoc:
  */
 - (void) openPush:(NSString *)userAccessToken
            pushNo:(NSNumber *)pushNo

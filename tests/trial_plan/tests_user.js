@@ -90,7 +90,7 @@ exports.suite = function(helper) {
                         expect(user).toEqual(jasmine.objectContaining({"point" : 20}));
                         expect(user.last_update_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
 
-                        expect(Object.keys(user.attributes).length).toEqual(19);
+                        expect(Object.keys(user.attributes).length).toEqual(20);
                         expect(user.attributes).toEqual(jasmine.objectContaining({"user_roman_name" : null}));
                         expect(user.attributes).toEqual(jasmine.objectContaining({"user_roman_first_name" : null}));
                         expect(user.attributes).toEqual(jasmine.objectContaining({"user_roman_last_name" : null}));
@@ -1262,7 +1262,7 @@ exports.suite = function(helper) {
                     RKZClient.getUserFieldDataList(visibleFieldOnly,
                         function(fields) {
                             expect(fields).toBeDefined();
-                            expect(fields.length).toEqual(44);
+                            expect(fields.length).toEqual(45);
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed

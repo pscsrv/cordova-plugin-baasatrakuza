@@ -1,6 +1,6 @@
 framework module BaaSAtRakuza {
   umbrella header "BaaSAtRakuza.h"
-
   export *
+
   module * { export * }
 }
