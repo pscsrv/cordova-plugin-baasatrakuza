@@ -964,10 +964,10 @@ exports.suite = function(helper) {
             });
             it('正常に取得できること', function(done) {
                 RKZClient.getDataFromQRCode(
-                    "cbcf1d399bda41c20ba71ad91e03c439,b7942e2523bf1da26ce516fc486a61f7,LStuJNTcoIG456Wqagtb4u7MF/Gc93iICPO4FJt/Xt0=",
+                    "f894d7b3b7a0bff4f4462721cfa4e2ba,04a6332e30ec5e15120caba5583518f8,I0Izc8lON1+bshN9wuHcC8zH3awYYYJYn2QITm73JuH3bg6+PcBgSYEWuXCANOpI",
                     function(data) {
                         expect(data).toBeDefined();
-                        expect(data).toEqual(jasmine.objectContaining({object_id: 'qr'}));
+                        expect(data).toEqual(jasmine.objectContaining({object_id: 'qr_master'}));
                         expect(data).toEqual(jasmine.objectContaining({code: '0001'}));
                         expect(data).toEqual(jasmine.objectContaining({name: 'QRコード001'}));
                         expect(data).toEqual(jasmine.objectContaining({short_name: 'QRコード001'}));

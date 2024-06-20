@@ -60,6 +60,22 @@
     }];
 }
 
+- (void) deleteUser:(CDVInvokedUrlCommand*)command
+{
+    NSString *userAccessToken = [command.arguments objectAtIndex:0];
+    [[RKZService sharedInstance] deleteUser:userAccessToken withBlock:^(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus) {
+        CDVPluginResult *result;
+        if (responseStatus.isSuccess) {
+            NSNumber *code = [NSNumber numberWithInteger:responseStatus.statusCode];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[code stringValue]];
+        } else {
+            NSDictionary *error = [self dictionaryFromResponseStatus:responseStatus];
+            result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:error];
+        }
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }];
+}
+
 - (void) registPushDeviceToken:(CDVInvokedUrlCommand*)command
 {
     NSString *userAccessToken = [command.arguments objectAtIndex:0];

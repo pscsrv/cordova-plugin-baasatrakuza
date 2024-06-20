@@ -152,6 +152,15 @@ NS_ASSUME_NONNULL_BEGIN
            withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus * responseStatus))block;
 
 /**
+ ユーザー情報を削除する
+ 
+ @param userAccessToken ユーザーアクセストークン
+ @param block 通信後にblockが実行される。 blockは次の引数のシグネチャを持つ<br/>
+ ( RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus )
+ */
+- (void) deleteUser:(NSString *)userAccessToken withBlock:(void (^)(RKZApiStatusCode statusCode, RKZResponseStatus *responseStatus))block;
+
+/**
  パスワード変更WebView取得
  
  [RKZEditPasswordWebView startWebView] を実行すると WebView が開始されます。
@@ -1361,8 +1370,6 @@ searchConditionArray:(nullable NSArray<RKZSearchCondition *> *)searchConditionAr
  @param userAccessToken ユーザーアクセストークン(必須)
  @param pushNo プッシュ番号(必須)
  @param block 通信後にblockが実行される
-
- :nodoc:
  */
 - (void) openPush:(NSString *)userAccessToken
            pushNo:(NSNumber *)pushNo

@@ -19,6 +19,7 @@ import jp.co.pscsrv.android.baasatrakuza.client.RKZClient;
 import jp.co.pscsrv.android.baasatrakuza.core.RKZResponseStatus;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnAuthModelChangeListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnClearPushDeviceTokenListener;
+import jp.co.pscsrv.android.baasatrakuza.listener.OnDeleteUserListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnEditPasswordListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnEditUserListener;
 import jp.co.pscsrv.android.baasatrakuza.listener.OnGetRKZFieldDataListListener;
@@ -123,6 +124,32 @@ public final class UserBridge extends BridgeBase {
             } catch (RKZResponseStatus status) {
                 final JSONException ex = new JSONException(status.getMessage());
             }
+            return true;
+        }
+    }
+
+    /**
+     * ユーザー削除用ブリッジクラス
+     */
+    private class DeleteUserBridge implements RKZAPIBridge {
+
+        @Override
+        public boolean execute(final JSONArray data, final CallbackContext callbackContext) throws JSONException {
+            final String userAccessToken = data.getString(0);
+
+            // API呼び出し
+            RKZClient.getInstance().deleteUser(userAccessToken, new OnDeleteUserListener() {
+                @Override
+                public void onDeleteUser(final RKZResponseStatus rkzResponseStatus) {
+                    // 復帰値を設定する
+                    callback(callbackContext, rkzResponseStatus, new Success() {
+                        @Override
+                        public void execute(CallbackContext callbackContext) throws JSONException {
+                            callbackContext.success(rkzResponseStatus.getStatusCode());
+                        }
+                    });
+                }
+            });
             return true;
         }
     }
@@ -406,6 +433,7 @@ public final class UserBridge extends BridgeBase {
         tasks.put("registUser", new RegistUserBridge());
         tasks.put("getUser", new GetUserBridge());
         tasks.put("editUser", new EditUserBridge());
+        tasks.put("deleteUser", new DeleteUserBridge());
         tasks.put("userAuth", new UserAuthBridge());
         tasks.put("registPushDeviceToken", new RegistPushDeviceTokenBridge());
         tasks.put("editPassword", new EditPasswordBridge());

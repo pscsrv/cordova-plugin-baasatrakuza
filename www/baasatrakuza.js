@@ -170,6 +170,18 @@ var BaaSAtRakuza = (function() {
             cordova.exec(success, error, featureName, "editUser", [ _user ]);
         },
         /**
+         * ユーザー情報を削除します。
+         * 
+         * @param {String} userAccessToken ユーザーアクセストークン (必須)
+         * @param {Function} success 成功時コールバック関数
+         * @param {Function} error 失敗時のコールバック関数
+         */
+        deleteUser: function(userAccessToken, success, error) {
+            if (!is("String", userAccessToken)) { error(RKZMessages.error("CDVE0001", "userAccessToken"));return; }
+            var _userAccessToken = userAccessToken || "";
+            cordova.exec(success, error, featureName, "deleteUser", [ _userAccessToken ]);
+        },
+        /**
          * プッシュデバイストークン情報を登録します。
          *
          * @param {String} userAccessToken ユーザーアクセストークン (必須)

@@ -195,6 +195,8 @@
 
 - (void) editUser:(CDVInvokedUrlCommand*)command;
 
+- (void) deleteUser:(CDVInvokedUrlCommand*)command;
+
 - (void) registPushDeviceToken:(CDVInvokedUrlCommand*)command;
 
 - (void) clearPushDeviceToken:(CDVInvokedUrlCommand*)command;

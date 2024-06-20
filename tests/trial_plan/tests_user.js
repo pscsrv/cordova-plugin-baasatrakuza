@@ -1326,6 +1326,123 @@ exports.suite = function(helper) {
                     });
             }, TIMEOUT);
         });  // end of RKZClient.getFieldDataList
+
+        describe('ユーザーを削除する場合', function () {
+
+            it('ユーザアクセストークン=undefinedの場合、エラーになること', function(done) {
+                var userAccessToken;
+                RKZClient.deleteUser(userAccessToken,
+                    function(statusCode) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                        done();
+                    });
+            }, TIMEOUT);
+            it('ユーザアクセストークン!==Stringの場合、エラーになること', function(done) {
+                var userAccessToken = { userAccessToken: "NG" };
+                RKZClient.deleteUser(userAccessToken,
+                    function(statusCode) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "CDVE0001"}));
+                        expect(error).toEqual(jasmine.objectContaining({message: "Type of userAccessToken is not correct."}));
+                        done();
+                    });
+            }, TIMEOUT);
+            it('ユーザアクセストークンが空の場合、エラーが返ってくること', function(done) {
+                var userAccessToken = "";
+                RKZClient.deleteUser(userAccessToken,
+                    function(statusCode) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9020"}));
+                        if (cordova.platformId == "ios") { expect(error).toEqual(jasmine.objectContaining({message: "必須入力チェックエラー : ユーザーアクセストークンの取得に失敗しました"})); }
+                        else if (cordova.platformId == "android") { expect(error).toEqual(jasmine.objectContaining({message: "ユーザアクセストークンがありません。"})); }
+                        done();
+                    });
+            }, TIMEOUT);
+            it('存在しないユーザアクセストークンの場合、エラーが返ってくること', function(done) {
+                var userAccessToken = "abcde";
+                RKZClient.deleteUser(userAccessToken,
+                    function(statusCode) {
+                        expect(false).toBeTruthy(); done();  // Failed
+                    }, function(error) {
+                        expect(error).toBeDefined();
+                        expect(error).toEqual(jasmine.objectContaining({status_code: "9007"}));
+                        expect(error).toEqual(jasmine.objectContaining({ message: "不正トークンエラー : 不正なパラメータです。" }));
+                        done();
+                    });
+            }, TIMEOUT);
+            var baseUserAccessToken = '';
+            it('事前にユーザー削除用のユーザーを生成しておく', function(done) {
+                var user = {
+                    user_name: "UpdateUserAccessToken"
+                };
+                RKZClient.registUser(user,
+                    function(user) {
+                        expect(user).toBeDefined();
+                        expect(Object.keys(user).length).toEqual(19);
+                        expect(user.user_access_token).not.toBeNull();
+
+                        // 以降の処理で利用するため保持する
+                        baseUserAccessToken = user.user_access_token;
+                        done();
+                    }, function(error) {
+                        expect(false).toBeTruthy();  // Failed
+                    });
+            }, TIMEOUT);
+            describe('パラメータが正しい場合', function () {
+                it('正常に削除できること', function (done) {
+                    RKZClient.deleteUser(baseUserAccessToken,
+                        function (statusCode) {
+                            expect(statusCode).toBeDefined();
+                            expect(statusCode).toBe("1001");
+                            done();
+                        }, function (error) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        });
+                }, TIMEOUT);
+                it('削除後トークンではアクセス不可であること', function (done) {
+                    RKZClient.deleteUser(baseUserAccessToken,
+                        function (statusCode) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function (error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({ status_code: "9007" }));
+                            expect(error).toEqual(jasmine.objectContaining({ message: "不正トークンエラー : 不正なパラメータです。" }));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('削除したユーザーにアクセスできない状態であること', function (done) {
+                    RKZClient.getUser(baseUserAccessToken,
+                        function(user) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({ status_code: "9007" }));
+                            expect(error).toEqual(jasmine.objectContaining({ message: "不正トークンエラー : 不正なパラメータです。" }));
+                            done();
+                        });
+                }, TIMEOUT);
+                it('削除したユーザーは利用できない状態であること', function (done) {
+                    var deviceToken = "CORDOVA_PLUGIN_TEST_TOKEN";
+                    RKZClient.registPushDeviceToken(baseUserAccessToken, deviceToken,
+                        function(statusCode) {
+                            expect(false).toBeTruthy(); done();  // Failed
+                        }, function(error) {
+                            expect(error).toBeDefined();
+                            expect(error).toEqual(jasmine.objectContaining({ status_code: "9007" }));
+                            expect(error).toEqual(jasmine.objectContaining({ message: "不正トークンエラー : 不正なパラメータです。" }));
+                            done();
+                        });
+                }, TIMEOUT);
+            })
+        }); // end of RKZClient.deleteUser
     });  // end of ユーザー関連API
 
 };
