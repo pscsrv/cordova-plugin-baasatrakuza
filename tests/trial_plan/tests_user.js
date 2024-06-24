@@ -64,7 +64,9 @@ exports.suite = function(helper) {
                     state_cd : "0010",
                     birth_day: '2016-01-01',
                     attributes : {
-                        user_password : "test"
+                        user_password : "test",
+                        push_device_token: "CORDOVA_PLUGIN_TEST_TOKEN_ANDROID",
+                        smartphonesb_cd: "0001",
                     }
                 };
                 RKZClient.registUser(user,
@@ -90,7 +92,7 @@ exports.suite = function(helper) {
                         expect(user).toEqual(jasmine.objectContaining({"point" : 20}));
                         expect(user.last_update_dte).toMatch(/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\+0900$/);
 
-                        expect(Object.keys(user.attributes).length).toEqual(20);
+                        expect(Object.keys(user.attributes).length).toEqual(23);
                         expect(user.attributes).toEqual(jasmine.objectContaining({"user_roman_name" : null}));
                         expect(user.attributes).toEqual(jasmine.objectContaining({"user_roman_first_name" : null}));
                         expect(user.attributes).toEqual(jasmine.objectContaining({"user_roman_last_name" : null}));
@@ -108,6 +110,8 @@ exports.suite = function(helper) {
                         expect(user.attributes).toEqual(jasmine.objectContaining({"age_config_name" : "50代"}));
                         expect(user.attributes).toEqual(jasmine.objectContaining({"state_cd_name" : "群馬県"}));
                         expect(user.attributes).toEqual(jasmine.objectContaining({"business_class_cd_name" : "会社員"}));
+                        expect(user.attributes).toEqual(jasmine.objectContaining({"push_device_token" : "CORDOVA_PLUGIN_TEST_TOKEN_ANDROID"}));
+                        expect(user.attributes).toEqual(jasmine.objectContaining({"smartphonesb_cd" : "0001"}));
 
                         // 以降のテストで利用するユーザー情報を保持する。
                         helper.userAccessToken = user.user_access_token;
@@ -222,11 +226,15 @@ exports.suite = function(helper) {
                     // 抜き取ったデータを使って、更新処理を実施
                     _user.user_first_name = _user.user_first_name + "【修正】";
                     _user.birth_day = '2020-10-21'
+                    _user.attributes.push_device_token = "CORDOVA_PLUGIN_TEST_TOKEN_IOS"
+                    _user.attributes.smartphonesb_cd = "0002"
                     RKZClient.editUser(_user,
                         function(user) {
                             expect(user).toBeDefined();
                             expect(user.user_name).toEqual(_user.user_last_name + _user.user_first_name);
                             expect(user.birth_day).toEqual('2020-10-21 00:00:00+0900');
+                            expect(user.attributes.push_device_token).toEqual("CORDOVA_PLUGIN_TEST_TOKEN_IOS");
+                            expect(user.attributes.smartphonesb_cd).toEqual("0002");
                             done();
                         }, function(error) {
                             expect(false).toBeTruthy(); done();  // Failed

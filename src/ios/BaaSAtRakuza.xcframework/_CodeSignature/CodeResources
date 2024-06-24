@@ -6,7 +6,7 @@
 	<dict>
 		<key>ios-arm64/BaaSAtRakuza.framework/BaaSAtRakuza</key>
 		<data>
-		CLS/TSqSquaN2yVAhYPg7aR0GjQ=
+		pS+rW/VAJh7ZgGdwea24qGBgeQA=
 		</data>
 		<key>ios-arm64/BaaSAtRakuza.framework/Headers/BaaSAtRakuza.h</key>
 		<data>
@@ -162,7 +162,7 @@
 		</data>
 		<key>ios-arm64/BaaSAtRakuza.framework/Info.plist</key>
 		<data>
-		GtP4EJoOMRkPCFgVN+2v7uzIkzI=
+		rS5ZS//UY9nmjuwa+eOAtwaux8c=
 		</data>
 		<key>ios-arm64/BaaSAtRakuza.framework/Modules/module.modulemap</key>
 		<data>
@@ -174,7 +174,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/BaaSAtRakuza</key>
 		<data>
-		ahDGCYy/qeno5gjhupPt9HK5gtw=
+		HgAhBbweiZHVMfQJ453ccXhUqR8=
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/Headers/BaaSAtRakuza.h</key>
 		<data>
@@ -330,7 +330,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/Info.plist</key>
 		<data>
-		44r2BYCT880+x/WihEBtAQdiFVA=
+		vkC0I30Upfpx70qQLkmN44Rj1CI=
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/Modules/module.modulemap</key>
 		<data>
@@ -342,7 +342,7 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeDirectory</key>
 		<data>
-		d6NXdhUEnvMcLMtQE6MSOd420Xs=
+		26HcsNKwc/MU0YC1fX5P7BIc4k0=
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeRequirements</key>
 		<data>
@@ -350,11 +350,11 @@
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeRequirements-1</key>
 		<data>
-		n8IOwM5JsniP5Ce8MbPo9REELF0=
+		UGb5w9UXvHVhyHBr47Xy+CQJ5R0=
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeResources</key>
 		<data>
-		9AsS5voxbFXCtyz6HnoF89TCljk=
+		IMIjAtR2xvwj3tmYJT+ouNo7Eag=
 		</data>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeSignature</key>
 		<data>
@@ -367,11 +367,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			CLS/TSqSquaN2yVAhYPg7aR0GjQ=
+			pS+rW/VAJh7ZgGdwea24qGBgeQA=
 			</data>
 			<key>hash2</key>
 			<data>
-			qKS2c08dzKLHlsAJkaio0qsieDPjLIa0kajdzT5Uop8=
+			XYac4lMNJ/NvVImxby5eutyjI0oP2Vm0Lm74kYi+G8E=
 			</data>
 		</dict>
 		<key>ios-arm64/BaaSAtRakuza.framework/Headers/BaaSAtRakuza.h</key>
@@ -796,11 +796,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			GtP4EJoOMRkPCFgVN+2v7uzIkzI=
+			rS5ZS//UY9nmjuwa+eOAtwaux8c=
 			</data>
 			<key>hash2</key>
 			<data>
-			XCFWuJgKHQowuHyJVQtTzuxjBe9uTI7qXfFO54TGLPc=
+			B2Yx2iyWAk4dJdvMPN/jY6vN9o5EXAPESY/KVHTAGPI=
 			</data>
 		</dict>
 		<key>ios-arm64/BaaSAtRakuza.framework/Modules/module.modulemap</key>
@@ -829,11 +829,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			ahDGCYy/qeno5gjhupPt9HK5gtw=
+			HgAhBbweiZHVMfQJ453ccXhUqR8=
 			</data>
 			<key>hash2</key>
 			<data>
-			oA9tzDB+v1YgK4vSObO7qSVuBLIafvGgczE8EIAvheM=
+			jnf5RGPebPNTB0XzpyH4NtGrzsekoD2n3+H7di5f/Dg=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/Headers/BaaSAtRakuza.h</key>
@@ -1258,11 +1258,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			44r2BYCT880+x/WihEBtAQdiFVA=
+			vkC0I30Upfpx70qQLkmN44Rj1CI=
 			</data>
 			<key>hash2</key>
 			<data>
-			4eIHWrAXrKzYcDMHxQ3UILSW/WmBR/AtqmwDaglUBO4=
+			G9wLfV/RPo8cOOeGRZceVGB3wezrwTWJS74s2jeI0BY=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/Modules/module.modulemap</key>
@@ -1291,11 +1291,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			d6NXdhUEnvMcLMtQE6MSOd420Xs=
+			26HcsNKwc/MU0YC1fX5P7BIc4k0=
 			</data>
 			<key>hash2</key>
 			<data>
-			EtmUcq3AC79tS1APHNLb4U7HQIXOOB7TNtNlR7M3fS4=
+			z3f097U69ESDALFL+wWxAn4zKp6rg+mHBCFxRYJbfvQ=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeRequirements</key>
@@ -1313,22 +1313,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			n8IOwM5JsniP5Ce8MbPo9REELF0=
+			UGb5w9UXvHVhyHBr47Xy+CQJ5R0=
 			</data>
 			<key>hash2</key>
 			<data>
-			Idcf8BKOtru4ZCCJDP4V7Vy716jJoLodC9XXkIIUc0M=
+			AR3IDfD00C59DbhkovXT+XIi6HIKTMOUBef2MxZ/hVc=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			9AsS5voxbFXCtyz6HnoF89TCljk=
+			IMIjAtR2xvwj3tmYJT+ouNo7Eag=
 			</data>
 			<key>hash2</key>
 			<data>
-			2T5R2p2vUiF608ZPjSHjvsr6my6/F4YOBu3wO+m7jmg=
+			1ywywgBC7MoGtZY7rI2UPlyExYK912s4/xTNqe3R4jg=
 			</data>
 		</dict>
 		<key>ios-arm64_x86_64-simulator/BaaSAtRakuza.framework/_CodeSignature/CodeSignature</key>

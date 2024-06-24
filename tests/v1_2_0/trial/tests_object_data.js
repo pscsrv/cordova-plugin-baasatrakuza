@@ -964,7 +964,7 @@ exports.suite = function(helper) {
             });
             it('正常に取得できること', function(done) {
                 RKZClient.getDataFromQRCode(
-                    "f894d7b3b7a0bff4f4462721cfa4e2ba,04a6332e30ec5e15120caba5583518f8,I0Izc8lON1+bshN9wuHcC8zH3awYYYJYn2QITm73JuH3bg6+PcBgSYEWuXCANOpI",
+                    "861bcae45558b0100f0d3471ce0e6c94,6de766e9f42f16a42a7bae63816f3d39,f0+k2H6qldZxSvWfcvnOiQnCaqhQJSJ/0DlHgsEIQ1D0y2j+URdcko4S/wut7Poo",
                     function(data) {
                         expect(data).toBeDefined();
                         expect(data).toEqual(jasmine.objectContaining({object_id: 'qr_master'}));

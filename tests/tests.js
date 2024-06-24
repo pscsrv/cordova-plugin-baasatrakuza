@@ -77,7 +77,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
     createActionButton('QRコード読み込み', function() {
         clearLog();
         RKZClient.getDataFromQRCode(
-            '6d0d12a7c2496fe2ae2190a93e6b031a,e3fb0d02101edcea31731ee29239bf4d,LgMuJnqtiJMect5heHyVtDaHx78wxArwIkwqMbI2yng=',
+            '861bcae45558b0100f0d3471ce0e6c94,6de766e9f42f16a42a7bae63816f3d39,f0+k2H6qldZxSvWfcvnOiQnCaqhQJSJ/0DlHgsEIQ1D0y2j+URdcko4S/wut7Poo',
             function(data) {
                 logMessage( window.JSON.stringify(data) );
             }, function(error) {
